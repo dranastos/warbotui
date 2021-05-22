@@ -1,0 +1,18 @@
+{
+  "name": "comrade",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "antd": "^4.15.5",
+    "next": "10.2.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "use-wallet": "^0.8.1",
+    "web3-eth-contract": "^1.3.6"
+  }
+}
