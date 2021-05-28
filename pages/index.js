@@ -124,7 +124,7 @@ export default function Dashboard() {
             <Statistic title="Emergency" value={pension.emergencyAddress} />
           </Col>
           <Col span={12}>
-            <Statistic title="Pension Receiving Contract" value={pension.ssTaxReceivingContract} />
+            <Statistic title="Social Security Receiving Contract" value={pension.ssTaxReceivingContract} />
           </Col>
         </Row>
       </Card>
@@ -134,7 +134,7 @@ export default function Dashboard() {
   return (
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
-        <Title level={2}>Pension</Title>
+        <Title level={2}>Social Security</Title>
         <Space style={{ marginBottom: 20 }} size="large">
           <Button onClick={actions.setMainnet}>Mainnet</Button>
           <Button onClick={actions.setTestnet}>Testnet</Button>

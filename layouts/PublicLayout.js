@@ -34,7 +34,7 @@ export default function PublicLayout({ children }) {
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <Title style={{ color: 'white', marginBottom: 0, marginRight: 30 }} level={3}>Welfare</Title>
         <Menu theme="dark" mode="horizontal">
-          <Menu.Item key="2" onClick={() => Router.push('/')}>Pension</Menu.Item>
+          <Menu.Item key="2" onClick={() => Router.push('/')}>Social Security</Menu.Item>
           <Menu.Item key="3" onClick={() => Router.push('/center')}>Command Center</Menu.Item>
           <Menu.Item key="4" onClick={() => Router.push('/bonus')}>Bonus Vault</Menu.Item>
           <Menu.Item key="5" onClick={() => Router.push('/welfare')}>Welfare</Menu.Item>
