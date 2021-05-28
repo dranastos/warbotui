@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Typography, Space, Row, Col, Card, Slider, Form, Button, Input, notification } from 'antd'
 const { Title, Text } = Typography
 import { useWallet } from 'use-wallet'
-import { SocialSecurity } from './contracts';
 
 const SettleForm = ({ onComplete }) => {
   const wallet = useWallet()

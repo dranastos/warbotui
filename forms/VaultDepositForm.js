@@ -6,7 +6,6 @@ import useWeb3 from '../hooks/useWeb3'
 import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
 
-
 const VaultDepositForm = ({ onComplete, address }) => {
   const wallet = useWallet()
   const [state, actions] = useGlobal(['security', 'hasSecurity'])

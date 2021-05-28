@@ -1,20 +1,26 @@
 import { useEffect, useState, useCallback } from 'react'
-import Head from 'next/head'
-import { Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert, Tabs, Statistic, Row, Col, Card, Slider, Form, Button, Input, Descriptions, notification } from 'antd'
-const { Title, Text } = Typography
-import PublicLayout from '../layouts/PublicLayout'
 import { useWallet } from 'use-wallet'
+import moment from 'moment'
+import Head from 'next/head'
+import {
+  Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert,
+  Tabs, Statistic, Row, Col, Card, Slider, Form, Button, Input, Descriptions,
+  notification
+} from 'antd'
+
+import PublicLayout from '../layouts/PublicLayout'
+import VaultDepositForm from '../forms/VaultDepositForm'
+import UserDeposits from '../forms/UserDeposits'
+
 import useGlobal from '../hooks/useGlobal'
 import useSecurity from '../hooks/useSecurity'
-import moment from 'moment'
 
+const { Title, Text } = Typography
 const { Item } = Descriptions
-import { SocialSecurity } from '../forms/contracts'
-import VaultDepositForm from '../forms/VaultDepositForm'
-import SettleForm from '../forms/SettleForm'
-import PenaltyAdjustForm from '../forms/PenaltyAdjustForm'
-import PullTaxForm from '../forms/PullTaxForm'
-import UserDeposits from '../forms/UserDeposits'
+
+// import SettleForm from '../forms/SettleForm'
+// import PenaltyAdjustForm from '../forms/PenaltyAdjustForm'
+// import PullTaxForm from '../forms/PullTaxForm'
 
 // COMMAND CENTER: 0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6
 // BONUS: 0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c
@@ -31,7 +37,7 @@ export default function Dashboard() {
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
 
-  console.log("STATE", state)
+  // console.log("STATE", state)
 
   useEffect(() => {
     if (wallet.status == 'connected' && state.hasSecurity) {
