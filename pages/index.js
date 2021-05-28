@@ -167,41 +167,37 @@ export default function Dashboard() {
 
         {
           (state.hasSecurity && wallet.status == 'connected') && (
-            <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
-              <Tabs.TabPane tab="Pensioner Dashboard" key="dashboard">
-                <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
-                  <Col xs={8}>
-                    <VaultDepositForm />
-                  </Col>
-                  <Col xs={16}>
-                    <UserDeposits />
-                  </Col>
-                </Row>
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Contract Details" key="details">
-                { renderStats() }
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="Admin Access" key="admin">
-                <Row gutter={[20, 40]}>
-                  <Col span={24}>
-                    <Space>
-                      <Button
-                        size="large"
-                        type="primary"
-                        onClick={() => sendTx('depositSSTax', wallet.account)}>
-                        Deposit Tax
-                      </Button>
-                      <Button
-                        size="large"
-                        type="primary"
-                        onClick={() => sendTx('sweepReflectBalance', wallet.account)}>
-                        Sweep Reflect Balance
-                      </Button>
-                    </Space>
-                  </Col>
-                </Row>
-              </Tabs.TabPane>
-            </Tabs>
+            <div>
+              <Space style={{ marginTop: 20 }}>
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => sendTx('depositSSTax', wallet.account)}>
+                  Deposit Tax
+                </Button>
+                <Button
+                  size="large"
+                  type="primary"
+                  onClick={() => sendTx('sweepReflectBalance', wallet.account)}>
+                  Sweep Reflect Balance
+                </Button>
+              </Space>
+              <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
+                <Tabs.TabPane tab="Pensioner Dashboard" key="dashboard">
+                  <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
+                    <Col xs={8}>
+                      <VaultDepositForm />
+                    </Col>
+                    <Col xs={16}>
+                      <UserDeposits />
+                    </Col>
+                  </Row>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Contract Details" key="details">
+                  { renderStats() }
+                </Tabs.TabPane>
+              </Tabs>
+            </div>
           )
         }
 

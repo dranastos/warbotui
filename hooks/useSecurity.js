@@ -26,7 +26,7 @@ const useSecurity = (address) => {
 
   const sendTx = async(field, wallet, ...rest) => {
     if (contract) {
-      return await contracts.methods[field](...rest).send({ from: wallet, to: address })
+      return await contract.methods[field](...rest).send({ from: wallet, to: address })
     }
     return false
   }

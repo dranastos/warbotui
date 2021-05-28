@@ -32,7 +32,9 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
 
   const getBalance = async() => {
-    setBalance(web3.utils.fromWei(await welfare.balanceOf(wallet.account).call(), 'gwei'))
+    if (welfare) {
+      setBalance(web3.utils.fromWei(await welfare.balanceOf(wallet.account).call(), 'gwei'))
+    }
   }
 
 
