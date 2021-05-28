@@ -1,35 +1,52 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Head from 'next/head'
-import { Layout, Menu, Breadcrumb, Typography, Space, Row, Col, Card, Slider, Form, Button, Input, Descriptions, notification } from 'antd'
+import { Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert, Tabs, Statistic, Row, Col, Card, Slider, Form, Button, Input, Descriptions, notification } from 'antd'
 const { Title, Text } = Typography
 import PublicLayout from '../layouts/PublicLayout'
 import { useWallet } from 'use-wallet'
+import useGlobal from '../hooks/useGlobal'
+import useSecurity from '../hooks/useSecurity'
+import moment from 'moment'
+
 const { Item } = Descriptions
 import { SocialSecurity } from '../forms/contracts'
 import VaultDepositForm from '../forms/VaultDepositForm'
 import SettleForm from '../forms/SettleForm'
 import PenaltyAdjustForm from '../forms/PenaltyAdjustForm'
 import PullTaxForm from '../forms/PullTaxForm'
+import UserDeposits from '../forms/UserDeposits'
+
+// COMMAND CENTER: 0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6
+// BONUS: 0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c
+// WELFARE ADDRESS: 0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab
+// SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
 
 export default function Dashboard() {
   const wallet = useWallet()
+  const [address, setAddress] = useState(false)
+  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'vault', 'hasVault'])
+  const [security, web3, getField] = useSecurity(state.security)
+  const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
   const [counter, setCounter] = useState(0)
-  const [hasDeposits, setHasDeposits] = useState(false) // user has deposits
+  const [loading, setLoading] = useState(false)
+
+  console.log("STATE", state)
 
   useEffect(() => {
-    if (wallet.status == 'connected') {
+    if (wallet.status == 'connected' && state.hasSecurity) {
       getInfo()
     }
-  }, [wallet.status])
+  }, [wallet.status, state.hasSecurity])
 
   const getInfo = async() => {
+    setLoading(true)
+    console.log("GET INFO")
     let owner = await getField('owner')
     let timePeriod = await getField('timePeriod')
-    let emergencyAddress = await getField('EmergencyAddress')
-    let welfareAddress = await getField('WelfareCommandCenterAddress')
     let ssTaxReceivingContract = await getField('ssTaxReceivingContract')
     let globalDepositNumber = await getField('globalDepositNumber')
+    let globalDepositTimeValue = await getField('globalDepositTimeValue')
     let globalSSTaxDepositNumber = await getField('globalSSTaxDepositNumber')
     let totalTaxCollected = await getField('totalTaxCollected')
     let totalSSVaults = await getField('totalSSVaults')
@@ -37,96 +54,127 @@ export default function Dashboard() {
 
     let token = await getField('token')
     let bonusVault = await getField('bonusVault')
-    let deposits = await SocialSecurity.methods.getUserDeposits(wallet.account).call()
-    if (deposits.length > 0) {
-      setHasDeposits(true)
-    }
-    console.log("deposits", deposits)
+    let emergencyAddress = await getField('EmergencyAddress')
+    let welfareAddress = await getField('WelfareCommandCenterAddress')
+    let reflectBalance = await getField('getReflectBalance')
+
 
     setPension({ ...pension,
       owner, timePeriod, ssTaxReceivingContract,
-      globalDepositNumber, globalSSTaxDepositNumber,
+      globalDepositNumber, globalSSTaxDepositNumber, globalDepositTimeValue,
       totalTaxCollected, totalSSVaults, totalTaxCollectedByPensioners,
-      token, bonusVault, emergencyAddress, welfareAddress
+      token, bonusVault, emergencyAddress, welfareAddress,
+      reflectBalance
     })
 
-    setCounter(counter + 1)
+    setLoading(false)
   }
 
-  const comradeVaultDeposit = async() => {
-    const reply = await SocialSecurity.methods.ssVaultDeposit().send()
-  }
-
-  const getField = async(field) => await SocialSecurity.methods[field]().call()
-
-// Pension 0xEe01AA16D9F79623a174B61F6BE67dB287fc9722
+  const renderStats = useCallback(() => (
+    <Spin spinning={loading}>
+      <Card title="Pension Contract" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
+        <Row gutter={[20, 20]}>
+          <Col span={8}>
+            <Statistic title="Global Deposit Number" value={pension.globalDepositNumber} />
+          </Col>
+          <Col span={8}>
+            <Statistic title="Global Deposit Time Value" value={pension.globalDepositTimeValue} />
+          </Col>
+          <Col span={8}>
+            <Statistic title="Time Period" value={`${((pension.timePeriod / 60) / 60 / 24)} days`} />
+          </Col>
+          <Col span={8}>
+            <Statistic title="Total Pension Vaults" value={pension.totalSSVaults} />
+          </Col>
+          <Col span={8}>
+            <Statistic title="Reflect Balance" value={pension.reflectBalance} />
+          </Col>
+          <Col span={8}>
+            <Statistic title="Tax Deposit Number" value={pension.globalSSTaxDepositNumber} />
+          </Col>
+          <Col span={8}>
+            <Statistic title="Total Collected Tax" value={pension.totalTaxCollected} />
+          </Col>
+          <Col span={8}>
+            <Statistic title="Tax Collected By Pensioners" value={pension.totalTaxCollectedByPensioners} />
+          </Col>
+          <Col span={12}>
+            <Statistic title="Owner" value={pension.owner} />
+          </Col>
+          <Col span={12}>
+            <Statistic title="Welfare Token" value={pension.token} />
+          </Col>
+          <Col span={12}>
+            <Statistic title="Command Center" value={pension.welfareAddress} />
+          </Col>
+          <Col span={12}>
+            <Statistic title="Vault" value={pension.bonusVault} />
+          </Col>
+          <Col span={12}>
+            <Statistic title="Emergency" value={pension.emergencyAddress} />
+          </Col>
+          <Col span={12}>
+            <Statistic title="Pension Receiving Contract" value={pension.ssTaxReceivingContract} />
+          </Col>
+        </Row>
+      </Card>
+    </Spin>
+  ), [pension, loading])
 
   return (
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
         <Title level={2}>Pension</Title>
-
-        {
-          wallet.status == 'connected' && (
-            <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
-              <Col xs={8}>
-                <VaultDepositForm />
-              </Col>
-              <Col xs={8}>
-                <SettleForm />
-              </Col>
-              <Col xs={8}>
-                <PenaltyAdjustForm />
-              </Col>
-            </Row>
-          )
-        }
-
-        {
-          (wallet.status == 'connected' && pension.owner == wallet.account) && (
-            <div>
-              <Title level={2}>Pension Depositor Only</Title>
-              <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
-                <Col xs={8}>
-                  <PullTaxForm />
-                </Col>
-                <Col xs={8}>
-                  <SettleForm />
-                </Col>
-                <Col xs={8}>
-                  <PenaltyAdjustForm />
-                </Col>
-              </Row>
-            </div>
-
-          )
-        }
-
-        {
-          wallet.status == 'connected' && (
-            <Descriptions title="Details" bordered column={4} style={{ background: 'white', border: `1px solid #B4CAEA`, padding: `20px` }}>
-              <Item label="Owner" span={2}>{pension.owner}</Item>
-              <Item label="Pension Receiving Contract" span={2}>{pension.pensionTaxReceivingContract}</Item>
-
-              <Item label="Token" span={2}>{pension.token}</Item>
-              <Item label="Bonus Vault" span={2}>{pension.bonusVault}</Item>
-              <Item label="Welfare Command Center" span={2}>{pension.welfareAddress}</Item>
-              <Item label="Emergency Address" span={2}>{pension.emergencyAddress}</Item>
-
-              <Item label="Time Period">{pension.timePeriod}</Item>
-              <Item label="Global Deposit Number">{pension.globalDepositNumber}</Item>
-              <Item label="Pension Tax Deposit Number">{pension.globalPensionTaxDepositNumber}</Item>
-              <Item label="Tax Collected"><b>{pension.totalTaxCollected}</b></Item>
-
-              <Item label="Total Pension Vaults">{pension.totalPensionVaults}</Item>
-              <Item label="Tax Collected By Pensioners" span={3}>{pension.totalTaxCollectedByPensioners}</Item>
-            </Descriptions>
-          )
-        }
+        <Space style={{ marginBottom: 20 }} size="large">
+          <Button onClick={actions.setMainnet}>Mainnet</Button>
+          <Button onClick={actions.setTestnet}>Testnet</Button>
+          <Text>Current Network: <strong>{state.chain == '56' ? 'Mainnet' : 'Testnet'}</strong></Text>
+          { state.chain == '97' && <div>Test Pension: <Text copyable>0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69</Text></div> }
+          {wallet.status == 'connected' && <Text copyable>{wallet.account}</Text>}
+        </Space>
 
         {
           wallet.status != 'connected' && (
-            <Title>Please connect your wallet</Title>
+            <Alert
+              message="Connect Wallet"
+              description="Please connect your wallet"
+              type="error"
+              showIcon
+              closable
+              style={{ marginBottom: 20 }}
+              />
+          )
+        }
+
+        <Input.Search
+          placeholder="Contract Address"
+          allowClear
+          enterButton="Connect"
+          size="large"
+          onChange={e => actions.setSecurity(e.target.value)}
+          onSearch={() => wallet.connect()}
+        />
+
+        {
+          (state.hasSecurity && wallet.status == 'connected') && (
+            <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
+              <Tabs.TabPane tab="Pensioner Dashboard" key="dashboard">
+                <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
+                  <Col xs={8}>
+                    <VaultDepositForm />
+                  </Col>
+                  <Col xs={16}>
+                    <UserDeposits />
+                  </Col>
+                </Row>
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Contract Details" key="details">
+                { renderStats() }
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="Admin Access" key="admin">
+
+              </Tabs.TabPane>
+            </Tabs>
           )
         }
 
@@ -134,3 +182,24 @@ export default function Dashboard() {
     </PublicLayout>
   )
 }
+
+        //
+        // {
+        //   (wallet.status == 'connected' && pension.owner == wallet.account) && (
+        //     <div>
+        //       <Title level={2}>Pension Depositor Only</Title>
+        //       <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
+        //         <Col xs={8}>
+        //           <PullTaxForm />
+        //         </Col>
+        //         <Col xs={8}>
+        //           <SettleForm />
+        //         </Col>
+        //         <Col xs={8}>
+        //           <PenaltyAdjustForm />
+        //         </Col>
+        //       </Row>
+        //     </div>
+        //
+        //   )
+        // }

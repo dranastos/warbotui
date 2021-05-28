@@ -11,7 +11,7 @@ export default function PublicLayout({ children }) {
   const wallet = useWallet()
 
   const renderWallet = useCallback(() => {
-    if (wallet.status == 'connected') {
+    if (wallet.status == 'connected' && wallet.account) {
       return (
         <Space>
           <Text style={{ color: 'white' }}>
@@ -35,7 +35,9 @@ export default function PublicLayout({ children }) {
         <Title style={{ color: 'white', marginBottom: 0, marginRight: 30 }} level={3}>Welfare</Title>
         <Menu theme="dark" mode="horizontal">
           <Menu.Item key="2" onClick={() => Router.push('/')}>Pension</Menu.Item>
-          <Menu.Item key="3" onClick={() => Router.push('/vault')}>Pension Vault</Menu.Item>
+          <Menu.Item key="3" onClick={() => Router.push('/center')}>Command Center</Menu.Item>
+          <Menu.Item key="3" onClick={() => Router.push('/bonus')}>Bonus Vault</Menu.Item>
+          <Menu.Item key="3" onClick={() => Router.push('/welfare')}>Welfare</Menu.Item>
         </Menu>
         <div style={{ flex: 1 }} />
         {renderWallet()}
