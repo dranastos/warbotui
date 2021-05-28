@@ -16,6 +16,27 @@ const actions = {
       store.setState({ hasVault: false })
     }
   },
+  setBonus: (store, bonus) => {
+    if (bonus && bonus.startsWith('0x') && bonus.length == 42) {
+      store.setState({ bonus, hasBonus: true })
+    } else {
+      store.setState({ hasBonus: false })
+    }
+  },
+  setCenter: (store, center) => {
+    if (center && center.startsWith('0x') && center.length == 42) {
+      store.setState({ center, hasCenter: true })
+    } else {
+      store.setState({ hasCenter: false })
+    }
+  },
+  setWelfare: (store, welfare) => {
+    if (welfare && welfare.startsWith('0x') && welfare.length == 42) {
+      store.setState({ welfare, hasWelfare: true })
+    } else {
+      store.setState({ hasWelfare: false })
+    }
+  },
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -27,6 +48,12 @@ const initialState = {
   hasSecurity: false,
   vault: false,
   hasVault: false,
+  center: false,
+  hasCenter: false,
+  bonus: false,
+  hasBonus: false,
+  welfare: false,
+  hasWelfare: false,
   vaultCount: 0
 }
 

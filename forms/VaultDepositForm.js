@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Typography, Space, Row, Col, Card, Slider, Form, Spin, Button, Input, notification } from 'antd'
+import { Typography, Space, Row, Col, Card, Statistic, Slider, Form, Spin, Button, Input, notification } from 'antd'
 const { Title, Text } = Typography
 import { useWallet } from 'use-wallet'
 import useWeb3 from '../hooks/useWeb3'
 import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
+import useWelfare from '../hooks/useWelfare'
 
 const VaultDepositForm = ({ onComplete, address }) => {
   const wallet = useWallet()
   const [state, actions] = useGlobal(['security', 'hasSecurity'])
   const [contract, web3] = useSecurity(state.security)
+  const [welfare] = useWelfare(state.welfare)
+  const [balance, setBalance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
   const [canDeposit, setCanDeposit] = useState(false)
   const [data, setData] = useState({ months: 0, amount: 0, timelock: 0 })
@@ -17,17 +20,27 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
   useEffect(() => {
     if (state.hasSecurity && contract) {
-      setCanDeposit(false)
       getTimeDeposit()
     }
-  }, [data, state])
+  }, [data])
+
+  useEffect(() => {
+    if (state.hasSecurity && contract) {
+      getBalance()
+    }
+  }, [state])
+
+
+  const getBalance = async() => {
+    setBalance(web3.utils.fromWei(await welfare.balanceOf(wallet.account).call(), 'gwei'))
+  }
+
 
   const getTimeDeposit = async() => {
     const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'gwei').toString()
     const bonus = await contract.applyBonus(weiValue, parseInt(data.months)).call()
     if (bonus > 0) {
       setTimeValue(web3.utils.fromWei(bonus, 'gwei').toString())
-      setCanDeposit(true)
     }
   }
 
@@ -45,11 +58,45 @@ const VaultDepositForm = ({ onComplete, address }) => {
   // transactionIndex: 1
   // type: "0x0"
 
+
+  const approve = async() => {
+    setLoading(true)
+
+    try {
+
+      if (data.amount > 0) {
+        const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
+
+        const tx = await welfare.approve(state.security, value).send({
+          from: wallet.account,
+          to: state.security
+        })
+
+
+        if (tx.status) {
+          notification.success({
+            message: 'Approve Successful',
+            description: tx.transactionHash
+          })
+        }
+      }
+
+    } catch (e) {
+
+    }
+
+    setLoading(false)
+
+
+  }
+
   const handleDeposit = async() => {
     setLoading(true)
+
     try {
+
       const tx = await contract
-        .ssVaultDeposit(web3.utils.toWei(data.amount.toString(), 'gwei').toString(), parseInt(data.months))
+        .ssVaultDeposit(value, parseInt(data.months))
         .send({ from: wallet.account, to: state.security })
       if (tx.status) {
         setData({ amount: 0, months: 0 })
@@ -59,20 +106,18 @@ const VaultDepositForm = ({ onComplete, address }) => {
         })
         actions.addVaultCount()
       }
+
     } catch (e) {
 
     }
+
     setLoading(false)
+
   }
 
   const handleTimeLock = (months) => {
     setData({ ...data, months })
   }
-
-  const approveToken = async() => {
-
-  }
-
   const handleAmount = (e) => {
     setData({ ...data, amount: parseInt(e.target.value) })
   }
@@ -83,6 +128,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
         <Form
           size="large"
           layout="vertical">
+          <Statistic title="Balance" value={balance} />
           <Form.Item name="vAmount" label="Deposit Amount" rules={[{ required: true, message: 'Enter deposit amount' }]}>
             <Input type="number" placeholder="e.g 10000" value={data.amount} onChange={handleAmount} />
           </Form.Item>
@@ -94,8 +140,9 @@ const VaultDepositForm = ({ onComplete, address }) => {
             </Space>
           </Form.Item>
           <Space>
-            <Button size="large" onClick={getTimeDeposit}>Calculate Bonus</Button>
-            <Button size="large" type="primary" disabled={!canDeposit} onClick={handleDeposit}>Deposit</Button>
+            <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
+            <Button size="large" onClick={approve}>Approve</Button>
+            <Button size="large" type="primary" onClick={handleDeposit}>Deposit</Button>
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
             <Title level={3} type="success" copyable strong>{timeValue}</Title>

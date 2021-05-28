@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { notification } from 'antd'
 import Contract from 'web3-eth-contract'
 import SSVault from '../build/contracts/SSVault.json'
 import useWeb3 from './useWeb3'
@@ -12,9 +13,22 @@ const useVault = () => {
     Contract.setProvider(web3.givenProvider)
   }, [])
 
+  const sendVaultTx = async(name, vault, wallet, ...rest) => {
+    const contract = new Contract(SSVault.abi, vault)
+    const tx = await contract.methods[name](...rest).send({
+      from: wallet,
+      to: vault
+    })
+    if (tx.status) {
+      notification.success({
+        message: 'Transaction Successful',
+        description: tx.transactionHash
+      })
+    }
+  }
+
   const getVault = async(address) => {
     const contract = new Contract(SSVault.abi, address)
-    setContract(contract)
     const pensioner = await contract.methods.pensioner().call()
     const depositamount = await contract.methods.depositamount().call()
     const depositTimeValueAmount = await contract.methods.depositTimeValueAmount().call()
@@ -33,7 +47,8 @@ const useVault = () => {
       depositamount: web3.utils.fromWei(depositamount, 'gwei'),
       depositTimeValueAmount: web3.utils.fromWei(depositTimeValueAmount, 'gwei'),
       emergencyWithdrawalAmount: web3.utils.fromWei(emergencyWithdrawalAmount, 'gwei'),
-      lastUpdate: moment.unix(lastUpdate).format('MM/DD/YYYY HH:mm'),
+      lastUpdateTime: moment.unix(lastUpdate).format('MM/DD/YYYY HH:mm'),
+      lastUpdate,
       reflectBalance,
       timeAtDeposit: moment.unix(timeAtDeposit).format('MM/DD/YYYY HH:mm'),
       timeAtExpiration: moment.unix(timeAtExpiration).format('MM/DD/YYYY HH:mm'),
@@ -43,7 +58,7 @@ const useVault = () => {
     }
   }
 
-  return [getVault]
+  return [getVault, sendVaultTx]
 }
 
 export default useVault

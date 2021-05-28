@@ -9,7 +9,7 @@ import useVault from '../hooks/useVault'
 
 const UserDeposits = ({ onComplete, address }) => {
   const wallet = useWallet()
-  const [getVault] = useVault()
+  const [getVault, sendVaultTx] = useVault()
   const [state, actions] = useGlobal(['security', 'hasSecurity', 'vaultCount'])
   const [contract, web3] = useSecurity(state.security)
   const [deposits, setDeposits] = useState([])
@@ -22,7 +22,7 @@ const UserDeposits = ({ onComplete, address }) => {
     if (contract && state.hasSecurity) {
       getDeposits(false)
     }
-  }, [contract, state])
+  }, [contract, state.security, state.vaultCount])
 
   const getDeposits = async() => {
     setLoading(true)
@@ -50,6 +50,16 @@ const UserDeposits = ({ onComplete, address }) => {
     setLoading(false)
   }
 
+  const handleSettle = async(id) => {
+    const tx = await contract.settle(id).send({ from: wallet.account, to: state.security })
+    if (tx.status) {
+      notification.success({
+        message: 'Settlement Successful',
+        description: tx.transactionHash
+      })
+    }
+  }
+
   const renderDeposit = (id, key) => {
     if (vaults[id] == undefined) return null;
     return (
@@ -59,9 +69,34 @@ const UserDeposits = ({ onComplete, address }) => {
           <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
             <Col span={24}>
               <Space size="small">
-                <Button type="primary">Withdraw Reflect Balance</Button>
-                <Button type="primary">Pull Tax Share</Button>
-                <Button type="danger">Emergency Withdrawal</Button>
+                <Button
+                  type="primary"
+                  onClick={() => handleSettle(id)}>
+                  Settle
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => sendVaultTx('withdrawReflectBalance', vaults[id].address, wallet.account)}>
+                  Withdraw Reflect Balance
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => sendVaultTx('pullTaxShare', vaults[id].address, wallet.account)}>
+                  Pull Tax Share
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => sendVaultTx('pullTaxShareEmergency', vaults[id].address, wallet.account, vaults[id].lastUpdate)}>
+                  Pull Tax Emergency
+                </Button>
+                <Button
+                  type="danger"
+                  onClick={() => sendVaultTx('emergencyWithdrawal', vaults[id].address, wallet.account)}>
+                  Emergency Withdrawal
+                  </Button>
+              </Space>
+              <Space>
+                <Button>Load All Data</Button>
               </Space>
             </Col>
             <Col span={12}>
@@ -71,7 +106,7 @@ const UserDeposits = ({ onComplete, address }) => {
             {
               Object.keys(vaults[id]).map((name, key) => (
                 <Col
-                  key={`${id}-${key}`} 
+                  key={`${id}-${key}`}
                   span={vaults.[id][name].toString().startsWith('0x') ? 24 : 8}>
                   <Statistic
                     title={name.toUpperCase()}

@@ -17,9 +17,21 @@ const useSecurity = (address) => {
     }
   }, [address])
 
-  const getField = async(field) => await contract.methods[field]().call()
+  const getField = async(field) => {
+    if (contract) {
+      return await contract.methods[field]().call()
+    }
+    return false
+  }
 
-  return [contract.methods, web3, getField]
+  const sendTx = async(field, wallet, ...rest) => {
+    if (contract) {
+      return await contracts.methods[field](...rest).send({ from: wallet, to: address })
+    }
+    return false
+  }
+
+  return [contract.methods, web3, getField, sendTx]
 }
 
 export default useSecurity

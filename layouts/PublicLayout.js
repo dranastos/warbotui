@@ -36,8 +36,8 @@ export default function PublicLayout({ children }) {
         <Menu theme="dark" mode="horizontal">
           <Menu.Item key="2" onClick={() => Router.push('/')}>Pension</Menu.Item>
           <Menu.Item key="3" onClick={() => Router.push('/center')}>Command Center</Menu.Item>
-          <Menu.Item key="3" onClick={() => Router.push('/bonus')}>Bonus Vault</Menu.Item>
-          <Menu.Item key="3" onClick={() => Router.push('/welfare')}>Welfare</Menu.Item>
+          <Menu.Item key="4" onClick={() => Router.push('/bonus')}>Bonus Vault</Menu.Item>
+          <Menu.Item key="5" onClick={() => Router.push('/welfare')}>Welfare</Menu.Item>
         </Menu>
         <div style={{ flex: 1 }} />
         {renderWallet()}
