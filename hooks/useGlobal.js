@@ -6,35 +6,39 @@ const actions = {
     if (security && security.startsWith('0x') && security.length == 42) {
       store.setState({ security, hasSecurity: true })
     } else {
-      store.setState({ hasSecurity: false })
+      store.setState({ security: '', hasSecurity: false })
     }
+  },
+  setSecurityInfo: (store, securityInfo) => {
+    store.setState({ securityInfo })
   },
   setVault: (store, vault) => {
     if (vault && vault.startsWith('0x') && vault.length == 42) {
       store.setState({ vault, hasVault: true })
     } else {
-      store.setState({ hasVault: false })
+      store.setState({ vault: '', hasVault: false })
     }
   },
   setBonus: (store, bonus) => {
     if (bonus && bonus.startsWith('0x') && bonus.length == 42) {
       store.setState({ bonus, hasBonus: true })
     } else {
-      store.setState({ hasBonus: false })
+      store.setState({ bonus: '', hasBonus: false })
     }
   },
   setCenter: (store, center) => {
     if (center && center.startsWith('0x') && center.length == 42) {
       store.setState({ center, hasCenter: true })
     } else {
-      store.setState({ hasCenter: false })
+      store.setState({ center: '', hasCenter: false })
     }
   },
   setWelfare: (store, welfare) => {
+    console.log("SET WELFARE")
     if (welfare && welfare.startsWith('0x') && welfare.length == 42) {
       store.setState({ welfare, hasWelfare: true })
     } else {
-      store.setState({ hasWelfare: false })
+      store.setState({ welfare: '', hasWelfare: false })
     }
   },
   setTestnet: (store) => store.setState({ chain: 97 }),
@@ -44,15 +48,16 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: false,
+  security: '',
+  securityInfo: {},
   hasSecurity: false,
-  vault: false,
+  vault: '',
   hasVault: false,
-  center: false,
+  center: '',
   hasCenter: false,
-  bonus: false,
+  bonus: '',
   hasBonus: false,
-  welfare: false,
+  welfare: '',
   hasWelfare: false,
   vaultCount: 0
 }

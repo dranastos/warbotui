@@ -9,38 +9,37 @@ import useWelfare from '../hooks/useWelfare'
 
 const VaultDepositForm = ({ onComplete, address }) => {
   const wallet = useWallet()
-  const [state, actions] = useGlobal(['security', 'hasSecurity'])
-  const [contract, web3] = useSecurity(state.security)
+  const [state, actions] = useGlobal(['security', 'hasSecurity', 'welfare', 'hasWelfare'])
+  const { security, web3, connected } = useSecurity(state.security)
   const [welfare] = useWelfare(state.welfare)
   const [balance, setBalance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
   const [canDeposit, setCanDeposit] = useState(false)
   const [data, setData] = useState({ months: 0, amount: 0, timelock: 0 })
   const [loading, setLoading] = useState(false)
+  const [counter, setCounter] = useState(0)
 
   useEffect(() => {
-    if (state.hasSecurity && contract) {
+    if (connected && state.hasSecurity) {
       getTimeDeposit()
     }
   }, [data])
 
   useEffect(() => {
-    if (state.hasSecurity && contract) {
+    if (connected && welfare && state.hasSecurity) {
       getBalance()
     }
-  }, [state])
-
+  }, [connected, welfare, state.hasSecurity])
 
   const getBalance = async() => {
-    if (welfare) {
-      setBalance(web3.utils.fromWei(await welfare.balanceOf(wallet.account).call(), 'gwei'))
-    }
+    const balance = await welfare.balanceOf(wallet.account).call()
+    setBalance(web3.utils.fromWei(balance, 'gwei'))
+    setCounter(counter + 1)
   }
-
 
   const getTimeDeposit = async() => {
     const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'gwei').toString()
-    const bonus = await contract.applyBonus(weiValue, parseInt(data.months)).call()
+    const bonus = await security.applyBonus(weiValue, parseInt(data.months)).call()
     if (bonus > 0) {
       setTimeValue(web3.utils.fromWei(bonus, 'gwei').toString())
     }

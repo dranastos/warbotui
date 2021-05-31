@@ -11,7 +11,7 @@ const UserDeposits = ({ onComplete, address }) => {
   const wallet = useWallet()
   const [getVault, sendVaultTx] = useVault()
   const [state, actions] = useGlobal(['security', 'hasSecurity', 'vaultCount'])
-  const [contract, web3] = useSecurity(state.security)
+  const { security, web3, connected } = useSecurity(state.security)
   const [deposits, setDeposits] = useState([])
   const [vaults, setVaults] = useState({})
   const [total, setTotal] = useState(0)
@@ -19,21 +19,21 @@ const UserDeposits = ({ onComplete, address }) => {
   const [hasVaults, setHasVaults] = useState(false)
 
   useEffect(() => {
-    if (contract && state.hasSecurity) {
+    if (connected && state.hasSecurity) {
       getDeposits(false)
     }
-  }, [contract, state.security, state.vaultCount])
+  }, [connected, state.hasSecurity])
 
   const getDeposits = async() => {
     setLoading(true)
-    const totalDeps = await contract.userTotalDeposits(wallet.account).call()
-    const deps = await contract.getUserDeposits(wallet.account).call()
+    const totalDeps = await security.userTotalDeposits(wallet.account).call()
+    const deps = await security.getUserDeposits(wallet.account).call()
     setDeposits(deps)
     let vaults = {}
     for (let dep of deps) {
-      const address = await contract.deposits(dep).call()
+      const address = await security.deposits(dep).call()
       const data = await getVault(address)
-      const status = await contract.ssVault(address).call()
+      const status = await security.ssVault(address).call()
 
       console.log("DP STATUS", status)
 
@@ -63,63 +63,62 @@ const UserDeposits = ({ onComplete, address }) => {
   const renderDeposit = (id, key) => {
     if (vaults[id] == undefined) return null;
     return (
-      <div>
-      <Collapse>
-        <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount}`} key={id}>
-          <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
-            <Col span={24}>
-              <Space size="small">
-                <Button
-                  type="primary"
-                  onClick={() => handleSettle(id)}>
-                  Settle
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => sendVaultTx('withdrawReflectBalance', vaults[id].address, wallet.account)}>
-                  Withdraw Reflect Balance
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => sendVaultTx('pullTaxShare', vaults[id].address, wallet.account)}>
-                  Pull Tax Share
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => sendVaultTx('pullTaxShareEmergency', vaults[id].address, wallet.account, vaults[id].lastUpdate)}>
-                  Pull Tax Emergency
-                </Button>
-                <Button
-                  type="danger"
-                  onClick={() => sendVaultTx('emergencyWithdrawal', vaults[id].address, wallet.account)}>
-                  Emergency Withdrawal
+      <div key={`vault-${id}`}>
+        <Collapse>
+          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount}`}>
+            <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
+              <Col span={24}>
+                <Space size="small" style={{ marginBottom: 10 }}>
+                  <Button
+                    type="primary"
+                    onClick={() => handleSettle(id)}>
+                    Settle
                   </Button>
-              </Space>
-              <Space>
-                <Button>Load All Data</Button>
-              </Space>
-            </Col>
-            <Col span={12}>
-              <Statistic title="Deposit Number" value={id} />
-            </Col>
+                  <Button
+                    type="primary"
+                    onClick={() => sendVaultTx('withdrawReflectBalance', vaults[id].address, wallet.account)}>
+                    Withdraw Reflect Balance
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => sendVaultTx('pullTaxShare', vaults[id].address, wallet.account)}>
+                    Pull Tax Share
+                  </Button>
+                  </Space>
+                  <Space>
+                  <Button
+                    type="primary"
+                    onClick={() => sendVaultTx('pullTaxShareEmergency', vaults[id].address, wallet.account, vaults[id].lastUpdate)}>
+                    Pull Tax Emergency
+                  </Button>
+                  <Button
+                    type="danger"
+                    onClick={() => sendVaultTx('emergencyWithdrawal', vaults[id].address, wallet.account)}>
+                    Emergency Withdrawal
+                    </Button>
+                </Space>
+              </Col>
+              <Col span={12}>
+                <Statistic title="Deposit Number" value={id} />
+              </Col>
 
-            {
-              Object.keys(vaults[id]).map((name, key) => (
-                <Col
-                  key={`${id}-${key}`}
-                  span={vaults.[id][name].toString().startsWith('0x') ? 24 : 8}>
-                  <Statistic
-                    title={name.toUpperCase()}
-                    value={vaults.[id][name]}
-                    precision={4}
-                    style={{ marginBottom: 20 }}
-                    />
-                </Col>
-              ))
-            }
-          </Row>
-        </Collapse.Panel>
-      </Collapse>
+              {
+                Object.keys(vaults[id]).map((name, key) => (
+                  <Col
+                    key={`${id}-${name}-${key}`}
+                    span={vaults.[id][name].toString().startsWith('0x') ? 24 : 8}>
+                    <Statistic
+                      title={name.toUpperCase()}
+                      value={vaults.[id][name]}
+                      precision={4}
+                      style={{ marginBottom: 20 }}
+                      />
+                  </Col>
+                ))
+              }
+            </Row>
+          </Collapse.Panel>
+        </Collapse>
       </div>
     )
   }

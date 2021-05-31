@@ -6,15 +6,21 @@ import useWeb3 from './useWeb3'
 const useContract = (address) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
+  const [connected, setConnected] = useState(false)
 
   useEffect(() => {
     if (address) {
-      Contract.setProvider(web3.givenProvider)
+      Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(Bonus, address))
+      setConnected(true)
     }
   }, [address])
 
-  return [contract.methods, web3]
+  return {
+    bonus: contract.methods,
+    web3,
+    connected
+  }
 }
 
 export default useContract

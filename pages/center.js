@@ -25,23 +25,23 @@ export default function CommandCenter() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
   const [state, actions] = useGlobal(['chain', 'center', 'hasCenter'])
-  const [contract, web3, getField] = useCommandCenter(state.center)
+  const { center, web3, connected } = useCommandCenter(state.center)
   const [show, setShow] = useState(false)
   const [data, setData] = useState({ })
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (wallet.status == 'connected' && state.hasCenter) {
+    if (connected && wallet.status == 'connected' && state.hasCenter) {
       getInfo()
     }
-  }, [wallet, state])
+  }, [connected, wallet.status, state.hasCenter])
 
   const getInfo = async() => {
     setLoading(true)
-    const vaultAddr = await contract.getBonusVault().call()
-    const securityAddr = await contract.getSocialSecurityAddress().call()
-    const welfareAddr = await contract.getWelfareAddress().call()
+    const vaultAddr = await center.getBonusVault().call()
+    const securityAddr = await center.getSocialSecurityAddress().call()
+    const welfareAddr = await center.getWelfareAddress().call()
     setData({ vaultAddr, securityAddr, welfareAddr })
     setLoading(false)
   }
@@ -107,35 +107,6 @@ export default function CommandCenter() {
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
         <Title level={2}>Command Center</Title>
-        <Space style={{ marginBottom: 20 }} size="large">
-          <Button onClick={actions.setMainnet}>Mainnet</Button>
-          <Button onClick={actions.setTestnet}>Testnet</Button>
-          <Text>Current Network: <strong>{state.chain == '56' ? 'Mainnet' : 'Testnet'}</strong></Text>
-          { state.chain == '97' && <div>Test Command Center: <Text copyable>0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6</Text></div> }
-          {wallet.status == 'connected' && <Text copyable>{wallet.account}</Text>}
-        </Space>
-
-        {
-          wallet.status != 'connected' && (
-            <Alert
-              message="Connect Wallet"
-              description="Please connect your wallet"
-              type="error"
-              showIcon
-              closable
-              style={{ marginBottom: 20 }}
-              />
-          )
-        }
-
-        <Input.Search
-          placeholder="Contract Address"
-          allowClear
-          enterButton="Connect"
-          size="large"
-          onChange={e => actions.setCenter(e.target.value)}
-          onSearch={() => wallet.connect()}
-        />
 
         { state.hasCenter && renderDashboard() }
 

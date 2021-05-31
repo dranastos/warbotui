@@ -10,7 +10,7 @@ const useVault = () => {
   const [contract, setContract] = useState({})
 
   useEffect(() => {
-    Contract.setProvider(web3.givenProvider)
+    Contract.setProvider(global.window && window.ethereum)
   }, [])
 
   const sendVaultTx = async(name, vault, wallet, ...rest) => {

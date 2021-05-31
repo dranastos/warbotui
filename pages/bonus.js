@@ -21,27 +21,28 @@ const { Item } = Descriptions
 // WELFARE ADDRESS: 0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab
 // SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
 
-export default function CommandCenter() {
+export default function BonusVault() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'center', 'hasCenter'])
-  const [contract, web3] = useBonus(state.bonus)
+  const [state, actions] = useGlobal(['chain', 'bonus', 'hasBonus'])
+  const { bonus, web3, connected } = useBonus(state.bonus)
   const [show, setShow] = useState(false)
   const [data, setData] = useState({ })
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (wallet.status == 'connected' && state.hasBonus) {
+    console.log("STATE", state)
+    if (connected && state.hasBonus) {
       getInfo()
     }
-  }, [wallet, state])
+  }, [connected, state.hasBonus])
 
   const getInfo = async() => {
     setLoading(true)
-    const welfareAddr = await contract.welfarecontract().call()
-    const securityAddr = await contract.socialsecuritycontract().call()
-    const centerAddr = await contract.ComradeCommandCenterAddress().call()
+    const welfareAddr = await bonus.welfarecontract().call()
+    const securityAddr = await bonus.socialsecuritycontract().call()
+    const centerAddr = await bonus.ComradeCommandCenterAddress().call()
     setData({ centerAddr, securityAddr, welfareAddr })
     setLoading(false)
   }
@@ -122,36 +123,6 @@ export default function CommandCenter() {
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
         <Title level={2}>Bonus Vault</Title>
-        <Space style={{ marginBottom: 20 }} size="large">
-          <Button onClick={actions.setMainnet}>Mainnet</Button>
-          <Button onClick={actions.setTestnet}>Testnet</Button>
-          <Text>Current Network: <strong>{state.chain == '56' ? 'Mainnet' : 'Testnet'}</strong></Text>
-          { state.chain == '97' && <div>Test Command Center: <Text copyable>0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c</Text></div> }
-          {wallet.status == 'connected' && <Text copyable>{wallet.account}</Text>}
-        </Space>
-
-        {
-          wallet.status != 'connected' && (
-            <Alert
-              message="Connect Wallet"
-              description="Please connect your wallet"
-              type="error"
-              showIcon
-              closable
-              style={{ marginBottom: 20 }}
-              />
-          )
-        }
-
-        <Input.Search
-          placeholder="Contract Address"
-          allowClear
-          enterButton="Connect"
-          size="large"
-          onChange={e => actions.setBonus(e.target.value)}
-          onSearch={() => wallet.connect()}
-        />
-
         { state.hasBonus && renderDashboard() }
 
       </div>

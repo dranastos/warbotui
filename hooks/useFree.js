@@ -9,7 +9,7 @@ const useFree = (address) => {
 
   useEffect(() => {
     if (address) {
-      Contract.setProvider(web3.givenProvider)
+      Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(abi, address))
     }
   }, [address])

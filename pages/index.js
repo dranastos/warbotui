@@ -31,53 +31,19 @@ const { Item } = Descriptions
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'vault', 'hasVault'])
-  const [security, web3, getField, sendTx] = useSecurity(state.security)
+  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo'])
+  const { security, web3, getField, sendTx, connected, getFields } = useSecurity(state.security)
   const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
 
-  // console.log("STATE", state)
-
   useEffect(() => {
-    if (wallet.status == 'connected' && state.hasSecurity) {
-      getInfo()
-    }
-  }, [wallet, state])
+    setPension(state.securityInfo)
+  }, [state.securityInfo])
 
   const getInfo = async() => {
-    setLoading(true)
-    console.log("GET INFO")
-    let owner = await getField('owner')
-    let timePeriod = await getField('timePeriod')
-    let ssTaxReceivingContract = await getField('ssTaxReceivingContract')
-    let globalDepositNumber = await getField('globalDepositNumber')
-    let globalDepositTimeValue = await getField('globalDepositTimeValue')
-    let globalSSTaxDepositNumber = await getField('globalSSTaxDepositNumber')
-    let totalTaxCollected = await getField('totalTaxCollected')
-    let totalSSVaults = await getField('totalSSVaults')
-    let totalTaxCollectedByPensioners = await getField('totalTaxCollectedByPensioners')
-
-    let token = await getField('token')
-    let bonusVault = await getField('bonusVault')
-    let emergencyAddress = await getField('EmergencyAddress')
-    let welfareAddress = await getField('WelfareCommandCenterAddress')
-    let reflectBalance = await getField('getReflectBalance')
-
-    setPension({ ...pension,
-      owner, timePeriod, ssTaxReceivingContract,
-      globalDepositNumber, globalSSTaxDepositNumber, globalDepositTimeValue,
-      totalTaxCollected, totalSSVaults, totalTaxCollectedByPensioners,
-      token, bonusVault, emergencyAddress, welfareAddress,
-      reflectBalance
-    })
-
-    actions.setCenter(welfareAddress)
-    actions.setBonus(bonusVault)
-    actions.setWelfare(token)
-
-    setLoading(false)
+    await getFields()
   }
 
   const renderStats = useCallback(() => (
@@ -135,35 +101,6 @@ export default function Dashboard() {
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
         <Title level={2}>Social Security</Title>
-        <Space style={{ marginBottom: 20 }} size="large">
-          <Button onClick={actions.setMainnet}>Mainnet</Button>
-          <Button onClick={actions.setTestnet}>Testnet</Button>
-          <Text>Current Network: <strong>{state.chain == '56' ? 'Mainnet' : 'Testnet'}</strong></Text>
-          { state.chain == '97' && <div>Test Pension: <Text copyable>0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69</Text></div> }
-          {wallet.status == 'connected' && <Text copyable>{wallet.account}</Text>}
-        </Space>
-
-        {
-          wallet.status != 'connected' && (
-            <Alert
-              message="Connect Wallet"
-              description="Please connect your wallet"
-              type="error"
-              showIcon
-              closable
-              style={{ marginBottom: 20 }}
-              />
-          )
-        }
-
-        <Input.Search
-          placeholder="Contract Address"
-          allowClear
-          enterButton="Connect"
-          size="large"
-          onChange={e => actions.setSecurity(e.target.value)}
-          onSearch={() => wallet.connect()}
-        />
 
         {
           (state.hasSecurity && wallet.status == 'connected') && (

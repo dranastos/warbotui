@@ -6,32 +6,71 @@ import useWeb3 from './useWeb3'
 const useSecurity = (address) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
+  const [connected, setConnected] = useState(false)
 
   useEffect(() => {
     if (address) {
-      Contract.setProvider(web3.givenProvider)
+      Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(SSecurity.abi, address))
+      setConnected(true)
       console.log("SOCIAL SECURITY ADDRESS", address)
     } else {
       console.log("SOCIAL SECURITY ADDRESS NOT SET")
     }
   }, [address])
 
+  const getFields = async() => {
+    try {
+      let owner = await getField('owner')
+      let timePeriod = await getField('timePeriod')
+      let ssTaxReceivingContract = await getField('ssTaxReceivingContract')
+      let globalDepositNumber = await getField('globalDepositNumber')
+      let globalDepositTimeValue = await getField('globalDepositTimeValue')
+      let globalSSTaxDepositNumber = await getField('globalSSTaxDepositNumber')
+      let totalTaxCollected = await getField('totalTaxCollected')
+      let totalSSVaults = await getField('totalSSVaults')
+      let totalTaxCollectedByPensioners = await getField('totalTaxCollectedByPensioners')
+
+      let token = await getField('token')
+      let bonusVault = await getField('bonusVault')
+      let emergencyAddress = await getField('EmergencyAddress')
+      let welfareAddress = await getField('WelfareCommandCenterAddress')
+      let reflectBalance = await getField('getReflectBalance')
+
+      return {
+        owner, timePeriod, ssTaxReceivingContract,
+        globalDepositNumber, globalSSTaxDepositNumber, globalDepositTimeValue,
+        totalTaxCollected, totalSSVaults, totalTaxCollectedByPensioners,
+        token, bonusVault, emergencyAddress, welfareAddress,
+        reflectBalance
+      }
+    } catch (e) {
+      return {}
+    }
+  }
+
   const getField = async(field) => {
-    if (contract) {
+    if (connected) {
       return await contract.methods[field]().call()
     }
     return false
   }
 
   const sendTx = async(field, wallet, ...rest) => {
-    if (contract) {
+    if (connected) {
       return await contract.methods[field](...rest).send({ from: wallet, to: address })
     }
     return false
   }
 
-  return [contract.methods, web3, getField, sendTx]
+  return {
+    security: contract.methods,
+    web3,
+    getField,
+    sendTx,
+    getFields,
+    connected
+  }
 }
 
 export default useSecurity

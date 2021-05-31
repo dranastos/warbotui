@@ -40,11 +40,13 @@ export default function CommandCenter() {
   }, [wallet.status, state.hasWelfare])
 
   const renderActions = useCallback(() => (
-    <Row gutter={20}>
-      <Col span={8}>
-        <Statistic title="Balance" value={data.balance} />
-      </Col>
-    </Row>
+    <Card style={{ marginTop: 20 }}>
+      <Row gutter={20}>
+        <Col span={8}>
+          <Statistic title="Balance" value={data.balance} />
+        </Col>
+      </Row>
+    </Card>
   ), [state, wallet])
 
   const claimFree = async() => {
@@ -66,35 +68,8 @@ export default function CommandCenter() {
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
         <Title level={2}>Welfare</Title>
-        <Space style={{ marginBottom: 20 }} size="large">
-          <Button onClick={actions.setMainnet}>Mainnet</Button>
-          <Button onClick={actions.setTestnet}>Testnet</Button>
-          <Text>Current Network: <strong>{state.chain == '56' ? 'Mainnet' : 'Testnet'}</strong></Text>
-          { state.chain == '97' && <div>Test Pension: <Text copyable>0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab</Text></div> }
-          { (state.chain == '97' && wallet.status == 'connected') && <Button type="danger" loading={loading} onClick={claimFree}>Claim FREE Welfare (WIC) Testnet Tokens</Button> }
-        </Space>
 
-        {
-          wallet.status != 'connected' && (
-            <Alert
-              message="Connect Wallet"
-              description="Please connect your wallet"
-              type="error"
-              showIcon
-              closable
-              style={{ marginBottom: 20 }}
-              />
-          )
-        }
-
-        <Input.Search
-          placeholder="Contract Address"
-          allowClear
-          enterButton="Connect"
-          size="large"
-          onChange={e => actions.setWelfare(e.target.value)}
-          onSearch={() => wallet.connect()}
-        />
+        { (state.chain == '97' && wallet.status == 'connected') && <Button type="danger" size="large" loading={loading} onClick={claimFree}>Claim FREE Welfare (WIC) Testnet Tokens</Button> }
 
         { state.hasWelfare && renderActions() }
 
