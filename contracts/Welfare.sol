@@ -1,20 +1,275 @@
-// SPDX-License-Identifier: GPL-3.0
 /**
+ *Submitted for verification at BscScan.com on 2021-03-01
+*/
+
+/**
+ *Submitted for verification at BscScan.com on 2021-03-01
+*/
+
+/**
+  
    #BEE
+   
    #LIQ+#RFI+#SHIB+#DOGE = #BEE
+
    #SAFEMOON features:
    3% fee auto add to the liquidity pool to locked forever when selling
    2% fee auto distribute to all holders
    I created a black hole so #Bee token will deflate itself in supply with every transaction
    50% Supply is burned at start.
-*/
-pragma solidity ^0.7.0;
+   
 
-import './Context.sol';
-import './Ownable.sol';
-import './IERC20.sol';
-import './SafeMath.sol';
-import './CommandCenter.sol';
+ */
+
+pragma solidity ^0.6.12;
+// SPDX-License-Identifier: Unlicensed
+interface IERC20 {
+
+    function totalSupply() external view returns (uint256);
+
+
+    /**
+     * @dev Returns the amount of tokens owned by `account`.
+     */
+    function balanceOf(address account) external view returns (uint256);
+
+    /**
+     * @dev Moves `amount` tokens from the caller's account to `recipient`.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a {Transfer} event.
+     */
+    function transfer(address recipient, uint256 amount) external returns (bool);
+
+    /**
+     * @dev Returns the remaining number of tokens that `spender` will be
+     * allowed to spend on behalf of `owner` through {transferFrom}. This is
+     * zero by default.
+     *
+     * This value changes when {approve} or {transferFrom} are called.
+     */
+    function allowance(address owner, address spender) external view returns (uint256);
+
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * IMPORTANT: Beware that changing an allowance with this method brings the risk
+     * that someone may use both the old and the new allowance by unfortunate
+     * transaction ordering. One possible solution to mitigate this race
+     * condition is to first reduce the spender's allowance to 0 and set the
+     * desired value afterwards:
+     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729
+     *
+     * Emits an {Approval} event.
+     */
+    function approve(address spender, uint256 amount) external returns (bool);
+
+    /**
+     * @dev Moves `amount` tokens from `sender` to `recipient` using the
+     * allowance mechanism. `amount` is then deducted from the caller's
+     * allowance.
+     *
+     * Returns a boolean value indicating whether the operation succeeded.
+     *
+     * Emits a {Transfer} event.
+     */
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+
+    /**
+     * @dev Emitted when `value` tokens are moved from one account (`from`) to
+     * another (`to`).
+     *
+     * Note that `value` may be zero.
+     */
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    /**
+     * @dev Emitted when the allowance of a `spender` for an `owner` is set by
+     * a call to {approve}. `value` is the new allowance.
+     */
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+}
+
+
+
+/**
+ * @dev Wrappers over Solidity's arithmetic operations with added overflow
+ * checks.
+ *
+ * Arithmetic operations in Solidity wrap on overflow. This can easily result
+ * in bugs, because programmers usually assume that an overflow raises an
+ * error, which is the standard behavior in high level programming languages.
+ * `SafeMath` restores this intuition by reverting the transaction when an
+ * operation overflows.
+ *
+ * Using this library instead of the unchecked operations eliminates an entire
+ * class of bugs, so it's recommended to use it always.
+ */
+ 
+library SafeMath {
+    /**
+     * @dev Returns the addition of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `+` operator.
+     *
+     * Requirements:
+     *
+     * - Addition cannot overflow.
+     */
+    function add(uint256 a, uint256 b) internal pure returns (uint256) {
+        uint256 c = a + b;
+        require(c >= a, "SafeMath: addition overflow");
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        return sub(a, b, "SafeMath: subtraction overflow");
+    }
+
+    /**
+     * @dev Returns the subtraction of two unsigned integers, reverting with custom message on
+     * overflow (when the result is negative).
+     *
+     * Counterpart to Solidity's `-` operator.
+     *
+     * Requirements:
+     *
+     * - Subtraction cannot overflow.
+     */
+    function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        require(b <= a, errorMessage);
+        uint256 c = a - b;
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the multiplication of two unsigned integers, reverting on
+     * overflow.
+     *
+     * Counterpart to Solidity's `*` operator.
+     *
+     * Requirements:
+     *
+     * - Multiplication cannot overflow.
+     */
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+        // benefit is lost if 'b' is also tested.
+        // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
+        if (a == 0) {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c / a == b, "SafeMath: multiplication overflow");
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers. Reverts on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        return div(a, b, "SafeMath: division by zero");
+    }
+
+    /**
+     * @dev Returns the integer division of two unsigned integers. Reverts with custom message on
+     * division by zero. The result is rounded towards zero.
+     *
+     * Counterpart to Solidity's `/` operator. Note: this function uses a
+     * `revert` opcode (which leaves remaining gas untouched) while Solidity
+     * uses an invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        require(b > 0, errorMessage);
+        uint256 c = a / b;
+        // assert(a == b * c + a % b); // There is no case in which this doesn't hold
+
+        return c;
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * Reverts when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        return mod(a, b, "SafeMath: modulo by zero");
+    }
+
+    /**
+     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
+     * Reverts with custom message when dividing by zero.
+     *
+     * Counterpart to Solidity's `%` operator. This function uses a `revert`
+     * opcode (which leaves remaining gas untouched) while Solidity uses an
+     * invalid opcode to revert (consuming all remaining gas).
+     *
+     * Requirements:
+     *
+     * - The divisor cannot be zero.
+     */
+    function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
+        require(b != 0, errorMessage);
+        return a % b;
+    }
+}
+
+abstract contract Context {
+    function _msgSender() internal view virtual returns (address payable) {
+        return msg.sender;
+    }
+
+    function _msgData() internal view virtual returns (bytes memory) {
+        this; // silence state mutability warning without generating bytecode - see https://github.com/ethereum/solidity/issues/2691
+        return msg.data;
+    }
+}
+
+interface WelfareCommandCenter {
+
+    function updateWelfareAddress( address _comrade ) external;
+    function updatePensionAddress( address _pension ) external;
+    function getWelfareAddress( ) external view returns ( address );
+    function getSocialSecurityAddress() external view returns ( address );  
+}
 
 /**
  * @dev Collection of functions related to the address type
@@ -152,6 +407,64 @@ library Address {
             }
         }
     }
+}         
+
+
+contract Ownable is Context {
+    address private _owner;
+    address private _previousOwner;
+    uint256 private _lockTime;
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor () internal {
+        address msgSender = _msgSender();
+        _owner = msgSender;
+       
+        emit OwnershipTransferred(address(0), msgSender);
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(_owner == _msgSender(), "Ownable: caller is not the owner");
+        _;
+    }
+
+     /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions anymore. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby removing any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        emit OwnershipTransferred(_owner, address(0));
+        _owner = address(0);
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        emit OwnershipTransferred(_owner, newOwner);
+        _owner = newOwner;
+    }
+
+    
 }
 
 // pragma solidity >=0.5.0;
@@ -380,9 +693,9 @@ contract Welfare is Context, IERC20, Ownable {
     mapping (address => bool) private _isExcludedFromFee;
 
     mapping (address => bool) private _isExcluded;
-    mapping ( address => uint256 ) public lastTrade;
+    mapping ( address => uint256 ) public lastTrade;  
     address[] private _excluded;
-
+   
     uint256 private constant MAX = ~uint256(0);
     uint256 private _tTotal = 1000000000 * 10**6 * 10**9;
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
@@ -391,22 +704,22 @@ contract Welfare is Context, IERC20, Ownable {
     string private _name = "WELFARE";
     string private _symbol = "WIC";
     uint8  private _decimals = 9;
-
+    
     uint256 public _taxFee = 6;
     uint256 private _previousTaxFee = _taxFee;
-
+    
     uint256 public _liquidityFee = 9;
     uint256 private _previousLiquidityFee = _liquidityFee;
-
+    
     uint256 public _SSFee = 15;
     uint256 private _previousSSFee = _SSFee;
-
+    
 
     mapping ( address => uint256 ) public timeKeeper;
     uint256 public timeOut = 24 hours;
-
-    bool public budgetSwitch = true;
-    bool public liquiditySubmitted = false;
+    
+   
+    
     bool public TheWall = false;
     bool public tripleLiquidityTax = false;
     mapping ( address => bool ) public timeViolation;
@@ -414,19 +727,19 @@ contract Welfare is Context, IERC20, Ownable {
 
     IUniswapV2Router02 public  uniswapV2Router;
     address public  uniswapV2Pair;
-
+    
     address public socialSecurity;
     address payable public WelfareCommandCenterAddress;
     address public EmergencyAddress;
     address public bonusVault;
     address public burnAddress;
-
+    
     bool inSwapAndLiquify;
     bool public swapAndLiquifyEnabled = true;
-
+    
     uint256 public _maxTxAmount = 5000000 * 10**6 * 10**9;
     uint256 private numTokensSellToAddToLiquidity = 500000 * 10**6 * 10**9;
-
+    
     event MinTokensBeforeSwapUpdated(uint256 minTokensBeforeSwap);
     event SwapAndLiquifyEnabledUpdated(bool enabled);
     event SwapAndLiquify(
@@ -434,64 +747,58 @@ contract Welfare is Context, IERC20, Ownable {
         uint256 ethReceived,
         uint256 tokensIntoLiqudity
     );
-
+    
     modifier lockTheSwap {
         inSwapAndLiquify = true;
         _;
         inSwapAndLiquify = false;
     }
-
-    constructor ()  {
+    
+    constructor () public  {
         _rOwned[_msgSender()] = _rTotal;
         WelfareCommandCenterAddress = 0x511C8fE08f1662FED7B02f62f6f2db4ED735c84a;
         burnAddress = 0x000000000000000000000000000000000000dEaD;
-
-
-
+        
+        
+        
         //IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E);
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0xD99D1c33F9fC3444f8101754aBC46c52416550D1);
          //Create a uniswap pair for this new token
          uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
             .createPair(address(this), _uniswapV2Router.WETH());
-
+          
         // set the rest of the contract variables
         uniswapV2Router = _uniswapV2Router;
-
+        
         //exclude owner and this contract from fee
         _isExcludedFromFee[owner()] = true;
         _isExcludedFromFee[WelfareCommandCenterAddress] = true;
         _isExcludedFromFee[address(this)] = true;
-
-
-
-        //WelfareCommandCenter ccc = WelfareCommandCenter(WelfareCommandCenterAddress);
-        //ccc.updateWelfareAddress( address(this) );
-        //socialSecurity = ccc.getSocialSecurityAddress();
-        //_isExcludedFromFee[socialSecurity] = true;
+        
         emit Transfer(address(0), _msgSender(), _tTotal);
     }
-
-
+    
+    
     function updateWelfareCommandCenter ( address payable _welfarecommandcenter ) public onlyEmergency {
-
+        
         WelfareCommandCenterAddress = _welfarecommandcenter;
         _isExcludedFromFee[_welfarecommandcenter] = true;
     }
-
+    
     function updateSocialSecurity ( address _socialSecurityAddress ) public onlyCommandCenter {
-
+        
         socialSecurity = _socialSecurityAddress;
         _isExcludedFromFee[_socialSecurityAddress] = true;
     }
-
-
-
-
+    
+    
+    
+    
     function updateBonusVault ( address _bonusvault) public onlyCommandCenter {
-
+        
         bonusVault = _bonusvault;
         _isExcludedFromFee[ _bonusvault ] = true;
-
+        
     }
 
     function name() public view returns (string memory) {
@@ -553,10 +860,10 @@ contract Welfare is Context, IERC20, Ownable {
     function totalFees() public view returns (uint256) {
         return _tFeeTotal;
     }
-
-
-
-
+    
+   
+  
+        
     function deliver(uint256 tAmount) public {
         address sender = _msgSender();
         require(!_isExcluded[sender], "Excluded addresses cannot call this function");
@@ -610,43 +917,37 @@ contract Welfare is Context, IERC20, Ownable {
         _tOwned[sender] = _tOwned[sender].sub(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);        
         _takeLiquidity(tLiquidity);
         _reflectFee(rFee, tFee);
         _sendToSS ( tSS );
-
+        
         emit Transfer(sender, recipient, tTransferAmount);
     }
-
-    function _transferToSS(address sender, address recipient, uint256 tAmount) private {
-        _tOwned[sender] = _tOwned[sender].sub(tAmount);
-        _rOwned[sender] = _rOwned[sender].sub(tAmount);
-        _tOwned[recipient] = _tOwned[recipient].add(tAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(tAmount);
-        emit Transfer(sender, recipient, tAmount);
-    }
-
+    
+   
+    
     function excludeFromFee(address account) public onlyOwner {
         _isExcludedFromFee[account] = true;
     }
-
+    
     function includeInFee(address account) public onlyOwner {
         _isExcludedFromFee[account] = false;
     }
-
+    
     function setTaxFeePercent(uint256 taxFee) external onlyOwner() {
         _taxFee = taxFee;
     }
-
+    
     function setLiquidityFeePercent(uint256 liquidityFee) external onlyOwner() {
         _liquidityFee = liquidityFee;
     }
-
+    
     function setSSFeePercent(uint256 ssFee) external onlyOwner() {
         _SSFee = ssFee;
     }
-
-
+   
+   
     function setMaxTxPercent(uint256 maxTxPercent) public onlyOwner() {
         _maxTxAmount = _tTotal.mul(maxTxPercent).div(
             10**3
@@ -657,7 +958,7 @@ contract Welfare is Context, IERC20, Ownable {
         swapAndLiquifyEnabled = _enabled;
         emit SwapAndLiquifyEnabledUpdated(_enabled);
     }
-
+    
      //to recieve ETH from uniswapV2Router when swaping
     receive() external payable {}
 
@@ -674,16 +975,16 @@ contract Welfare is Context, IERC20, Ownable {
 
     function _getTValues(uint256 tAmount) private  view returns (uint256, uint256, uint256, uint256 ) {
         uint256 tFee = calculateTaxFee(tAmount);
-        uint256 tLiquidity = calculateLiquidityFee(tAmount);
+        uint256 tLiquidity = calculateLiquidityFee(tAmount);  
         //tLiquidity = _tradeCheck(tLiquidity);
         uint256 tSS = calculateSSFee(tAmount);
         uint256 tTransferAmount = tAmount.sub(tFee).sub(tLiquidity).sub(tSS);
         return (tTransferAmount, tFee, tLiquidity, tSS);
     }
-
+    
     function _tradeCheck ( uint256 _tLiquidity ) public view returns ( uint256 ){
          if( tripleLiquidityTax == false  ) return _tLiquidity;
-         if ( timeViolation[msg.sender] == true){ _tLiquidity = _tLiquidity * 3;  }
+         if ( timeViolation[msg.sender] == true){ _tLiquidity = _tLiquidity * 3;  } 
          return _tLiquidity;
     }
 
@@ -703,7 +1004,7 @@ contract Welfare is Context, IERC20, Ownable {
 
     function _getCurrentSupply() private view returns(uint256, uint256) {
         uint256 rSupply = _rTotal;
-        uint256 tSupply = _tTotal;
+        uint256 tSupply = _tTotal;      
         for (uint256 i = 0; i < _excluded.length; i++) {
             if (_rOwned[_excluded[i]] > rSupply || _tOwned[_excluded[i]] > tSupply) return (_rTotal, _tTotal);
             rSupply = rSupply.sub(_rOwned[_excluded[i]]);
@@ -712,7 +1013,7 @@ contract Welfare is Context, IERC20, Ownable {
         if (rSupply < _rTotal.div(_tTotal)) return (_rTotal, _tTotal);
         return (rSupply, tSupply);
     }
-
+    
     function _takeLiquidity(uint256 tLiquidity) private {
         uint256 currentRate =  _getRate();
         uint256 rLiquidity = tLiquidity.mul(currentRate);
@@ -720,16 +1021,15 @@ contract Welfare is Context, IERC20, Ownable {
         if(_isExcluded[address(this)])
             _tOwned[address(this)] = _tOwned[address(this)].add(tLiquidity);
     }
-
+    
     function _sendToSS ( uint tSS ) private {
-
-        // transfer tokens to SS
-       // _transferToSS ( msg.sender , socialSecurity, tSS);
+        
+       
        uint256 rSS = tSS.mul(_getRate());
        _tOwned[WelfareCommandCenterAddress] = _tOwned[WelfareCommandCenterAddress].add(rSS);
-       _rOwned[WelfareCommandCenterAddress] = _rOwned[WelfareCommandCenterAddress].add(rSS);
+       _rOwned[WelfareCommandCenterAddress] = _rOwned[WelfareCommandCenterAddress].add(rSS); 
     }
-
+    
     function calculateTaxFee(uint256 _amount) private view returns (uint256) {
         return _amount.mul(_taxFee).div(
             10**2
@@ -741,35 +1041,35 @@ contract Welfare is Context, IERC20, Ownable {
             10**2
         );
     }
-
+    
     function calculateSSFee(uint256 _amount) private view returns (uint256) {
         return _amount.mul(_SSFee).div(
             10**2
         );
     }
-
-
-
+    
+  
+    
     function removeAllFee() private {
         if(_taxFee == 0 && _liquidityFee == 0 && _SSFee == 0  ) return;
-
+        
         _previousTaxFee = _taxFee;
         _previousLiquidityFee = _liquidityFee;
         _previousSSFee = _SSFee;
-
+        
         _taxFee = 0;
         _liquidityFee = 0;
         _SSFee = 0;
-
+      
     }
-
+    
     function restoreAllFee() private {
         _taxFee = _previousTaxFee;
         _liquidityFee = _previousLiquidityFee;
         _SSFee = _previousSSFee;
-
+        
     }
-
+    
     function isExcludedFromFee(address account) public view returns(bool) {
         return _isExcludedFromFee[account];
     }
@@ -781,15 +1081,15 @@ contract Welfare is Context, IERC20, Ownable {
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
     }
-
+    
     function CheckTheWall (address from, address to, uint256 amount ) internal view {
-        if( from == owner() || to == owner() ) return;
-        if( from == socialSecurity || to == socialSecurity ) return;
-        if( from == uniswapV2Pair ) return;
-        require ( amount < balanceOf ( from ).div(4) );
-
+        if( from == owner() || to == owner() ) return; 
+        if( from == socialSecurity || to == socialSecurity ) return; 
+        if( from == uniswapV2Pair ) return; 
+        require ( amount < balanceOf ( from ).div(4) );   
+         
     }
-
+    
     function tripleLiquidityTaxProcess (address from, address to  ) internal  {
         if ( from == uniswapV2Pair ) return;
         if ( from == socialSecurity || to == socialSecurity ) return;
@@ -797,7 +1097,7 @@ contract Welfare is Context, IERC20, Ownable {
         timeViolation[from] = true;
         timeKeeper[from] = block.timestamp;
     }
-
+    
     function _transfer(
         address from,
         address to,
@@ -808,21 +1108,21 @@ contract Welfare is Context, IERC20, Ownable {
         require(amount > 0, "Transfer amount must be greater than zero");
         if(from != owner() && to != owner() )
             require(amount <= _maxTxAmount, "Transfer amount exceeds the maxTxAmount.");
-        if( TheWall ) CheckTheWall( from, to, amount );
+        if( TheWall ) CheckTheWall( from, to, amount );    
         if( tripleLiquidityTax ) tripleLiquidityTaxProcess( from, to );
-
-
+        
+        
         // is the token balance of this contract address over the min number of
         // tokens that we need to initiate a swap + liquidity lock?
         // also, don't get caught in a circular liquidity event.
         // also, don't swap & liquify if sender is uniswap pair.
         uint256 contractTokenBalance = balanceOf(address(this));
-
+        
         if(contractTokenBalance >= _maxTxAmount)
         {
             contractTokenBalance = _maxTxAmount;
         }
-
+        
         bool overMinTokenBalance = contractTokenBalance >= numTokensSellToAddToLiquidity;
         if (
             overMinTokenBalance &&
@@ -835,15 +1135,15 @@ contract Welfare is Context, IERC20, Ownable {
              //contractTokenBalance = fundBudget(contractTokenBalance);
              swapAndLiquify(contractTokenBalance);
         }
-
+        
         //indicates if fee should be deducted from transfer
         bool takeFee = true;
-
+        
         //if any account belongs to _isExcludedFromFee account then remove the fee
         if(_isExcludedFromFee[from] || _isExcludedFromFee[to]){
             takeFee = false;
         }
-
+        
         //transfer amount, it will take tax, burn, liquidity fee
         _tokenTransfer(from,to,amount,takeFee);
     }
@@ -867,13 +1167,13 @@ contract Welfare is Context, IERC20, Ownable {
 
         // add liquidity to uniswap
         addLiquidity(otherHalf, newBalance);
-
+        
         emit SwapAndLiquify(half, newBalance, otherHalf);
     }
-
-
-
-
+    
+   
+    
+    
 
     function swapTokensForEth(uint256 tokenAmount) private {
         // generate the uniswap pair path of token -> weth
@@ -897,9 +1197,9 @@ contract Welfare is Context, IERC20, Ownable {
         // approve token transfer to cover all possible scenarios
         // transferFrom( msg.sender, address(this), tokenAmount );
         _approve(address(this), address(uniswapV2Router), tokenAmount);
-
+        
         // add the liquidity
-
+        
         uniswapV2Router.addLiquidityETH{value: ethAmount}(
             address(this),
             tokenAmount,
@@ -909,21 +1209,21 @@ contract Welfare is Context, IERC20, Ownable {
             block.timestamp
         );
     }
-
-
+    
+   
     function setTheWall ( bool _switch ) public onlyEmergency {
         TheWall = _switch;
     }
-
+    
     function setTripleTaxLiquidity ( bool _switch ) public onlyEmergency {
         tripleLiquidityTax = _switch;
     }
-
+  
    //this method is responsible for taking all fee, if takeFee is true
     function _tokenTransfer(address sender, address recipient, uint256 amount,bool takeFee) private {
         if(!takeFee)
             removeAllFee();
-
+        
         if (_isExcluded[sender] && !_isExcluded[recipient]) {
             _transferFromExcluded(sender, recipient, amount);
         } else if (!_isExcluded[sender] && _isExcluded[recipient]) {
@@ -935,7 +1235,7 @@ contract Welfare is Context, IERC20, Ownable {
         } else {
             _transferStandard(sender, recipient, amount);
         }
-
+        
         if(!takeFee)
             restoreAllFee();
     }
@@ -954,7 +1254,7 @@ contract Welfare is Context, IERC20, Ownable {
         (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tLiquidity, uint256 tSS ) = _getValues(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
         _tOwned[recipient] = _tOwned[recipient].add(tTransferAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);           
         _takeLiquidity(tLiquidity);
         _reflectFee(rFee, tFee);
         _sendToSS ( tSS );
@@ -965,19 +1265,19 @@ contract Welfare is Context, IERC20, Ownable {
         (uint256 rAmount, uint256 rTransferAmount, uint256 rFee, uint256 tTransferAmount, uint256 tFee, uint256 tLiquidity , uint256 tSS ) = _getValues(tAmount);
         _tOwned[sender] = _tOwned[sender].sub(tAmount);
         _rOwned[sender] = _rOwned[sender].sub(rAmount);
-        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);
+        _rOwned[recipient] = _rOwned[recipient].add(rTransferAmount);   
         _takeLiquidity(tLiquidity);
         _reflectFee(rFee, tFee);
          _sendToSS ( tSS );
         emit Transfer(sender, recipient, tTransferAmount);
     }
 
-
+    
      modifier onlyCommandCenter() {
         require( WelfareCommandCenterAddress == _msgSender(), "Ownable: caller is not the Command Center");
         _;
     }
-
+    
      modifier onlyEmergency() {
         require( EmergencyAddress == _msgSender(), "Ownable: caller is not the Command Center");
         _;
