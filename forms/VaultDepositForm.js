@@ -127,6 +127,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
           message: 'Deposit Successful',
           description: tx.transactionHash
         })
+
         actions.addVaultCount()
       }
 
@@ -167,7 +168,6 @@ const VaultDepositForm = ({ onComplete, address }) => {
             </Space>
           </Form.Item>
           <Space>
-            <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
             <Button size="large" onClick={approve}>Approve</Button>
             <Button size="large" type="primary" onClick={handleDeposit}>Deposit</Button>
           </Space>
@@ -180,5 +180,8 @@ const VaultDepositForm = ({ onComplete, address }) => {
     </Spin>
   )
 }
+
+// <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
+
 
 export default VaultDepositForm

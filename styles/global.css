@@ -1,5 +1,9 @@
 @import 'antd/dist/antd.css';
 
+body {
+  background-color: #c6e686 !important;
+}
+
 .ant-descriptions-view, .ant-descriptions-row {
   border: 4px solid white !important;
 }
@@ -16,5 +20,75 @@
 }
 
 .ant-notification {
-  z-index: 1000
+  z-index: 1000;
+}
+
+.ant-layout-content.site-layout, .ant-layout-footer {
+  background-color: #c6e686 !important;
+}
+
+.ant-layout-header {
+  background: #8E2DE2 !important;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #4A00E0, #8E2DE2) !important;  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #4A00E0, #8E2DE2) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.ant-menu.ant-menu-dark {
+  background: transparent !important;
+  font-weight: bolder;
+  font-size: 1.1em;
+}
+
+.ant-menu > .ant-menu-item {
+  border: 0px !important;
+}
+
+.ant-menu > .ant-menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  color: white !important;
+}
+
+.ant-menu > .ant-menu-item-selected {
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+}
+
+.ant-btn {
+  border: 0px !important;
+  border-radius: 4px !important;
+}
+
+.ant-card {
+  border-radius: 10px;
+  border: 0px !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ant-tabs-tab {
+
+}
+
+.ant-tabs-tab-btn {
+  font-weight: bolder;
+  font-size: 1.5em;
+  color: #3F5908 !important;
+}
+
+.ant-tabs-ink-bar {
+  background: #3F5908 !important;
+}
+
+.ant-alert {
+  border-radius: 10px;
+  border-width: 4px;
+}
+
+.ant-collapse {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ant-collapse-content, .ant-collapse-content-box, .ant-collapse-item {
+  border-radius: 10px !important;
 }

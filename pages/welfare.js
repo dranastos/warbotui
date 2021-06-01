@@ -28,7 +28,7 @@ const FREETOKENS = '0xb5B8cD15Eac571F3d733e3F4ad01143D1548C6ce'
 export default function CommandCenter() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'vault', 'hasVault'])
+  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'hasWelfare'])
   const [contract, web3] = useWelfare(state.welfare)
   const [free] = useFree(FREETOKENS)
   const [show, setShow] = useState(false)
@@ -53,15 +53,19 @@ export default function CommandCenter() {
 
   const claimFree = async() => {
     setLoading(true)
-    const tx = await free.claim(state.welfare, web3.utils.toWei('100000', 'gwei')).send({
-      from: wallet.account,
-      to: FREETOKENS
-    })
-    if (tx.status) {
-      notification.success({
-        message: 'Claim Successful',
-        description: tx.transactionHash
+    try {
+      const tx = await free.claim(state.welfare, web3.utils.toWei('10000', 'gwei')).send({
+        from: wallet.account,
+        to: FREETOKENS
       })
+      if (tx.status) {
+        notification.success({
+          message: 'Claim Successful',
+          description: tx.transactionHash
+        })
+      }
+    } catch (e) {
+      
     }
     setLoading(false)
   }

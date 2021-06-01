@@ -31,7 +31,7 @@ const { Item } = Descriptions
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo'])
+  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo', 'vaultCount'])
   const { security, web3, getField, sendTx, connected, getFields } = useSecurity(state.security)
   const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
@@ -39,11 +39,17 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setPension(state.securityInfo)
-  }, [state.securityInfo])
+    if (state.hasSecurity && connected) {
+      getInfo()
+    }
+  }, [state.hasSecurity, state.vaultCount, connected])
 
   const getInfo = async() => {
-    await getFields()
+    setLoading(true)
+    const securityInfo = await getFields()
+    setPension(securityInfo)
+    actions.setSecurityInfo(securityInfo)
+    setLoading(false)
   }
 
   const renderStats = useCallback(() => (
@@ -57,7 +63,7 @@ export default function Dashboard() {
             <Statistic title="Global Deposit Time Value" value={pension.globalDepositTimeValue} />
           </Col>
           <Col span={8}>
-            <Statistic title="Time Period" value={`${((pension.timePeriod / 60) / 60 / 24)} days`} />
+            <Statistic title="Time Period" value={pension.timePeriod} />
           </Col>
           <Col span={8}>
             <Statistic title="Total Pension Vaults" value={pension.totalSSVaults} />
