@@ -111,8 +111,10 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
       const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
 
+      const bonus = await security.applyBonus(value, parseInt(data.months)).call()
+
       const tx = await security
-        .ssVaultDeposit(value, parseInt(data.months))
+        .ssVaultDeposit(bonus.toString(), parseInt(data.months))
         .send({ from: wallet.account, to: state.security })
 
       if (tx.status) {
