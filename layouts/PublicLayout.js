@@ -8,6 +8,12 @@ import useSecurity from '../hooks/useSecurity';
 const { Header, Content, Footer } = Layout
 const { Title, Text } = Typography
 
+// COMMAND CENTER: 0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6
+// BONUS: 0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c
+// WELFARE ADDRESS: 0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab
+// SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
+
+
 export default function PublicLayout({ children }) {
   const [drawer, showDrawer] = useState(false)
   const [state, actions] = useGlobal([])
@@ -114,7 +120,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="welfare" label="Welfare Address">
-            <Text copyable>0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6</Text>
+            <Text copyable>0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab</Text>
             <Input
               name="command"
               placeholder="Welfare Address"
@@ -126,7 +132,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="bonus" label="Bonus Address">
-            <Text copyable>0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6</Text>
+            <Text copyable>0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c</Text>
             <Input
               name="command"
               placeholder="Bonus Address"

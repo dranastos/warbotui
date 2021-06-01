@@ -13,6 +13,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
   const { security, web3, connected } = useSecurity(state.security)
   const [welfare] = useWelfare(state.welfare)
   const [balance, setBalance] = useState(0)
+  const [allowance, setAllowance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
   const [canDeposit, setCanDeposit] = useState(false)
   const [data, setData] = useState({ months: 0, amount: 0, timelock: 0 })
@@ -28,12 +29,19 @@ const VaultDepositForm = ({ onComplete, address }) => {
   useEffect(() => {
     if (connected && welfare && state.hasSecurity) {
       getBalance()
+      getAllowance()
     }
   }, [connected, welfare, state.hasSecurity])
 
   const getBalance = async() => {
     const balance = await welfare.balanceOf(wallet.account).call()
     setBalance(web3.utils.fromWei(balance, 'gwei'))
+    setCounter(counter + 1)
+  }
+
+  const getAllowance = async() => {
+    const balance = await welfare.allowance(wallet.account, state.security).call()
+    setAllowance(web3.utils.fromWei(balance, 'gwei'))
     setCounter(counter + 1)
   }
 
@@ -79,11 +87,16 @@ const VaultDepositForm = ({ onComplete, address }) => {
             message: 'Approve Successful',
             description: tx.transactionHash
           })
+
+          getAllowance()
         }
       }
 
     } catch (e) {
-
+      notification.error({
+        message: 'Deposit Failed',
+        description: e.toString()
+      })
     }
 
     setLoading(false)
@@ -96,9 +109,12 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
     try {
 
-      const tx = await contract
+      const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
+
+      const tx = await security
         .ssVaultDeposit(value, parseInt(data.months))
         .send({ from: wallet.account, to: state.security })
+
       if (tx.status) {
         setData({ amount: 0, months: 0 })
         notification.success({
@@ -109,7 +125,10 @@ const VaultDepositForm = ({ onComplete, address }) => {
       }
 
     } catch (e) {
-
+      notification.error({
+        message: 'Deposit Failed',
+        description: e.toString()
+      })
     }
 
     setLoading(false)
@@ -130,6 +149,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
           size="large"
           layout="vertical">
           <Statistic title="Balance" value={balance} />
+          <Statistic title="Approved" value={allowance} />
           <Form.Item name="vAmount" label="Deposit Amount" rules={[{ required: true, message: 'Enter deposit amount' }]}>
             <Input type="number" placeholder="e.g 10000" value={data.amount} onChange={handleAmount} />
           </Form.Item>
