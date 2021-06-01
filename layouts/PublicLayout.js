@@ -97,6 +97,7 @@ export default function PublicLayout({ children }) {
 
           <Form.Item name="ss" label="Social Security">
             <Text copyable>0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69</Text>
+            <Text copyable>0xdbFb3433e5D4F45407EB8b65Bb7F9365c6dE9783</Text>
             <Input
               name="social"
               placeholder="Social Security Address"
@@ -142,6 +143,12 @@ export default function PublicLayout({ children }) {
               onChange={e => actions.setBonus(e.target.value)}
             />
           </Form.Item>
+
+          <div>
+            <Alert description="Send tokens to this contract" type="info" showIcon />
+            <Text copyable>0xb5B8cD15Eac571F3d733e3F4ad01143D1548C6ce</Text>
+          </div>
+
         </Spin>
       </Drawer>
 

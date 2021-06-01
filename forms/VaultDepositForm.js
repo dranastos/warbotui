@@ -47,7 +47,10 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
   const getTimeDeposit = async() => {
     const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'gwei').toString()
-    const bonus = await security.applyBonus(weiValue, parseInt(data.months)).call()
+    const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
+
+    console.log("TIME DEPOSIT", bonus)
+
     if (bonus > 0) {
       setTimeValue(web3.utils.fromWei(bonus, 'gwei').toString())
     }
@@ -74,13 +77,14 @@ const VaultDepositForm = ({ onComplete, address }) => {
     try {
 
       if (data.amount > 0) {
-        const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
+        const value = web3.utils.toWei(((data.amount || 0) * 1.5).toString(), 'gwei').toString()
+
+        console.log("APPROVAL AMOUNT", value)
 
         const tx = await welfare.approve(state.security, value).send({
           from: wallet.account,
           to: state.security
         })
-
 
         if (tx.status) {
           notification.success({
@@ -88,7 +92,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
             description: tx.transactionHash
           })
 
-          getAllowance()
+          await getAllowance()
         }
       }
 
@@ -111,10 +115,10 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
       const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
 
-      const bonus = await security.applyBonus(value, parseInt(data.months)).call()
+      console.log('DEPOSIT',  value)
 
       const tx = await security
-        .ssVaultDeposit(bonus.toString(), parseInt(data.months))
+        .ssVaultDeposit(value, parseInt(data.months))
         .send({ from: wallet.account, to: state.security })
 
       if (tx.status) {
