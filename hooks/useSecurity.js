@@ -44,19 +44,31 @@ const useSecurity = (address) => {
         ssTaxReceivingContract,
         globalDepositNumber,
         globalSSTaxDepositNumber,
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> 8cc4510963844b2bdb1f6b1f6883458ee9e42002
         globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'nano'),
         reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'nano'),
         totalTaxCollected:web3.utils.fromWei(totalTaxCollected, 'nano'),
         totalSSVaults,
         totalTaxCollectedByPensioners:web3.utils.fromWei(totalTaxCollectedByPensioners, 'nano'),
+<<<<<<< HEAD
 
+=======
+=======
+>>>>>>> 8cc4510963844b2bdb1f6b1f6883458ee9e42002
         globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'gwei'),
         reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'gwei'),
         totalTaxCollected,
         totalSSVaults,
         totalTaxCollectedByPensioners,
+<<<<<<< HEAD
 
+=======
+>>>>>>> ef9bb24d3b7dc5d72a12210e8d3034fc6dcc0881
+>>>>>>> 8cc4510963844b2bdb1f6b1f6883458ee9e42002
         token,
         bonusVault,
         emergencyAddress,
