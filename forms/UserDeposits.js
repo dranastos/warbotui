@@ -59,7 +59,7 @@ const UserDeposits = ({ onComplete, address }) => {
   }
 
   const handleSettle = async(id) => {
-    const tx = await contract.settle(id).send({ from: wallet.account, to: state.security })
+    const tx = await security.settle(id).send({ from: wallet.account, to: state.security })
     if (tx.status) {
       notification.success({
         message: 'Settlement Successful',
