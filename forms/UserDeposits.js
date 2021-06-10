@@ -22,7 +22,7 @@ const UserDeposits = ({ onComplete, address }) => {
     if (connected && state.hasSecurity) {
       getDeposits(false)
     }
-  }, [connected, state.hasSecurity])
+  }, [connected, state.hasSecurity, state.vaultCount])
 
   const getDeposits = async() => {
     setLoading(true)

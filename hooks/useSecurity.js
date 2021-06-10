@@ -38,11 +38,20 @@ const useSecurity = (address) => {
       let reflectBalance = await getField('getReflectBalance')
 
       return {
-        owner, timePeriod, ssTaxReceivingContract,
-        globalDepositNumber, globalSSTaxDepositNumber, globalDepositTimeValue,
-        totalTaxCollected, totalSSVaults, totalTaxCollectedByPensioners,
-        token, bonusVault, emergencyAddress, welfareAddress,
-        reflectBalance
+        owner,
+        timePeriod: `${(timePeriod / 60 / 60)} days`,
+        ssTaxReceivingContract,
+        globalDepositNumber,
+        globalSSTaxDepositNumber,
+        globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'gwei'),
+        reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'gwei'),
+        totalTaxCollected,
+        totalSSVaults,
+        totalTaxCollectedByPensioners,
+        token,
+        bonusVault,
+        emergencyAddress,
+        welfareAddress,
       }
     } catch (e) {
       return {}
