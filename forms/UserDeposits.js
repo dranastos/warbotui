@@ -6,8 +6,10 @@ import useWeb3 from '../hooks/useWeb3'
 import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
 import useVault from '../hooks/useVault'
+import moment from 'moment'
 
 const UserDeposits = ({ onComplete, address }) => {
+  
   const wallet = useWallet()
   const [getVault, sendVaultTx] = useVault()
   const [state, actions] = useGlobal(['security', 'hasSecurity', 'vaultCount'])
@@ -22,18 +24,23 @@ const UserDeposits = ({ onComplete, address }) => {
     if (connected && state.hasSecurity) {
       getDeposits(false)
     }
-  }, [connected, state.hasSecurity])
+  }, [connected, state.hasSecurity, state.vaultCount])
 
   const getDeposits = async() => {
-    setLoading(true)
+    
+	setLoading(true)
     const totalDeps = await security.userTotalDeposits(wallet.account).call()
     const deps = await security.getUserDeposits(wallet.account).call()
     setDeposits(deps)
+	
     let vaults = {}
     for (let dep of deps) {
+	  
       const address = await security.deposits(dep).call()
-      const data = await getVault(address)
-      const status = await security.ssVault(address).call()
+      console.log("address # " + address)
+	  const data = await getVault(address)
+      console.log("data # " + data)     
+	  const status = await security.ssVault(address).call()
 
       console.log("DP STATUS", status)
 
@@ -44,6 +51,7 @@ const UserDeposits = ({ onComplete, address }) => {
       }
 
     }
+	
     setVaults(vaults)
     setTotal(totalDeps)
     setHasVaults(true)
@@ -62,10 +70,17 @@ const UserDeposits = ({ onComplete, address }) => {
 
   const renderDeposit = (id, key) => {
     if (vaults[id] == undefined) return null;
+	var timeNow = new Date().getTime()/1000
+	var expiry = vaults[id].timeAtExpirationUnix
+	if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
+	//if ( expiry = "EXPIRED" )
+	
+	
+	//if (expiry < moment.unix() ) expiry = "EXPIRED"
     return (
       <div key={`vault-${id}`}>
         <Collapse>
-          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount}`}>
+          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount} - ${expiry}`}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
                 <Space size="small" style={{ marginBottom: 10 }}>
@@ -110,7 +125,7 @@ const UserDeposits = ({ onComplete, address }) => {
                     <Statistic
                       title={name.toUpperCase()}
                       value={vaults.[id][name]}
-                      precision={4}
+                      precision={0}
                       style={{ marginBottom: 20 }}
                       />
                   </Col>
@@ -129,7 +144,7 @@ const UserDeposits = ({ onComplete, address }) => {
       <Card title="Pensioner Deposits" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
-            <Statistic title="Total Deposits" value={web3.utils.fromWei(total.toString(), 'gwei')} />
+            <Statistic title="Total Deposits" value={web3.utils.fromWei(total.toString(), 'nano')} />
           </Col>
           <Col span={12}>
             <Statistic title="Total Vaults" value={Object.keys(vaults).length} />

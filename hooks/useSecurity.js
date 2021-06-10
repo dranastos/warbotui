@@ -30,6 +30,7 @@ const useSecurity = (address) => {
       let totalTaxCollected = await getField('totalTaxCollected')
       let totalSSVaults = await getField('totalSSVaults')
       let totalTaxCollectedByPensioners = await getField('totalTaxCollectedByPensioners')
+	  
 
       let token = await getField('token')
       let bonusVault = await getField('bonusVault')
@@ -38,11 +39,20 @@ const useSecurity = (address) => {
       let reflectBalance = await getField('getReflectBalance')
 
       return {
-        owner, timePeriod, ssTaxReceivingContract,
-        globalDepositNumber, globalSSTaxDepositNumber, globalDepositTimeValue,
-        totalTaxCollected, totalSSVaults, totalTaxCollectedByPensioners,
-        token, bonusVault, emergencyAddress, welfareAddress,
-        reflectBalance
+        owner,
+        timePeriod: `${(timePeriod / 60 / 60)} days`,
+        ssTaxReceivingContract,
+        globalDepositNumber,
+        globalSSTaxDepositNumber,
+        globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'nano'),
+        reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'nano'),
+        totalTaxCollected:web3.utils.fromWei(totalTaxCollected, 'nano'),
+        totalSSVaults,
+        totalTaxCollectedByPensioners:web3.utils.fromWei(totalTaxCollectedByPensioners, 'nano'),
+        token,
+        bonusVault,
+        emergencyAddress,
+        welfareAddress,
       }
     } catch (e) {
       return {}

@@ -35,24 +35,24 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
   const getBalance = async() => {
     const balance = await welfare.balanceOf(wallet.account).call()
-    setBalance(web3.utils.fromWei(balance, 'gwei'))
+    setBalance(web3.utils.fromWei(balance, 'nano'))
     setCounter(counter + 1)
   }
 
   const getAllowance = async() => {
     const balance = await welfare.allowance(wallet.account, state.security).call()
-    setAllowance(web3.utils.fromWei(balance, 'gwei'))
+    setAllowance(web3.utils.fromWei(balance, 'nano'))
     setCounter(counter + 1)
   }
 
   const getTimeDeposit = async() => {
-    const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'gwei').toString()
+    const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'nano').toString()
     const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
 
     console.log("TIME DEPOSIT", bonus)
 
     if (bonus > 0) {
-      setTimeValue(web3.utils.fromWei(bonus, 'gwei').toString())
+      setTimeValue(web3.utils.fromWei(bonus, 'nano').toString())
     }
   }
 
@@ -77,7 +77,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
     try {
 
       if (data.amount > 0) {
-        const value = web3.utils.toWei(((data.amount || 0) * 1.5).toString(), 'gwei').toString()
+        const value = web3.utils.toWei(((data.amount || 0) * 1.0).toString(), 'nano').toString()
 
         console.log("APPROVAL AMOUNT", value)
 
@@ -113,7 +113,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
     try {
 
-      const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
+      const value = web3.utils.toWei(data.amount.toString(), 'nano').toString()
 
       console.log('DEPOSIT',  value)
 
@@ -127,6 +127,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
           message: 'Deposit Successful',
           description: tx.transactionHash
         })
+
         actions.addVaultCount()
       }
 
@@ -167,18 +168,20 @@ const VaultDepositForm = ({ onComplete, address }) => {
             </Space>
           </Form.Item>
           <Space>
-            <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
             <Button size="large" onClick={approve}>Approve</Button>
             <Button size="large" type="primary" onClick={handleDeposit}>Deposit</Button>
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
             <Title level={3} type="success" copyable strong>{timeValue}</Title>
-            <Text level={5} strong>You'll get after {data.months} months</Text>
+            <Text level={5} strong>TimeDeposit Weight received for locking {data.months} month(s)</Text>
           </Card>
         </Form>
       </Card>
     </Spin>
   )
 }
+
+// <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
+
 
 export default VaultDepositForm
