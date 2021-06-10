@@ -73,14 +73,14 @@ const UserDeposits = ({ onComplete, address }) => {
 	var timeNow = new Date().getTime()/1000
 	var expiry = vaults[id].timeAtExpirationUnix
 	if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
-	//if ( expiry = "EXPIRED" )
+	if ( expiry = "EXPIRED" )
 	
 	
 	//if (expiry < moment.unix() ) expiry = "EXPIRED"
     return (
       <div key={`vault-${id}`}>
         <Collapse>
-          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount} - ${expiry}`}>
+          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount} - ${expiry} `}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
                 <Space size="small" style={{ marginBottom: 10 }}>

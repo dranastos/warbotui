@@ -52,7 +52,10 @@ const useVault = () => {
 	
     const timeLockUnits = await contract.methods.timeLockUnits().call()
     const totalTaxCollected = await contract.methods.totalTaxCollected().call()
-	const balance =  (parseInt(reflectBalance) + parseInt(depositamount) + parseInt(totalTaxCollected)).toString();
+	var balance =  ( parseFloat(reflectBalance) + parseFloat(depositamount) + parseFloat(totalTaxCollected) );
+	balance = toFixed(balance)
+	
+	console.log( "bal: " +  balance )
 	
    
     return {
@@ -69,11 +72,29 @@ const useVault = () => {
       "Time Left to Expiration": (timeLeft/60) + " Minutes",
       "Total Months Locked":timeLockUnits,
       "total Tax Collected": web3.utils.fromWei(totalTaxCollected , 'nano'),
-	  "Total Vault Balance": web3.utils.fromWei( balance , 'nano'),
+	  "Total Vault Balance": web3.utils.fromWei(balance.toString(), 'nano') ,
     }
   }
 
   return [getVault, sendVaultTx]
+}
+
+function toFixed(x) {
+  if (Math.abs(x) < 1.0) {
+    var e = parseInt(x.toString().split('e-')[1]);
+    if (e) {
+        x *= Math.pow(10,e-1);
+        x = '0.' + (new Array(e)).join('0') + x.toString().substring(2);
+    }
+  } else {
+    var e = parseInt(x.toString().split('+')[1]);
+    if (e > 20) {
+        e -= 20;
+        x /= Math.pow(10,e);
+        x += (new Array(e+1)).join('0');
+    }
+  }
+  return x;
 }
 
 export default useVault
