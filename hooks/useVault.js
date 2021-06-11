@@ -49,20 +49,25 @@ const useVault = () => {
     const timeAtExpiration = await contract.methods.timeAtExpiration().call()
 	
     const timeLeft = await contract.methods.timeLeft().call()
+	//const vaultStatus = true;
+	const vaultStatus = await contract.methods.activeVault().call()
 	
     const timeLockUnits = await contract.methods.timeLockUnits().call()
     const totalTaxCollected = await contract.methods.totalTaxCollected().call()
-	var balance =  ( parseFloat(reflectBalance) + parseFloat(depositamount) + parseFloat(totalTaxCollected) );
-	balance = toFixed(balance)
+    if ( vaultStatus == true ){
+		var balance =  (  parseFloat(reflectBalance) + parseFloat(depositamount) + parseFloat(totalTaxCollected) );
+	balance = toFixed(balance);}
+		else { balance = 0 }
 	
-	console.log( "bal: " +  balance )
+	
 	
    
     return {
       pensioner,
       depositamount: web3.utils.fromWei(depositamount, 'nano'),
-      "Deposit Time Value Amount": web3.utils.fromWei(depositTimeValueAmount, 'nano'),
+      "Pool Weight": web3.utils.fromWei(depositTimeValueAmount, 'nano'),
       "Emergency Withdrawal Amount": web3.utils.fromWei(emergencyWithdrawalAmount, 'nano'),
+	  "vaultStatus": vaultStatus ? 'Active' : 'Inactive',
       
       "Last Update":lastUpdate,
       "Reflect Balance": web3.utils.fromWei(reflectBalance , 'nano'),

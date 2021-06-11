@@ -45,7 +45,7 @@ const UserDeposits = ({ onComplete, address }) => {
       console.log("DP STATUS", status)
 
       vaults[dep] = {
-        status: status ? 'Active' : 'Inactive',
+        
         address,
         ...data
       }
@@ -72,11 +72,13 @@ const UserDeposits = ({ onComplete, address }) => {
     if (vaults[id] == undefined) return null;
 	var timeNow = new Date().getTime()/1000
 	var expiry = vaults[id].timeAtExpirationUnix
+	var vaultStatus = vaults[id].vaultStatus
+	
 	if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
-	if ( expiry = "EXPIRED" )
+	if ( vaultStatus == "Inactive" ) expiry = "EXPIRED"
 	
 	
-	//if (expiry < moment.unix() ) expiry = "EXPIRED"
+	if (expiry < moment.unix() ) expiry = "EXPIRED"
     return (
       <div key={`vault-${id}`}>
         <Collapse>
