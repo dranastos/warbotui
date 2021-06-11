@@ -83,7 +83,7 @@ const UserDepositsClosed = ({ onComplete, address }) => {
     return (
       <div key={`vault-${id}`}>
         <Collapse>
-          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount} - ${expiry} `}>
+          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount}  `}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
                 <Space size="small" style={{ marginBottom: 10 }}>
@@ -147,10 +147,10 @@ const UserDepositsClosed = ({ onComplete, address }) => {
       <Card title="User Deposits - Closed" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
-            <Statistic title="Total Deposits" value={web3.utils.fromWei(total.toString(), 'nano')} />
+        
           </Col>
           <Col span={12}>
-            <Statistic title="Total Vaults" value={Object.keys(vaults).length} />
+          
           </Col>
         </Row>
         { hasVaults && deposits.map(renderDeposit) }

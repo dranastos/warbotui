@@ -31,6 +31,7 @@ const UserDepositsExpiredUnsettled = ({ onComplete, address }) => {
 	setLoading(true)
     const totalDeps = await security.userTotalDeposits(wallet.account).call()
     const deps = await security.getUserDeposits(wallet.account).call()
+	const globalDeposits = await security.globalDepositTimeValue().call()
     setDeposits(deps)
 	
     let vaults = {}
@@ -38,7 +39,7 @@ const UserDepositsExpiredUnsettled = ({ onComplete, address }) => {
 	  
       const address = await security.deposits(dep).call()
       console.log("address # " + address)
-	  const data = await getVault(address)
+	  const data = await getVault(address, globalDeposits )
       console.log("data # " + data)     
 	  const status = await security.ssVault(address).call()
 
@@ -119,17 +120,19 @@ return (
               </Col>
 
               {
-                Object.keys(vaults[id]).map((name, key) => (
-                  <Col
+                Object.keys(vaults[id]).map((name, key) =>  (
+                  
+				  <Col
                     key={`${id}-${name}-${key}`}
                     span={vaults.[id][name].toString().startsWith('0x') ? 24 : 8}>
                     <Statistic
                       title={name.toUpperCase()}
                       value={vaults.[id][name]}
-                      precision={0}
+                       precision={ name == "POOL WEIGHT" ? 9 : 0 }
                       style={{ marginBottom: 20 }}
                       />
                   </Col>
+				  
                 ))
               }
             </Row>
@@ -145,10 +148,10 @@ return (
       <Card title="User Deposits - Expired and Unsettled" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
-            <Statistic title="Total Deposits" value={web3.utils.fromWei(total.toString(), 'nano')} />
+          
           </Col>
           <Col span={12}>
-            <Statistic title="Total Vaults" value={Object.keys(vaults).length} />
+            
           </Col>
         </Row>
         { hasVaults && deposits.map(renderDeposit) }

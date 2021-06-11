@@ -97,7 +97,7 @@ export default function PublicLayout({ children }) {
 
           <Form.Item name="ss" label="Social Security">
             <Text copyable>0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69</Text>
-            <Text copyable>0xD42d590cB5f1ecEBEF81b5F6B5d0b1BdF5f7353e</Text>
+            <Text copyable>0x38F8B872a31C13aAe9B05d21384e8Ca1dC3466Ce</Text>
             <Input
               name="social"
               placeholder="Social Security Address"

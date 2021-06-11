@@ -133,15 +133,19 @@ export default function Dashboard() {
                       <VaultDepositForm />
                     </Col>
                     <Col xs={16}>
-                      <UserDeposits />
+					  <UserDeposits />
+					   <Space style={{ marginTop: 20 }}></Space>
 					  <UserDepositsExpiredUnsettled />
-					  <UserDepositsClosed />
                     </Col>
                   </Row>
+                </Tabs.TabPane>
+				<Tabs.TabPane tab="Closed Vaults" key="closedVaults">
+                   <UserDepositsClosed />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="Contract Details" key="details">
                   { renderStats() }
                 </Tabs.TabPane>
+				
               </Tabs>
             </div>
           )

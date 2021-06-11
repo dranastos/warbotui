@@ -4,11 +4,14 @@ import Contract from 'web3-eth-contract'
 import SSVault from '../build/contracts/SSVault.json'
 import useWeb3 from './useWeb3'
 import moment from 'moment'
+import useSecurity from '../hooks/useSecurity'
+import useGlobal from '../hooks/useGlobal'
 
 const useVault = () => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
-
+  const [state, actions] = useGlobal(['security', 'hasSecurity', 'vaultCount'])
+ 
   useEffect(() => {
     Contract.setProvider(global.window && window.ethereum)
   }, [])
@@ -27,8 +30,10 @@ const useVault = () => {
     }
   }
 
-  const getVault = async(address) => {
-    const contract = new Contract(SSVault.abi, address)
+  const getVault = async(address, globalDeposits ) => {
+    
+    
+	const contract = new Contract(SSVault.abi, address)
     
     
 	const pensioner = await contract.methods.pensioner().call()
@@ -37,11 +42,11 @@ const useVault = () => {
 	
     const depositTimeValueAmount = await contract.methods.depositTimeValueAmount().call()
 	
-    const emergencyWithdrawalAmount = await contract.methods.emergencyWithdrawalAmount().call()
+    var emergencyWithdrawalAmount = await contract.methods.emergencyWithdrawalAmount().call()
 	
     const lastUpdate = await contract.methods.lastUpdate().call()
 	
-     
+    //const reflectBalance; 
     const reflectBalance = await contract.methods.reflectBalance().call()
 	
     const timeAtDeposit = await contract.methods.timeAtDeposit().call()
@@ -54,10 +59,19 @@ const useVault = () => {
 	
     const timeLockUnits = await contract.methods.timeLockUnits().call()
     const totalTaxCollected = await contract.methods.totalTaxCollected().call()
+	const taxPoolShare = (parseInt(depositTimeValueAmount) / parseInt(globalDeposits)).toString();
+	var timeNow = new Date().getTime()/1000
+	
+	console.log( "Global Deposits -- " + globalDeposits )
+	console.log( "Vault Deposits -- " + depositTimeValueAmount )
+	console.log( "taxPoolShare -- " + taxPoolShare )
+	
     if ( vaultStatus == true ){
 		var balance =  (  parseFloat(reflectBalance) + parseFloat(depositamount) + parseFloat(totalTaxCollected) );
 	balance = toFixed(balance);}
 		else { balance = 0 }
+		
+	if ( timeAtExpiration < timeNow )  	emergencyWithdrawalAmount = 0;
 	
 	
 	
@@ -65,8 +79,8 @@ const useVault = () => {
     return {
       pensioner,
       depositamount: web3.utils.fromWei(depositamount, 'nano'),
-      "Pool Weight": web3.utils.fromWei(depositTimeValueAmount, 'nano'),
-      "Emergency Withdrawal Amount": web3.utils.fromWei(emergencyWithdrawalAmount, 'nano'),
+      "POOL WEIGHT": taxPoolShare,
+      "Emergency Withdrawal Amount": emergencyWithdrawalAmount == 0 ? 0: web3.utils.fromWei(emergencyWithdrawalAmount, 'nano'),
 	  "vaultStatus": vaultStatus ? 'Active' : 'Inactive',
       
       "Last Update":lastUpdate,

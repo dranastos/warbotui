@@ -8,6 +8,8 @@ import useGlobal from '../hooks/useGlobal'
 import useVault from '../hooks/useVault'
 import moment from 'moment'
 
+
+
 const UserDeposits = ({ onComplete, address }) => {
   
   const wallet = useWallet()
@@ -26,11 +28,14 @@ const UserDeposits = ({ onComplete, address }) => {
     }
   }, [connected, state.hasSecurity, state.vaultCount])
 
+   
+
   const getDeposits = async() => {
     
 	setLoading(true)
     const totalDeps = await security.userTotalDeposits(wallet.account).call()
     const deps = await security.getUserDeposits(wallet.account).call()
+	const globalDeposits = await security.globalDepositTimeValue().call()
     setDeposits(deps)
 	
     let vaults = {}
@@ -38,7 +43,7 @@ const UserDeposits = ({ onComplete, address }) => {
 	  
       const address = await security.deposits(dep).call()
       console.log("address # " + address)
-	  const data = await getVault(address)
+	  const data = await getVault(address , globalDeposits )
       console.log("data # " + data)     
 	  const status = await security.ssVault(address).call()
 
@@ -71,16 +76,17 @@ const UserDeposits = ({ onComplete, address }) => {
   const renderDeposit = (id, key) => {
     if (vaults[id] == undefined) return null;
 	var timeNow = new Date().getTime()/1000
+	var expirationTime = vaults[id].timeAtExpirationUnix
 	var expiry = vaults[id].timeAtExpirationUnix
 	var vaultStatus = vaults[id].vaultStatus
 	
+	
 	if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
 	if ( vaultStatus == "Inactive" ) expiry = "EXPIRED"
+	if ( timeNow > expirationTime ) return( <div></div> )
 	
 	
-	if (expiry < moment.unix() ) expiry = "EXPIRED"
-	if ( expiry == "EXPIRED" ) return( <div></div> )
-	if ( timeNow > expirationTime ) return( <div></div> )	
+		
     return (
       <div key={`vault-${id}`}>
         <Collapse>
@@ -128,8 +134,8 @@ const UserDeposits = ({ onComplete, address }) => {
                     span={vaults.[id][name].toString().startsWith('0x') ? 24 : 8}>
                     <Statistic
                       title={name.toUpperCase()}
-                      value={vaults.[id][name]}
-                      precision={0}
+                      value={vaults.[id][name]   }
+                      precision={ name == "POOL WEIGHT" ? 9 : 0 }
                       style={{ marginBottom: 20 }}
                       />
                   </Col>
@@ -148,10 +154,10 @@ const UserDeposits = ({ onComplete, address }) => {
       <Card title="User Deposits Active" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
-            <Statistic title="Total Deposits" value={web3.utils.fromWei(total.toString(), 'nano')} />
+          
           </Col>
           <Col span={12}>
-            <Statistic title="Total Vaults" value={Object.keys(vaults).length} />
+         
           </Col>
         </Row>
         { hasVaults && deposits.map(renderDeposit) }
