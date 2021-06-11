@@ -8,7 +8,7 @@ import useGlobal from '../hooks/useGlobal'
 import useVault from '../hooks/useVault'
 import moment from 'moment'
 
-const UserDeposits = ({ onComplete, address }) => {
+const UserDepositsExpiredUnsettled = ({ onComplete, address }) => {
   
   const wallet = useWallet()
   const [getVault, sendVaultTx] = useVault()
@@ -71,20 +71,17 @@ const UserDeposits = ({ onComplete, address }) => {
   const renderDeposit = (id, key) => {
     if (vaults[id] == undefined) return null;
 	var timeNow = new Date().getTime()/1000
-	var expiry = vaults[id].timeAtExpirationUnix
+	var expirationTime = vaults[id].timeAtExpirationUnix
 	var vaultStatus = vaults[id].vaultStatus
+	var expiry = false;
 	
-	if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
-	if ( vaultStatus == "Inactive" ) expiry = "EXPIRED"
-	
-	
-	if (expiry < moment.unix() ) expiry = "EXPIRED"
-	if ( expiry == "EXPIRED" ) return( <div></div> )
-	if ( timeNow > expirationTime ) return( <div></div> )	
-    return (
+	if ( vaultStatus == "Inactive"    ) return( <div></div> )
+    if ( timeNow < expirationTime ) return( <div></div> )
+    
+return (
       <div key={`vault-${id}`}>
         <Collapse>
-          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount} - ${expiry} `}>
+          <Collapse.Panel header={`${vaults[id].address} - ${vaults[id].depositamount} `}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
                 <Space size="small" style={{ marginBottom: 10 }}>
@@ -145,7 +142,7 @@ const UserDeposits = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="User Deposits Active" extra={<Button onClick={getDeposits}>Refresh</Button>}>
+      <Card title="User Deposits - Expired and Unsettled" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
             <Statistic title="Total Deposits" value={web3.utils.fromWei(total.toString(), 'nano')} />
@@ -160,4 +157,4 @@ const UserDeposits = ({ onComplete, address }) => {
   )
 }
 
-export default UserDeposits
+export default UserDepositsExpiredUnsettled

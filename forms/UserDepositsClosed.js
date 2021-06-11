@@ -8,7 +8,7 @@ import useGlobal from '../hooks/useGlobal'
 import useVault from '../hooks/useVault'
 import moment from 'moment'
 
-const UserDeposits = ({ onComplete, address }) => {
+const UserDepositsClosed = ({ onComplete, address }) => {
   
   const wallet = useWallet()
   const [getVault, sendVaultTx] = useVault()
@@ -75,12 +75,11 @@ const UserDeposits = ({ onComplete, address }) => {
 	var vaultStatus = vaults[id].vaultStatus
 	
 	if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
-	if ( vaultStatus == "Inactive" ) expiry = "EXPIRED"
+	if ( vaultStatus == "Inactive" ) expiry = "CLOSED"
 	
 	
 	if (expiry < moment.unix() ) expiry = "EXPIRED"
-	if ( expiry == "EXPIRED" ) return( <div></div> )
-	if ( timeNow > expirationTime ) return( <div></div> )	
+	if ( expiry != "EXPIRED"  && expiry != "CLOSED"  ) return( <div></div> )
     return (
       <div key={`vault-${id}`}>
         <Collapse>
@@ -145,7 +144,7 @@ const UserDeposits = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="User Deposits Active" extra={<Button onClick={getDeposits}>Refresh</Button>}>
+      <Card title="User Deposits - Closed" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
             <Statistic title="Total Deposits" value={web3.utils.fromWei(total.toString(), 'nano')} />
@@ -160,4 +159,4 @@ const UserDeposits = ({ onComplete, address }) => {
   )
 }
 
-export default UserDeposits
+export default UserDepositsClosed

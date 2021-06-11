@@ -11,7 +11,8 @@ import {
 import PublicLayout from '../layouts/PublicLayout'
 import VaultDepositForm from '../forms/VaultDepositForm'
 import UserDeposits from '../forms/UserDeposits'
-
+import UserDepositsClosed from '../forms/UserDepositsClosed'
+import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
 import useSecurity from '../hooks/useSecurity'
 
@@ -133,6 +134,8 @@ export default function Dashboard() {
                     </Col>
                     <Col xs={16}>
                       <UserDeposits />
+					  <UserDepositsExpiredUnsettled />
+					  <UserDepositsClosed />
                     </Col>
                   </Row>
                 </Tabs.TabPane>
