@@ -46,7 +46,7 @@ const useSecurity = (address) => {
       
 	  return {
         balance: web3.utils.fromWei(balance.toString(), 'nano'),
-		owner,
+		
         timePeriod: `${(timePeriod / 60 / 60)} days`,
         ssTaxReceivingContract,
         globalDepositNumber,

@@ -90,24 +90,7 @@ export default function Dashboard() {
           <Col span={8}>
             <Statistic title="Tax Collected By Pensioners" value={pension.totalTaxCollectedByPensioners} />
           </Col>
-          <Col span={12}>
-            <Statistic title="Owner" value={pension.owner} />
-          </Col>
-          <Col span={12}>
-            <Statistic title="Welfare Token" value={pension.token} />
-          </Col>
-          <Col span={12}>
-            <Statistic title="Command Center" value={pension.welfareAddress} />
-          </Col>
-          <Col span={12}>
-            <Statistic title="Vault" value={pension.bonusVault} />
-          </Col>
-          <Col span={12}>
-            <Statistic title="Emergency" value={pension.emergencyAddress} />
-          </Col>
-          <Col span={12}>
-            <Statistic title="Social Security Receiving Contract" value={pension.ssTaxReceivingContract} />
-          </Col>
+        
         </Row>
       </Card>
     </Spin>
