@@ -48,17 +48,17 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '',
+  security: '0xb25361Fb65199B3f0a182BEC99040FdA3b99E6a0',
   securityInfo: {},
-  hasSecurity: false,
+  hasSecurity: true,
   vault: '',
   hasVault: false,
-  center: '',
-  hasCenter: false,
-  bonus: '',
-  hasBonus: false,
-  welfare: '',
-  hasWelfare: false,
+  center: '0x355AfB2BA7E71BecE6a829B557f2Da4F577AFFfc',
+  hasCenter: true,
+  bonus: '0xB1E8328D623D4d4df17A28494eEfFb050F3939cE',
+  hasBonus: true,
+  welfare: '0x40CFEeA6a9f5EDb28b491B14969d4228101414ca',
+  hasWelfare: true,
   vaultCount: 0
 }
 
