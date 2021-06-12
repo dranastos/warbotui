@@ -19,7 +19,7 @@ const useSecurity = (address) => {
     }
   }, [address])
 
-  const getFields = async() => {
+  const getFields = async( taxWallet ) => {
     try {
       let owner = await getField('owner')
       let timePeriod = await getField('timePeriod')
@@ -37,18 +37,25 @@ const useSecurity = (address) => {
       let emergencyAddress = await getField('EmergencyAddress')
       let welfareAddress = await getField('WelfareCommandCenterAddress')
       let reflectBalance = await getField('getReflectBalance')
-
-      return {
-        owner,
+      let balance = taxWallet;
+	  
+	  if ( balance === undefined ) balance = 0;
+	  console.log ( "totaltax collected " + totalTaxCollected );
+	  totalTaxCollected =  web3.utils.fromWei( totalTaxCollected.toString(), 'nano');
+	  totalTaxCollectedByPensioners = web3.utils.fromWei( totalTaxCollectedByPensioners.toString(), 'nano');
+      
+	  return {
+        balance: web3.utils.fromWei(balance.toString(), 'nano'),
+		owner,
         timePeriod: `${(timePeriod / 60 / 60)} days`,
         ssTaxReceivingContract,
         globalDepositNumber,
         globalSSTaxDepositNumber,
         globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'nano'),
         reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'nano'),
-        totalTaxCollected:web3.utils.fromWei(totalTaxCollected, 'nano'),
+        totalTaxCollected,
         totalSSVaults,
-        totalTaxCollectedByPensioners:web3.utils.fromWei(totalTaxCollectedByPensioners, 'nano'),
+        totalTaxCollectedByPensioners,
         globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'nano'),
         reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'nano'),
         totalTaxCollected,

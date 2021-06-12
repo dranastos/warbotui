@@ -37,12 +37,11 @@ const UserDepositsClosed = ({ onComplete, address }) => {
     for (let dep of deps) {
 	  
       const address = await security.deposits(dep).call()
-      console.log("address # " + address)
+     
 	  const data = await getVault(address)
-      console.log("data # " + data)     
+        
 	  const status = await security.ssVault(address).call()
 
-      console.log("DP STATUS", status)
 
       vaults[dep] = {
         

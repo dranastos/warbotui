@@ -15,6 +15,8 @@ import UserDepositsClosed from '../forms/UserDepositsClosed'
 import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
 import useSecurity from '../hooks/useSecurity'
+import useWelfare from '../hooks/useWelfare'
+
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
@@ -38,6 +40,7 @@ export default function Dashboard() {
   const [pension, setPension] = useState({ })
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [welfare] = useWelfare(state.welfare)
 
   useEffect(() => {
     if (state.hasSecurity && connected) {
@@ -47,7 +50,10 @@ export default function Dashboard() {
 
   const getInfo = async() => {
     setLoading(true)
-    const securityInfo = await getFields()
+   
+	if ( welfare !== undefined ) var taxwallet = await welfare.balanceOf(state.center).call()
+	
+	const securityInfo = await getFields( taxwallet )
     setPension(securityInfo)
     actions.setSecurityInfo(securityInfo)
     setLoading(false)
@@ -57,7 +63,10 @@ export default function Dashboard() {
     <Spin spinning={loading}>
       <Card title="Pension Contract" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
-          <Col span={8}>
+           <Col span={8}>
+            <Statistic title="Tax Wallet" value={pension.balance} />
+          </Col>
+		  <Col span={8}>
             <Statistic title="Global Deposit Number" value={pension.globalDepositNumber} />
           </Col>
           <Col span={8}>

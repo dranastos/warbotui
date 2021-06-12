@@ -43,7 +43,7 @@ const UserDepositsExpiredUnsettled = ({ onComplete, address }) => {
       console.log("data # " + data)     
 	  const status = await security.ssVault(address).call()
 
-      console.log("DP STATUS", status)
+      
 
       vaults[dep] = {
         
@@ -78,6 +78,7 @@ const UserDepositsExpiredUnsettled = ({ onComplete, address }) => {
 	
 	if ( vaultStatus == "Inactive"    ) return( <div></div> )
     if ( timeNow < expirationTime ) return( <div></div> )
+    
     
 return (
       <div key={`vault-${id}`}>
@@ -120,9 +121,9 @@ return (
               </Col>
 
               {
-                Object.keys(vaults[id]).map((name, key) =>  (
+                Object.keys(vaults[id]).map((name, key) => (
                   
-				  <Col
+<Col
                     key={`${id}-${name}-${key}`}
                     span={vaults.[id][name].toString().startsWith('0x') ? 24 : 8}>
                     <Statistic
@@ -132,7 +133,6 @@ return (
                       style={{ marginBottom: 20 }}
                       />
                   </Col>
-				  
                 ))
               }
             </Row>

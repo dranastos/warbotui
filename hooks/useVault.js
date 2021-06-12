@@ -62,9 +62,7 @@ const useVault = () => {
 	const taxPoolShare = (parseInt(depositTimeValueAmount) / parseInt(globalDeposits)).toString();
 	var timeNow = new Date().getTime()/1000
 	
-	console.log( "Global Deposits -- " + globalDeposits )
-	console.log( "Vault Deposits -- " + depositTimeValueAmount )
-	console.log( "taxPoolShare -- " + taxPoolShare )
+	
 	
     if ( vaultStatus == true ){
 		var balance =  (  parseFloat(reflectBalance) + parseFloat(depositamount) + parseFloat(totalTaxCollected) );
@@ -87,7 +85,7 @@ const useVault = () => {
       "Reflect Balance": web3.utils.fromWei(reflectBalance , 'nano'),
       "Time At Deposit": moment.unix(timeAtDeposit).format('MM/DD/YYYY HH:mm'),
       "timeAtExpiration": moment.unix(timeAtExpiration).format('MM/DD/YYYY HH:mm'),
-      timeAtExpirationUnix: timeAtExpiration,
+      "timeAtExpirationUnix": timeAtExpiration,
       "Time Left to Expiration": (timeLeft/60) + " Minutes",
       "Total Months Locked":timeLockUnits,
       "total Tax Collected": web3.utils.fromWei(totalTaxCollected , 'nano'),
