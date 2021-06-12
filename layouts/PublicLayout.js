@@ -20,10 +20,12 @@ export default function PublicLayout({ children }) {
   const { security, getFields, connected } = useSecurity(state.security)
   const [loading, setLoading] = useState(false)
   const wallet = useWallet()
+  
 
   useEffect(() => {
     if (wallet.status == 'connected' && state.hasSecurity == false) {
       showDrawer(true)
+	  
     }
   }, [wallet.status])
 
@@ -45,6 +47,7 @@ export default function PublicLayout({ children }) {
   }
 
   const renderWallet = useCallback(() => {
+	
     if (wallet.status == 'connected' && wallet.account) {
       return (
         <Space>
