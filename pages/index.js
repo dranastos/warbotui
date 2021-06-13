@@ -16,7 +16,7 @@ import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
 import useSecurity from '../hooks/useSecurity'
 import useWelfare from '../hooks/useWelfare'
-
+import useWicCardMinter from '../hooks/useWicCardMinter'
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
@@ -34,13 +34,14 @@ const { Item } = Descriptions
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo', 'vaultCount'])
+  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo', 'vaultCount', 'wicCardMinter'])
   const { security, web3, getField, sendTx, connected, getFields } = useSecurity(state.security)
   const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
   const [welfare] = useWelfare(state.welfare)
+  const [wiccardminter] = useWicCardMinter(state.wicCardMinter)
 
   useEffect(() => {
     if (state.hasSecurity && connected) {
@@ -50,10 +51,18 @@ export default function Dashboard() {
 
   const getInfo = async() => {
     setLoading(true)
-   
-	if ( welfare !== undefined ) var taxwallet = await welfare.balanceOf(state.center).call()
 	
-	const securityInfo = await getFields( taxwallet )
+	var WicCards = await wiccardminter.totalSupply().call()
+
+   
+	if ( welfare !== undefined ) {
+		var taxwallet = await welfare.balanceOf(state.center).call()
+		var wicbonuswallet = await welfare.balanceOf(state.wicbonus).call()
+		var bonuswallet = await welfare.balanceOf(state.bonus).call()
+		
+	}
+	
+	const securityInfo = await getFields( taxwallet, wicbonuswallet, bonuswallet, WicCards )
     setPension(securityInfo)
     actions.setSecurityInfo(securityInfo)
     setLoading(false)
@@ -61,10 +70,19 @@ export default function Dashboard() {
 
   const renderStats = useCallback(() => (
     <Spin spinning={loading}>
-      <Card title="Pension Contract" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
+      <Card title="Welfare Stats and Information" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
            <Col span={8}>
-            <Statistic title="Tax Wallet" value={pension.balance} />
+            <Statistic title="Tax Wallet" value={pension.taxWallet} />
+          </Col>
+		  <Col span={8}>
+            <Statistic title="Wic Bonus Wallet" value={pension.wicBonusWallet} />
+          </Col>
+		  <Col span={8}>
+            <Statistic title="Bonus Wallet" value={pension.bonusWallet} />
+          </Col>
+		  <Col span={8}>
+            <Statistic title="Wic Cards Issued" value={pension.wicCards} />
           </Col>
 		  <Col span={8}>
             <Statistic title="Global Deposit Number" value={pension.globalDepositNumber} />

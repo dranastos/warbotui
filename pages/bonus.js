@@ -42,7 +42,7 @@ export default function BonusVault() {
     setLoading(true)
     const welfareAddr = await bonus.welfarecontract().call()
     const securityAddr = await bonus.socialsecuritycontract().call()
-    const centerAddr = await bonus.ComradeCommandCenterAddress().call()
+    const centerAddr = await bonus.WelfareCommandCenterAddress().call()
     setData({ centerAddr, securityAddr, welfareAddr })
     setLoading(false)
   }

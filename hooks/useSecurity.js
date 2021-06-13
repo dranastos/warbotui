@@ -19,7 +19,7 @@ const useSecurity = (address) => {
     }
   }, [address])
 
-  const getFields = async( taxWallet ) => {
+  const getFields = async( taxWallet , wicBonusWallet, bonusWallet, wicCards ) => {
     try {
       let owner = await getField('owner')
       let timePeriod = await getField('timePeriod')
@@ -37,16 +37,21 @@ const useSecurity = (address) => {
       let emergencyAddress = await getField('EmergencyAddress')
       let welfareAddress = await getField('WelfareCommandCenterAddress')
       let reflectBalance = await getField('getReflectBalance')
-      let balance = taxWallet;
+      //let balance = taxWallet;
 	  
-	  if ( balance === undefined ) balance = 0;
-	  console.log ( "totaltax collected " + totalTaxCollected );
+	  if ( taxWallet === undefined ) taxWallet = 0;
+	  if ( wicBonusWallet === undefined ) wicBonusWallet = 0;
+	  if ( bonusWallet === undefined ) bonusWallet = 0;
+	  console.log ( "wb: " + wicBonusWallet )
+	  console.log ( "b: " + bonusWallet )
 	  totalTaxCollected =  web3.utils.fromWei( totalTaxCollected.toString(), 'nano');
 	  totalTaxCollectedByPensioners = web3.utils.fromWei( totalTaxCollectedByPensioners.toString(), 'nano');
       
 	  return {
-        balance: web3.utils.fromWei(balance.toString(), 'nano'),
-		
+        taxWallet: web3.utils.fromWei(taxWallet.toString(), 'nano'),
+		wicBonusWallet: web3.utils.fromWei(wicBonusWallet.toString(), 'nano'),
+		bonusWallet: web3.utils.fromWei(bonusWallet.toString(), 'nano'),
+	    wicCards,
         timePeriod: `${(timePeriod / 60 / 60)} days`,
         ssTaxReceivingContract,
         globalDepositNumber,

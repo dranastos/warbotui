@@ -26,6 +26,13 @@ const actions = {
       store.setState({ bonus: '', hasBonus: false })
     }
   },
+  setWicBonus: (store, wicbonus) => {
+    if (wicbonus && wicbonus.startsWith('0x') && wicbonus.length == 42) {
+      store.setState({ wicbonus, hasWicBonus: true })
+    } else {
+      store.setState({ wicbonus: '', hasWicBonus: false })
+    }
+  },
   setCenter: (store, center) => {
     if (center && center.startsWith('0x') && center.length == 42) {
       store.setState({ center, hasCenter: true })
@@ -41,6 +48,14 @@ const actions = {
       store.setState({ welfare: '', hasWelfare: false })
     }
   },
+  setWicCardMinter: (store, wicCardMinter) => {
+    console.log("SET WICCARDMINTER")
+    if (wicCardMinter && wicCardMinter.startsWith('0x') && wicCardMinter.length == 42) {
+      store.setState({ wicCardMinter, haswicCardMinter: true })
+    } else {
+      store.setState({ wicCardMinter: '', hasWelfare: false })
+    }
+  },
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -48,17 +63,21 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0xb25361Fb65199B3f0a182BEC99040FdA3b99E6a0',
+  security: '0x0293130729b0e45A40e4236c12AC7DFEDc4f1BFb',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
   hasVault: false,
-  center: '0x355AfB2BA7E71BecE6a829B557f2Da4F577AFFfc',
+  center: '0x09F5Db17dc0339cDc3F66BC51c77d00d368d9842',
   hasCenter: true,
-  bonus: '0xB1E8328D623D4d4df17A28494eEfFb050F3939cE',
+  bonus: '0x17cD2397A2b23c1241029B1d6711e788538d7655',
   hasBonus: true,
-  welfare: '0x40CFEeA6a9f5EDb28b491B14969d4228101414ca',
+  wicbonus: '0xCAe88a40787D82Ba4438FD3e65f69d30D4132A64',
+  hasWicBonus: true,
+  welfare: '0xB3c64913E2417f33c08af57fA4810D4B6DF406E3',
   hasWelfare: true,
+  wicCardMinter: '0xEd8E23e0Ab749995ceC18787812cfDC5A837aa65',
+  hasWicCardMinter: true,
   vaultCount: 0
 }
 

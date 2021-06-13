@@ -25,7 +25,6 @@ export default function PublicLayout({ children }) {
   useEffect(() => {
     if (wallet.status == 'connected' && state.hasSecurity == false) {
       showDrawer(true)
-	  
     }
   }, [wallet.status])
 
@@ -100,7 +99,7 @@ export default function PublicLayout({ children }) {
 
           <Form.Item name="ss" label="Social Security">
             <Text copyable>0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69</Text>
-            <Text copyable>0xb25361Fb65199B3f0a182BEC99040FdA3b99E6a0</Text>
+            <Text copyable>0x5dD940676dED1C9AD55E0605366d876Dc63315Ec</Text>
             <Input
               name="social"
               placeholder="Social Security Address"
@@ -146,6 +145,30 @@ export default function PublicLayout({ children }) {
               onChange={e => actions.setBonus(e.target.value)}
             />
           </Form.Item>
+		  
+		  <Form.Item name="wicbonus" label="Wic Bonus Address">
+            <Text copyable>0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c</Text>
+            <Input
+              name="command"
+              placeholder="Wic Bonus Address"
+              allowClear
+              value={state.wicbonus}
+              size="large"
+              onChange={e => actions.setWicBonus(e.target.value)}
+            />
+          </Form.Item>
+		  
+		  <Form.Item name="wicCardMinter" label="WicCardMinter Address">
+            <Text copyable>0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c</Text>
+            <Input
+              name="command"
+              placeholder="WicCardMinter Address"
+              allowClear
+              value={state.wicCardMinter}
+              size="large"
+              onChange={e => actions.setBonus(e.target.value)}
+            />
+          </Form.Item>
 
           <div>
             <Alert description="Send tokens to this contract" type="info" showIcon />
@@ -159,9 +182,9 @@ export default function PublicLayout({ children }) {
         <Title style={{ color: 'white', marginBottom: 0, marginRight: 30 }} level={3}>Welfare</Title>
         <Menu theme="dark" mode="horizontal">
           <Menu.Item key="2" onClick={() => Router.push('/')}>Social Security</Menu.Item>
-          <Menu.Item key="3" onClick={() => Router.push('/center')}>Command Center</Menu.Item>
-          <Menu.Item key="4" onClick={() => Router.push('/bonus')}>Bonus Vault</Menu.Item>
-          <Menu.Item key="5" onClick={() => Router.push('/welfare')}>Welfare</Menu.Item>
+          
+          <Menu.Item key="4" onClick={() => Router.push('/bonus')}>Welfare Cards</Menu.Item>
+         
         </Menu>
         <div style={{ flex: 1 }} />
         {renderWallet()}
