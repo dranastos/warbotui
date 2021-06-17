@@ -37,6 +37,8 @@ export default function BonusVault() {
   const [loading, setLoading] = useState(false)
   const [welfare] = useWelfare(state.welfare)
   const [auctions, setAuctions] = useState([])
+  const [nfts, setNFTS] = useState([])
+  const [nftcount, setNFTCount] = useState(0)
   const [totalAuctions, setTotalAuctions] = useState(0)
   
   useEffect(() => {
@@ -44,6 +46,7 @@ export default function BonusVault() {
     if (connected && state.hasWicCardMinter) {
       
 	  getInfo()
+	  
 	  getAuctions()
     }
   }, [connected, state.hasBonus])
@@ -53,10 +56,24 @@ export default function BonusVault() {
 	
     const totalNFTSupply = await wiccardminter.totalSupply().call()
     const bidExpiration = await wiccardminter.bidExpiration("1").call()
-     
-	
-     const buttonText = "Enter Bid for WIC Card # " + totalNFTSupply;
-	 setData({ totalNFTSupply, buttonText, bidExpiration })
+    
+	var nftcount=0;
+	var nfts = []
+	   
+       
+    for ( let x = 1; x <= totalNFTSupply; x++ ) {
+	         var ownerOf = await wiccardminter.ownerOf(x).call()
+	         if ( ownerOf == wallet.account ) 
+				{ nfts.push ( x ) 
+			      nftcount++;
+				}
+	         console.log ( "nfts " +  ownerOf )
+	}
+	 console.log ( "nft count " +  nftcount )
+	const buttonText = "Enter Bid for WIC Card # " + totalNFTSupply;
+	setNFTS(nfts) 
+	setNFTCount(nftcount)
+	setData({ totalNFTSupply, buttonText, bidExpiration  })
     setLoading(false)
   }
   
@@ -99,6 +116,23 @@ export default function BonusVault() {
 
   }
   
+   const getNFTS = async() => {
+	   setLoading(true)
+       const totalAuctions = await wiccardminter.totalSupply().call()
+	   
+	   var nfts = []
+	   
+       
+       for ( let x = 1; x <= totalAuctions; x++ ) {
+	         var ownerOf = await wiccardminter.ownerOf(x).call()
+	         if ( ownerOf == wallet.account ) nfts.push ( x )
+	         console.log ( "nfts " +  ownerOf )
+	   }
+	   setNFTS(nfts)
+	   setLoading(false)
+   }   
+  
+  
    const getAuctions = async() => {
     
 	setLoading(true)
@@ -106,6 +140,7 @@ export default function BonusVault() {
 	var timeNow = new Date().getTime()/1000
     
     setTotalAuctions(totalAuctions)
+	var nfts = []
 	
     let auctions = []
     for ( let x = 1; x <= totalAuctions; x++ ) {
@@ -120,6 +155,7 @@ export default function BonusVault() {
 	  
 	  var bidStatus =  await wiccardminter.bids( x, bidnumber ).call()
 	 
+	 
 	  
 	  if ( winnerDeclared == true  &&  bidStatus['_withdrawn']  ||  winnerDeclared == true &&  highestBidder[0] == wallet.account ||  winnerDeclared == true && yourBid == 0) continue;
 	  
@@ -129,7 +165,6 @@ export default function BonusVault() {
 	  else { var stat = "ACTIVE" }
       
 	  if ( winnerDeclared == true ) winner =" Winner is "
-	  
 	  
       auctions.push({
             winner : winner,
@@ -329,6 +364,7 @@ const renderD = ( key, id) =>  (
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
 	  <Button size="large" onClick={approve}>Approve</Button>
+	   <Title level={4}>You Own {nftcount} Welfare Cards.</Title>
         <Title level={4}>Welfare Card Bidding</Title>
         { state.hasWicCardMinter  && auctions.map(renderD) }
 		

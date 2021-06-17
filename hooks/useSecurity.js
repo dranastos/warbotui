@@ -47,7 +47,8 @@ const useSecurity = (address) => {
 	  
 	  totalTaxCollected =  web3.utils.fromWei( totalTaxCollected.toString(), 'nano');
 	  totalTaxCollectedByPensioners = web3.utils.fromWei( totalTaxCollectedByPensioners.toString(), 'nano');
-      console.log( "here")
+      
+      
 	  return {
         taxWallet: web3.utils.fromWei(taxWallet.toString(), 'nano'),
 		wicBonusWallet: web3.utils.fromWei(wicBonusWallet.toString(), 'nano'),

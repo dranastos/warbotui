@@ -60,10 +60,7 @@ export default function Dashboard() {
 
    
 	if ( (state.welfare.toString().length != 0 ) ) {
-		console.log( "check center" + state.center.toString().length  )
-		console.log( "check wic bonus" + state.bonus.toString().length )
-		console.log( "check bonus" + state.wicbonus.toString().length  )
-		console.log( "check welfare" + state.welfare.toString().length  )
+		
 		
 		taxwallet = await welfare.balanceOf(state.center).call()
 		wicbonuswallet = await welfare.balanceOf(state.wicbonus).call()
