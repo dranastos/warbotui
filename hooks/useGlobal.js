@@ -53,7 +53,7 @@ const actions = {
     if (wicCardMinter && wicCardMinter.startsWith('0x') && wicCardMinter.length == 42) {
       store.setState({ wicCardMinter, haswicCardMinter: true })
     } else {
-      store.setState({ wicCardMinter: '', hasWelfare: false })
+      store.setState({ wicCardMinter: '', hasWicCardMinter: false })
     }
   },
   setTestnet: (store) => store.setState({ chain: 97 }),
@@ -63,20 +63,20 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0x0293130729b0e45A40e4236c12AC7DFEDc4f1BFb',
+  security: '0xb28fA653aCdDC09B1B309510271A0633bF1FC9dA',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
   hasVault: false,
-  center: '0x09F5Db17dc0339cDc3F66BC51c77d00d368d9842',
+  center: '0x53019b3DA4acC6c3C01bEa4FDD8E93773716715D',
   hasCenter: true,
-  bonus: '0x17cD2397A2b23c1241029B1d6711e788538d7655',
+  bonus: '0x60d80ae39F74d6Cd694E61ec43c90A6B02130b47',
   hasBonus: true,
-  wicbonus: '0xCAe88a40787D82Ba4438FD3e65f69d30D4132A64',
+  wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
-  welfare: '0xB3c64913E2417f33c08af57fA4810D4B6DF406E3',
+  welfare: '0xdA0C5cdef08FA150A11357f6c917a576c5c2A1b0',
   hasWelfare: true,
-  wicCardMinter: '0xEd8E23e0Ab749995ceC18787812cfDC5A837aa65',
+  wicCardMinter: '0x4415F97e358b4C084DE270aa9E929b07311829dC',
   hasWicCardMinter: true,
   vaultCount: 0
 }

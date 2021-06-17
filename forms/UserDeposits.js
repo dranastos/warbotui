@@ -36,7 +36,9 @@ const UserDeposits = ({ onComplete, address }) => {
     const totalDeps = await security.userTotalDeposits(wallet.account).call()
     const deps = await security.getUserDeposits(wallet.account).call()
 	const globalDeposits = await security.globalDepositTimeValue().call()
-    setDeposits(deps)
+    
+	
+	setDeposits(deps)
 	
     let vaults = {}
     for (let dep of deps) {

@@ -20,10 +20,12 @@ const useSecurity = (address) => {
   }, [address])
 
   const getFields = async( taxWallet , wicBonusWallet, bonusWallet, wicCards ) => {
-    try {
-      let owner = await getField('owner')
+    
+	try {
+     
+	  let owner = await getField('owner')
       let timePeriod = await getField('timePeriod')
-      let ssTaxReceivingContract = await getField('ssTaxReceivingContract')
+      let ssTaxReceivingContract = await getField('WelfareCommandCenterAddress')
       let globalDepositNumber = await getField('globalDepositNumber')
       let globalDepositTimeValue = await getField('globalDepositTimeValue')
       let globalSSTaxDepositNumber = await getField('globalSSTaxDepositNumber')
@@ -42,11 +44,10 @@ const useSecurity = (address) => {
 	  if ( taxWallet === undefined ) taxWallet = 0;
 	  if ( wicBonusWallet === undefined ) wicBonusWallet = 0;
 	  if ( bonusWallet === undefined ) bonusWallet = 0;
-	  console.log ( "wb: " + wicBonusWallet )
-	  console.log ( "b: " + bonusWallet )
+	  
 	  totalTaxCollected =  web3.utils.fromWei( totalTaxCollected.toString(), 'nano');
 	  totalTaxCollectedByPensioners = web3.utils.fromWei( totalTaxCollectedByPensioners.toString(), 'nano');
-      
+      console.log( "here")
 	  return {
         taxWallet: web3.utils.fromWei(taxWallet.toString(), 'nano'),
 		wicBonusWallet: web3.utils.fromWei(wicBonusWallet.toString(), 'nano'),

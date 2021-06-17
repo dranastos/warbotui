@@ -98,8 +98,8 @@ export default function PublicLayout({ children }) {
           </Space>
 
           <Form.Item name="ss" label="Social Security">
-            <Text copyable>0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69</Text>
-            <Text copyable>0x5dD940676dED1C9AD55E0605366d876Dc63315Ec</Text>
+           
+            <Text copyable>0xb28fA653aCdDC09B1B309510271A0633bF1FC9dA</Text>
             <Input
               name="social"
               placeholder="Social Security Address"
@@ -111,7 +111,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="center" label="Command Center">
-            <Text copyable>0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6</Text>
+            <Text copyable>0x53019b3DA4acC6c3C01bEa4FDD8E93773716715D</Text>
             <Input
               name="command"
               placeholder="Command Center Address"
@@ -123,7 +123,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="welfare" label="Welfare Address">
-            <Text copyable>0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab</Text>
+            <Text copyable>0xdA0C5cdef08FA150A11357f6c917a576c5c2A1b0</Text>
             <Input
               name="command"
               placeholder="Welfare Address"
@@ -135,7 +135,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="bonus" label="Bonus Address">
-            <Text copyable>0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c</Text>
+            <Text copyable>0x60d80ae39F74d6Cd694E61ec43c90A6B02130b47</Text>
             <Input
               name="command"
               placeholder="Bonus Address"
@@ -147,7 +147,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 		  
 		  <Form.Item name="wicbonus" label="Wic Bonus Address">
-            <Text copyable>0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c</Text>
+            <Text copyable>0x390895B239a6e1FaBd22FecBaBC71F39948f39cC</Text>
             <Input
               name="command"
               placeholder="Wic Bonus Address"
@@ -159,7 +159,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 		  
 		  <Form.Item name="wicCardMinter" label="WicCardMinter Address">
-            <Text copyable>0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c</Text>
+            <Text copyable>0x4415F97e358b4C084DE270aa9E929b07311829dC</Text>
             <Input
               name="command"
               placeholder="WicCardMinter Address"
@@ -183,7 +183,8 @@ export default function PublicLayout({ children }) {
         <Menu theme="dark" mode="horizontal">
           <Menu.Item key="2" onClick={() => Router.push('/')}>Social Security</Menu.Item>
           
-          <Menu.Item key="4" onClick={() => Router.push('/bonus')}>Welfare Cards</Menu.Item>
+         
+		  <Menu.Item key="4" onClick={() => Router.push('/welfarecards')}>Welfare Cards</Menu.Item>
          
         </Menu>
         <div style={{ flex: 1 }} />

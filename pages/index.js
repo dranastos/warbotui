@@ -41,8 +41,8 @@ export default function Dashboard() {
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
   const [welfare] = useWelfare(state.welfare)
-  const [wiccardminter] = useWicCardMinter(state.wicCardMinter)
-
+  const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
+  
   useEffect(() => {
     if (state.hasSecurity && connected) {
       getInfo()
@@ -54,11 +54,20 @@ export default function Dashboard() {
 	
 	var WicCards = await wiccardminter.totalSupply().call()
 
+    var taxwallet = 0;
+	var wicbonuswallet = 0;
+	var bonuswallet = 0;
+
    
-	if ( welfare !== undefined ) {
-		var taxwallet = await welfare.balanceOf(state.center).call()
-		var wicbonuswallet = await welfare.balanceOf(state.wicbonus).call()
-		var bonuswallet = await welfare.balanceOf(state.bonus).call()
+	if ( (state.welfare.toString().length != 0 ) ) {
+		console.log( "check center" + state.center.toString().length  )
+		console.log( "check wic bonus" + state.bonus.toString().length )
+		console.log( "check bonus" + state.wicbonus.toString().length  )
+		console.log( "check welfare" + state.welfare.toString().length  )
+		
+		taxwallet = await welfare.balanceOf(state.center).call()
+		wicbonuswallet = await welfare.balanceOf(state.wicbonus).call()
+		bonuswallet = await welfare.balanceOf(state.bonus).call()
 		
 	}
 	
@@ -126,8 +135,8 @@ export default function Dashboard() {
                 <Button
                   size="large"
                   type="primary"
-                  onClick={() => sendTx('depositSSTax', wallet.account)}>
-                  Deposit Tax
+                  onClick={() => sendWicCardTx('mint', wallet.account)}>
+                  Mint Welfare Card ( Once every 24 hours )
                 </Button>
                 <Button
                   size="large"
