@@ -63,7 +63,7 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0xb28fA653aCdDC09B1B309510271A0633bF1FC9dA',
+  security: '0x5147788eC4912e0adB2B6e9B51c3ac305992AD6b',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -74,7 +74,7 @@ const initialState = {
   hasBonus: true,
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
-  welfare: '0xdA0C5cdef08FA150A11357f6c917a576c5c2A1b0',
+  welfare: '0xc34885ec2a16C1BA95308F3bebdB7407766AAEe4',
   hasWelfare: true,
   wicCardMinter: '0x4415F97e358b4C084DE270aa9E929b07311829dC',
   hasWicCardMinter: true,

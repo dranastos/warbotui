@@ -9,12 +9,12 @@ import {
 } from 'antd'
 
 import PublicLayout from '../layouts/PublicLayout'
-import VaultDepositForm from '../forms/VaultDepositForm'
-import UserDeposits from '../forms/UserDeposits'
+import MicroMachineStakingForm from '../forms/MicroMachineStakingForm'
+import UserManufacturingCenters from '../forms/UserManufacturingCenters'
 import UserDepositsClosed from '../forms/UserDepositsClosed'
 import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
-import useSecurity from '../hooks/useSecurity'
+import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useWelfare from '../hooks/useWelfare'
 import useWicCardMinter from '../hooks/useWicCardMinter'
 
@@ -35,7 +35,7 @@ export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
   const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo', 'vaultCount', 'wicCardMinter'])
-  const { security, web3, getField, sendTx, connected, getFields } = useSecurity(state.security)
+  const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.security)
   const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
   const [counter, setCounter] = useState(0)
@@ -76,7 +76,7 @@ export default function Dashboard() {
 
   const renderStats = useCallback(() => (
     <Spin spinning={loading}>
-      <Card title="Welfare Stats and Information" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
+      <Card title="Warbot Manufacturing Center" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
            <Col span={8}>
             <Statistic title="Tax Wallet" value={pension.taxWallet} />
@@ -123,42 +123,31 @@ export default function Dashboard() {
   return (
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
-        <Title level={2}>Social Security</Title>
+        <Title level={2}>MicroMachine Warbot Manufaturing Center</Title>
 
         {
           (state.hasSecurity && wallet.status == 'connected') && (
             <div>
               <Space style={{ marginTop: 20 }}>
-                <Button
-                  size="large"
-                  type="primary"
-                  onClick={() => sendWicCardTx('mint', wallet.account)}>
-                  Mint Welfare Card ( Once every 24 hours )
-                </Button>
-                <Button
-                  size="large"
-                  type="primary"
-                  onClick={() => sendTx('sweepReflectBalance', wallet.account)}>
-                  Sweep Reflect Balance
-                </Button>
+                
               </Space>
               <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
-                <Tabs.TabPane tab="Pensioner Dashboard" key="dashboard">
+                <Tabs.TabPane tab="Warbot Manufacturer Dashboard" key="dashboard">
                   <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
                     <Col xs={8}>
-                      <VaultDepositForm />
+                      <MicroMachineStakingForm />
                     </Col>
                     <Col xs={16}>
-					  <UserDeposits />
+					  <UserManufacturingCenters />
 					   <Space style={{ marginTop: 20 }}></Space>
-					  <UserDepositsExpiredUnsettled />
+					  
                     </Col>
                   </Row>
                 </Tabs.TabPane>
-				<Tabs.TabPane tab="Closed Vaults" key="closedVaults">
+				<Tabs.TabPane tab="Closed Plants" key="closedVaults">
                    <UserDepositsClosed />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Contract Details" key="details">
+                <Tabs.TabPane tab="WarBot Manufaturing Statistics" key="details">
                   { renderStats() }
                 </Tabs.TabPane>
 				

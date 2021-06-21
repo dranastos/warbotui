@@ -122,8 +122,8 @@ export default function PublicLayout({ children }) {
             />
           </Form.Item>
 
-          <Form.Item name="welfare" label="Welfare Address">
-            <Text copyable>0xdA0C5cdef08FA150A11357f6c917a576c5c2A1b0</Text>
+          <Form.Item name="welfare" label="Micromachine Address">
+            <Text copyable>0xc34885ec2a16C1BA95308F3bebdB7407766AAEe4</Text>
             <Input
               name="command"
               placeholder="Welfare Address"
@@ -179,12 +179,12 @@ export default function PublicLayout({ children }) {
       </Drawer>
 
       <Header style={{ position: 'fixed', zIndex: 1, width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-        <Title style={{ color: 'white', marginBottom: 0, marginRight: 30 }} level={3}>Welfare</Title>
+        <Title style={{ color: 'white', marginBottom: 0, marginRight: 30 }} level={3}>MMAC WARBOTS</Title>
         <Menu theme="dark" mode="horizontal">
-          <Menu.Item key="2" onClick={() => Router.push('/')}>Social Security</Menu.Item>
+          <Menu.Item key="2" onClick={() => Router.push('/')}>WarBot Manufacturing Center</Menu.Item>
           
          
-		  <Menu.Item key="4" onClick={() => Router.push('/welfarecards')}>Welfare Cards</Menu.Item>
+		  <Menu.Item key="4" onClick={() => Router.push('/welfarecards')}>Nanomachines</Menu.Item>
          
         </Menu>
         <div style={{ flex: 1 }} />

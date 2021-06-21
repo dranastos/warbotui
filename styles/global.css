@@ -1,7 +1,7 @@
 @import 'antd/dist/antd.css';
 
 body {
-  background-color: #c6e686 !important;
+  background-color: #0038ff !important;
 }
 
 .ant-descriptions-view, .ant-descriptions-row {
@@ -14,7 +14,7 @@ body {
 }
 
 .ant-descriptions-item-label {
-  background: #E3E9F2 !important;
+  background: #000000 !important;
   border-width: 0px !important;
   font-size: 0.9em;
 }
@@ -24,13 +24,13 @@ body {
 }
 
 .ant-layout-content.site-layout, .ant-layout-footer {
-  background-color: #c6e686 !important;
+  background-color: #0038ff !important;
 }
 
 .ant-layout-header {
   background: #8E2DE2 !important;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #4A00E0, #8E2DE2) !important;  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #4A00E0, #8E2DE2) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: -webkit-linear-gradient(to right, #000000, #8E2DE2) !important;  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #000000, #0038ff ) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .ant-menu.ant-menu-dark {
@@ -71,11 +71,11 @@ body {
 .ant-tabs-tab-btn {
   font-weight: bolder;
   font-size: 1.5em;
-  color: #3F5908 !important;
+  color: #000000 !important;
 }
 
 .ant-tabs-ink-bar {
-  background: #3F5908 !important;
+  background: #000000 !important;
 }
 
 .ant-alert {

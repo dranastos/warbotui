@@ -3,14 +3,14 @@ import { Typography, Space, Row, Col, Card, Statistic, Slider, Form, Spin, Butto
 const { Title, Text } = Typography
 import { useWallet } from 'use-wallet'
 import useWeb3 from '../hooks/useWeb3'
-import useSecurity from '../hooks/useSecurity'
+import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 import useWelfare from '../hooks/useWelfare'
 
-const VaultDepositForm = ({ onComplete, address }) => {
+const MicroMachineStakingForm = ({ onComplete, address }) => {
   const wallet = useWallet()
   const [state, actions] = useGlobal(['security', 'hasSecurity', 'welfare', 'hasWelfare'])
-  const { security, web3, connected } = useSecurity(state.security)
+  const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
   const [welfare] = useWelfare(state.welfare)
   const [balance, setBalance] = useState(0)
   const [allowance, setAllowance] = useState(0)
@@ -47,13 +47,11 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
   const getTimeDeposit = async() => {
     const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'nano').toString()
-    const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
+    //const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
 
-    console.log("TIME DEPOSIT", bonus)
+    console.log("VALUE", weiValue)
 
-    if (bonus > 0) {
-      setTimeValue(web3.utils.fromWei(bonus, 'nano').toString())
-    }
+
   }
 
   // blockHash: "0x7ccbdaa8ae5f8eeb4f12e91ee12438222cf9d7c9b4c05ba438ce5b422de595af"
@@ -115,10 +113,10 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
       const value = web3.utils.toWei(data.amount.toString(), 'nano').toString()
 
-      console.log('DEPOSIT',  value)
+      console.log('STAKE MICROMACHINES',  value, parseInt(data.months))
 
       const tx = await security
-        .ssVaultDeposit(value, parseInt(data.months))
+        .stakeMicroMachines(value, parseInt(data.months))
         .send({ from: wallet.account, to: state.security })
 
       if (tx.status) {
@@ -142,10 +140,9 @@ const VaultDepositForm = ({ onComplete, address }) => {
 
   }
 
-  const handleTimeLock = (months, amount) => {
+  const handleTimeLock = (months, amount ) => {
     setData({ ...data, months })
-	setData({ ...data, amount })
-	console.log( months + " " + amount )
+	
   }
   const handleAmount = (e) => {
     setData({ ...data, amount: parseInt(e.target.value) })
@@ -176,7 +173,7 @@ const VaultDepositForm = ({ onComplete, address }) => {
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
             <Title level={3} type="success" copyable strong>{timeValue}</Title>
-            <Text level={5} strong>Build x WarBots for locking {data.months} month(s)</Text>
+            <Text level={5} strong>Build {data.amount * data.months} WarBots a months by locking your MicroMachines for {data.months} month(s) for a total of {data.amount * data.months * data.months} WarBots</Text>
           </Card>
         </Form>
 		</Card>
@@ -188,4 +185,4 @@ const VaultDepositForm = ({ onComplete, address }) => {
 // <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
 
 
-export default VaultDepositForm
+export default MicroMachineStakingForm
