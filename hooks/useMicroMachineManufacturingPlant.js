@@ -19,59 +19,21 @@ const useMicroMachineManufacturingPlant = (address) => {
     }
   }, [address])
 
-  const getFields = async( taxWallet , wicBonusWallet, bonusWallet, wicCards ) => {
-    
+  const getFields = async(  ) => {
+    console.log( "hey")
 	try {
      
-	  let owner = await getField('owner')
-      let timePeriod = await getField('timePeriod')
-      let ssTaxReceivingContract = await getField('WelfareCommandCenterAddress')
-      let globalDepositNumber = await getField('globalDepositNumber')
-      let globalDepositTimeValue = await getField('globalDepositTimeValue')
-      let globalSSTaxDepositNumber = await getField('globalSSTaxDepositNumber')
-      let totalTaxCollected = await getField('totalTaxCollected')
-      let totalSSVaults = await getField('totalSSVaults')
-      let totalTaxCollectedByPensioners = await getField('totalTaxCollectedByPensioners')
-	  
-
-      let token = await getField('token')
-      let bonusVault = await getField('bonusVault')
-      let emergencyAddress = await getField('EmergencyAddress')
-      let welfareAddress = await getField('WelfareCommandCenterAddress')
-      let reflectBalance = await getField('getReflectBalance')
-      //let balance = taxWallet;
-	  
-	  if ( taxWallet === undefined ) taxWallet = 0;
-	  if ( wicBonusWallet === undefined ) wicBonusWallet = 0;
-	  if ( bonusWallet === undefined ) bonusWallet = 0;
-	  
-	  totalTaxCollected =  web3.utils.fromWei( totalTaxCollected.toString(), 'nano');
-	  totalTaxCollectedByPensioners = web3.utils.fromWei( totalTaxCollectedByPensioners.toString(), 'nano');
+	  let totalSupply = await getField('totalSupply')
+	  let globalwarbotproduction = await getField('globalwarbotproduction')
+	  let globalwarbotmanufacturingplants = await getField('globalwarbotmanufacturingplants')
+      
       
       
 	  return {
-        taxWallet: web3.utils.fromWei(taxWallet.toString(), 'nano'),
-		wicBonusWallet: web3.utils.fromWei(wicBonusWallet.toString(), 'nano'),
-		bonusWallet: web3.utils.fromWei(bonusWallet.toString(), 'nano'),
-	    wicCards,
-        timePeriod: `${(timePeriod / 60 / 60)} days`,
-        ssTaxReceivingContract,
-        globalDepositNumber,
-        globalSSTaxDepositNumber,
-        globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'nano'),
-        reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'nano'),
-        totalTaxCollected,
-        totalSSVaults,
-        totalTaxCollectedByPensioners,
-        globalDepositTimeValue: web3.utils.fromWei(globalDepositTimeValue.toString(), 'nano'),
-        reflectBalance: web3.utils.fromWei(reflectBalance.toString(), 'nano'),
-        totalTaxCollected,
-        totalSSVaults,
-        totalTaxCollectedByPensioners,
-        token,
-        bonusVault,
-        emergencyAddress,
-        welfareAddress,
+        totalSupply,
+		globalwarbotproduction,
+		globalwarbotmanufacturingplants,
+		
       }
     } catch (e) {
       return {}

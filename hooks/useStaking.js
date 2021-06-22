@@ -48,7 +48,7 @@ const useStaking = () => {
    
     return {
       
-      "_micromachinesstaked" :  web3.utils.fromWei( micromachinesstaked.toString(), 'nano') ,
+      "MicroMachinesStaked" :  web3.utils.fromWei( micromachinesstaked.toString(), 'nano') ,
       "PlantStatus": status ? 'Active' : 'Inactive',
       "Last Manufacture":moment.unix(lastmanufacture).format('MM/DD/YYYY HH:mm'),
       "Time At Deposit": moment.unix(timeinitiated).format('MM/DD/YYYY HH:mm'),
@@ -57,6 +57,7 @@ const useStaking = () => {
       "Time Left to Expiration": timeLeft<0?0:(timeLeft/60) + " Minutes",
       "Total Months Locked":timeunitslocked,
 	  "MonthlyProductionRate":periodproductionrate,
+	  "WarBotsManufactured":warbotsmanufactured,
       
     }
   }

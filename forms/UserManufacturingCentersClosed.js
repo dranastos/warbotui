@@ -87,7 +87,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
 	
  	//if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
 	//if ( vaultStatus == "Inactive" ) expiry = "EXPIRED"
-	 if ( vaults[id].PlantStatus == "Inactive" ) return( <div></div> )
+	 if ( vaults[id].PlantStatus == "Active" ) return( <div></div> )
 	
 	
 		

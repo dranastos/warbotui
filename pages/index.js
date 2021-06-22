@@ -2,6 +2,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import moment from 'moment'
 import Head from 'next/head'
+import Image from 'next/image'
+import profilePic from '../images/badguy1.jpeg'
+
 import {
   Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert,
   Tabs, Statistic, Row, Col, Card, Slider, Form, Button, Input, Descriptions,
@@ -11,6 +14,7 @@ import {
 import PublicLayout from '../layouts/PublicLayout'
 import MicroMachineStakingForm from '../forms/MicroMachineStakingForm'
 import UserManufacturingCenters from '../forms/UserManufacturingCenters'
+import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
 import UserDepositsClosed from '../forms/UserDepositsClosed'
 import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
@@ -52,23 +56,13 @@ export default function Dashboard() {
   const getInfo = async() => {
     setLoading(true)
 	
-	var WicCards = await wiccardminter.totalSupply().call()
-
-    var taxwallet = 0;
-	var wicbonuswallet = 0;
-	var bonuswallet = 0;
+	var WarBots = await security.totalSupply().call()
+    console.log( "WB-" + WarBots )
+   
 
    
-	if ( (state.welfare.toString().length != 0 ) ) {
-		
-		
-		taxwallet = await welfare.balanceOf(state.center).call()
-		wicbonuswallet = await welfare.balanceOf(state.wicbonus).call()
-		bonuswallet = await welfare.balanceOf(state.bonus).call()
-		
-	}
 	
-	const securityInfo = await getFields( taxwallet, wicbonuswallet, bonuswallet, WicCards )
+	const securityInfo = await getFields( )
     setPension(securityInfo)
     actions.setSecurityInfo(securityInfo)
     setLoading(false)
@@ -79,41 +73,15 @@ export default function Dashboard() {
       <Card title="Warbot Manufacturing Center" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
            <Col span={8}>
-            <Statistic title="Tax Wallet" value={pension.taxWallet} />
+            <Statistic title="WarBots in Existence" value={pension.totalSupply} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Wic Bonus Wallet" value={pension.wicBonusWallet} />
+            <Statistic title="Total Manufacturing Plants" value={pension.globalwarbotmanufacturingplants} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Bonus Wallet" value={pension.bonusWallet} />
+            <Statistic title="Warbots Manufactured Per Month" value={pension.globalwarbotproduction} />
           </Col>
-		  <Col span={8}>
-            <Statistic title="Wic Cards Issued" value={pension.wicCards} />
-          </Col>
-		  <Col span={8}>
-            <Statistic title="Global Deposit Number" value={pension.globalDepositNumber} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="Global Deposit Time Value" value={pension.globalDepositTimeValue} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="Time Period" value={pension.timePeriod} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="Total Pension Vaults" value={pension.totalSSVaults} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="Reflect Balance" value={pension.reflectBalance} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="Tax Deposit Number" value={pension.globalSSTaxDepositNumber} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="Total Collected Tax" value={pension.totalTaxCollected} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="Tax Collected By Pensioners" value={pension.totalTaxCollectedByPensioners} />
-          </Col>
+		  
         
         </Row>
       </Card>
@@ -123,13 +91,13 @@ export default function Dashboard() {
   return (
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
-        <Title level={2}>MicroMachine Warbot Manufaturing Center</Title>
+        <Title level={2}>MicroMachine Warbot Manufacturing Center</Title>
 
         {
           (state.hasSecurity && wallet.status == 'connected') && (
             <div>
               <Space style={{ marginTop: 20 }}>
-                
+               
               </Space>
               <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
                 <Tabs.TabPane tab="Warbot Manufacturer Dashboard" key="dashboard">
@@ -145,9 +113,9 @@ export default function Dashboard() {
                   </Row>
                 </Tabs.TabPane>
 				<Tabs.TabPane tab="Closed Plants" key="closedVaults">
-                   <UserDepositsClosed />
+                   <UserManufacturingCentersClosed />
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="WarBot Manufaturing Statistics" key="details">
+                <Tabs.TabPane tab="WarBot Manufacturing Statistics" key="details">
                   { renderStats() }
                 </Tabs.TabPane>
 				

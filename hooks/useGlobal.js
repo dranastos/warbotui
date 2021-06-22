@@ -63,7 +63,7 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0x5147788eC4912e0adB2B6e9B51c3ac305992AD6b',
+  security: '0xADF698bfbB5E44A594b40332a7EdBcC161414159',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
