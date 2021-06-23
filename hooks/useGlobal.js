@@ -64,6 +64,14 @@ const actions = {
       store.setState({ nanomachines: '', hasNanomachines: false })
     }
   },
+  setNanostaking: (store, nanostaking) => {
+    console.log("SET NANOMACHINE")
+    if (nanostaking && nanostaking.startsWith('0x') && nanostaking.length == 42) {
+      store.setState({ nanostaking, hasNanostaking: true })
+    } else {
+      store.setState({ nanostaking: '', hasNanostaking: false })
+    }
+  },
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -86,10 +94,20 @@ const initialState = {
   hasWelfare: true,
   wicCardMinter: '0x4415F97e358b4C084DE270aa9E929b07311829dC',
   hasWicCardMinter: true,
+  
+  micromachines: '0xc34885ec2a16C1BA95308F3bebdB7407766AAEe4',
+  hasMicromachines: true,
   nanomachines: '0x6b8f718E992F5184B43f591662655f79303F4f00',
   hasNanomachines: true,
   nanostaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
   hasNanostaking: true,
+  nanoLPstaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
+  hasNanoLPstaking: true,
+  microLPstaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
+  hasMicroLPstaking: true,
+  warbotmanufacturer: '0xADF698bfbB5E44A594b40332a7EdBcC161414159',
+  warbotmanufacturer: {},
+  hasWarbotmanufacturer: true,
   vaultCount: 0
 }
 

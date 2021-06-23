@@ -7,6 +7,7 @@ import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufactu
 import useGlobal from '../hooks/useGlobal'
 import useWelfare from '../hooks/useWelfare'
 import useNanomachines from '../hooks/useNanomachines'
+import useNanostaking from '../hooks/useNanostaking'
 
 const NanoMachineStakingForm = ({ onComplete, address }) => {
   const wallet = useWallet()
@@ -14,7 +15,9 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
   const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
   const [welfare] = useWelfare(state.welfare)
   const [nanomachines] = useNanomachines(state.nanomachines)
+  const [nanostaking] = useNanostaking(state.nanostaking)
   const [balance, setBalance] = useState(0)
+  const [usershare, setUsershare] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
   const [canDeposit, setCanDeposit] = useState(false)
@@ -29,6 +32,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
   }, [data])
 
   useEffect(() => {
+	  
     if (connected && nanomachines && state.hasNanomachines) {
       getBalance()
       getAllowance()
@@ -37,19 +41,22 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
   const getBalance = async() => {
     const balance = await nanomachines.balanceOf(wallet.account).call()
-    console.log("Balance " + balance )
+	var userShare = await nanostaking.getUserShare(wallet.account,1).call()
+    console.dir( userShare['userShare']  )
+	
 	setBalance(web3.utils.fromWei(balance, 'gwei'))
+	setUsershare(web3.utils.fromWei(userShare['userShare'], 'gwei'))
     setCounter(counter + 1)
   }
 
   const getAllowance = async() => {
     const balance = await nanomachines.allowance(wallet.account, state.nanostaking).call()
-    setAllowance(web3.utils.fromWei(balance, 'gwei'))
+    setAllowance(web3.utils.fromWei(balance))
     setCounter(counter + 1)
   }
 
   const getTimeDeposit = async() => {
-    const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'nano').toString()
+    const weiValue = web3.utils.toWei((data.amount || 0).toString()).toString()
     //const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
 
     console.log("VALUE", weiValue)
@@ -78,7 +85,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
     try {
 
       if (data.amount > 0) {
-        const value = web3.utils.toWei(((data.amount || 0) * 1.0).toString(), 'gwei').toString()
+        const value = web3.utils.toWei(data.amount.toString()).toString()
 
         console.log("APPROVAL AMOUNT", value)
 
@@ -114,7 +121,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
     try {
 
-      const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
+      const value = web3.utils.toWei(data.amount.toString()).toString()
 
       console.log('STAKE NANOMACHINES',  value, parseInt(data.months))
 
@@ -148,7 +155,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
     try {
 
-      const value = web3.utils.toWei(data.amount.toString(), 'gwei').toString()
+      const value = web3.utils.toWei(data.amount.toString()).toString()
 
       console.log('STAKE NANOMACHINES',  value, parseInt(data.months))
 
@@ -209,8 +216,9 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
           </Space>
 		  
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
-            <Title level={3} type="success" copyable strong>{timeValue}</Title>
-            <Text level={5} strong>Build {data.amount * data.months} WarBots a months by locking your MicroMachines for {data.months} month(s) for a total of {data.amount * data.months * data.months} WarBots</Text>
+            <Title level={3} type="success"  strong>Nanomachines Produced:</Title>
+			<Button size="large" type="primary" onClick={handleWithdrawal}>Withdraw {usershare}</Button>
+            <Text level={5} strong></Text>
           </Card>
         </Form>
 		</Card>
