@@ -97,12 +97,12 @@ export default function PublicLayout({ children }) {
             <Text>Current Network: <strong>{state.chain == '56' ? 'Mainnet' : 'Testnet'}</strong></Text>
           </Space>
 
-          <Form.Item name="ss" label="Social Security">
+          <Form.Item name="ss" label="Micromachine Manufacturing Plant">
            
             <Text copyable>0xb28fA653aCdDC09B1B309510271A0633bF1FC9dA</Text>
             <Input
               name="social"
-              placeholder="Social Security Address"
+              placeholder="MicroMachineManufacturingPlant"
               allowClear
               size="large"
               value={state.security}
@@ -110,13 +110,13 @@ export default function PublicLayout({ children }) {
             />
           </Form.Item>
 
-          <Form.Item name="center" label="Command Center">
-            <Text copyable>0x53019b3DA4acC6c3C01bEa4FDD8E93773716715D</Text>
+          <Form.Item name="nanomachines" label="Nanomachines Address">
+            <Text copyable>0x6b8f718E992F5184B43f591662655f79303F4f00</Text>
             <Input
               name="command"
-              placeholder="Command Center Address"
+              placeholder="Nanomachines Address"
               allowClear
-              value={state.center}
+              value={state.nanomachines}
               size="large"
               onChange={e => actions.setCenter(e.target.value)}
             />
@@ -126,7 +126,7 @@ export default function PublicLayout({ children }) {
             <Text copyable>0xc34885ec2a16C1BA95308F3bebdB7407766AAEe4</Text>
             <Input
               name="command"
-              placeholder="Welfare Address"
+              placeholder="MicroMachines Contract"
               allowClear
               value={state.welfare}
               size="large"
@@ -134,37 +134,37 @@ export default function PublicLayout({ children }) {
             />
           </Form.Item>
 
-          <Form.Item name="bonus" label="Bonus Address">
-            <Text copyable>0x60d80ae39F74d6Cd694E61ec43c90A6B02130b47</Text>
+          <Form.Item name="nanostaking" label="Nanomachines Staking">
+            <Text copyable>0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745</Text>
             <Input
               name="command"
-              placeholder="Bonus Address"
+              placeholder="Nanomachines Staking"
               allowClear
-              value={state.bonus}
+              value={state.nanostaking}
               size="large"
               onChange={e => actions.setBonus(e.target.value)}
             />
           </Form.Item>
 		  
-		  <Form.Item name="wicbonus" label="Wic Bonus Address">
+		  <Form.Item name="nanolpstaking" label="Nanomachines Nano LP Staking">
             <Text copyable>0x390895B239a6e1FaBd22FecBaBC71F39948f39cC</Text>
             <Input
               name="command"
-              placeholder="Wic Bonus Address"
+              placeholder="Nanomachines Nano LP Staking"
               allowClear
-              value={state.wicbonus}
+              value={state.nanolpstaking}
               size="large"
               onChange={e => actions.setWicBonus(e.target.value)}
             />
           </Form.Item>
 		  
-		  <Form.Item name="wicCardMinter" label="WicCardMinter Address">
+		  <Form.Item name="microlpstaking" label="Nanomachines Micro LP Staking">
             <Text copyable>0x4415F97e358b4C084DE270aa9E929b07311829dC</Text>
             <Input
               name="command"
-              placeholder="WicCardMinter Address"
+              placeholder="Nanomachines Micro LP Staking"
               allowClear
-              value={state.wicCardMinter}
+              value={state.microlpstaking}
               size="large"
               onChange={e => actions.setBonus(e.target.value)}
             />
@@ -184,7 +184,10 @@ export default function PublicLayout({ children }) {
           <Menu.Item key="2" onClick={() => Router.push('/')}>WarBot Manufacturing Center</Menu.Item>
           
          
-		  <Menu.Item key="4" onClick={() => Router.push('/welfarecards')}>Nanomachines</Menu.Item>
+		  <Menu.Item key="4" onClick={() => Router.push('/nanomachines')}>Nanomachines</Menu.Item>
+		  <Menu.Item key="4" onClick={() => Router.push('/warbots')}>Warbots</Menu.Item>
+		  <Menu.Item key="4" onClick={() => Router.push('/weaponsfacility')}>Upgrades</Menu.Item>
+		  <Menu.Item key="4" onClick={() => Router.push('/defense')}>Combat Zone</Menu.Item>
          
         </Menu>
         <div style={{ flex: 1 }} />

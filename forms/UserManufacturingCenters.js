@@ -113,7 +113,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
                   
               </Col>
               <Col span={12}>
-                <Statistic title="Manufacturing Plant " value={id} />
+                <Statistic title="WarBot Manufacturing Plant " value={id} />
               </Col>
 
               {
@@ -140,7 +140,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="Manufacturing Centers" extra={<Button onClick={getDeposits}>Refresh</Button>}>
+      <Card title="WarBot Manufacturing Plants" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
           

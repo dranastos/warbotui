@@ -56,6 +56,14 @@ const actions = {
       store.setState({ wicCardMinter: '', hasWicCardMinter: false })
     }
   },
+  setNanomachines: (store, nanomachines) => {
+    console.log("SET NANOMACHINE")
+    if (nanomachines && nanomachines.startsWith('0x') && nanomachine.length == 42) {
+      store.setState({ nanomachines, hasNanomachines: true })
+    } else {
+      store.setState({ nanomachines: '', hasNanomachines: false })
+    }
+  },
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -78,6 +86,10 @@ const initialState = {
   hasWelfare: true,
   wicCardMinter: '0x4415F97e358b4C084DE270aa9E929b07311829dC',
   hasWicCardMinter: true,
+  nanomachines: '0x6b8f718E992F5184B43f591662655f79303F4f00',
+  hasNanomachines: true,
+  nanostaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
+  hasNanostaking: true,
   vaultCount: 0
 }
 
