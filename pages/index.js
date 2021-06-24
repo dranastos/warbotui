@@ -2,6 +2,9 @@ import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import moment from 'moment'
 import Head from 'next/head'
+import logo from '../images/badguy1.jpeg'
+
+
 //import Image from 'next/image'
 //import profilePic from '../images/badguy1.jpeg'
 
@@ -84,7 +87,8 @@ export default function Dashboard() {
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
         <Title level={2}>MicroMachine Warbot Manufacturing Center</Title>
-
+		
+         
         {
           (state.hasSecurity && wallet.status == 'connected') && (
             <div>
