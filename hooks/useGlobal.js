@@ -93,8 +93,6 @@ const initialState = {
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
  
-  wicCardMinter: '0x4415F97e358b4C084DE270aa9E929b07311829dC',
-  hasWicCardMinter: true,
   
   micromachines: '0xEA0f4B6fF0E921dB09F4f2A214a5927B09EC8103',
   hasMicromachines: true,

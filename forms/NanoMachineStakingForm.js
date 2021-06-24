@@ -184,6 +184,41 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
   }
 
+  const handleNanoWithdrawal = async() => {
+    setLoading(true)
+
+    try {
+
+      const value = web3.utils.toWei(data.amount.toString()).toString()
+
+      console.log('Withdraw NANOMACHINES',  value, parseInt(data.months))
+
+      const tx = await nanostaking
+        .deposit(value )
+        .send({ from: wallet.account, to: state.nanostaking })
+
+      if (tx.status) {
+        setData({ amount: 0, months: 0 })
+        notification.success({
+          message: 'Deposit Successful',
+          description: tx.transactionHash
+        })
+
+        actions.addVaultCount()
+      }
+
+    } catch (e) {
+      notification.error({
+        message: 'Deposit Failed',
+        description: e.toString()
+      })
+    }
+
+    setLoading(false)
+
+  }
+
+
   const handleTimeLock = (months, amount ) => {
     setData({ ...data, months })
 	
@@ -217,7 +252,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 		  
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
             <Title level={3} type="success"  strong>Nanomachines Produced:</Title>
-			<Button size="large" type="primary" onClick={handleWithdrawal}>Withdraw {usershare}</Button>
+			<Button size="large" type="primary" onClick={handleNanoWithdrawal}>Withdraw {usershare}</Button>
             <Text level={5} strong></Text>
           </Card>
         </Form>
