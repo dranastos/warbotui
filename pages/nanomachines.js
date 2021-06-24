@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import moment from 'moment'
 import Head from 'next/head'
-import Image from 'next/image'
-import profilePic from '../images/badguy1.jpeg'
+//import Image from 'next/image'
+//import profilePic from '../images/badguy1.jpeg'
 
 import {
   Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert,
