@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import Contract from 'web3-eth-contract'
-import SSecurity from '../build/contracts/MicroMachineManufacturingPlant.json'
+import MicroMachineManufacturingPlant from '../build/contracts/MicroMachineManufacturingPlant.json'
 import useWeb3 from './useWeb3'
 
 const useMicroMachineManufacturingPlant = (address) => {
@@ -9,9 +9,10 @@ const useMicroMachineManufacturingPlant = (address) => {
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-    if (address) {
+    console.log("ADDRESS WE HAVE for SS ", address)
+	if (address) {
       Contract.setProvider(global.window && window.ethereum)
-      setContract(new Contract(SSecurity.abi, address))
+      setContract(new Contract(MicroMachineManufacturingPlant.abi, address))
       setConnected(true)
       console.log("SOCIAL SECURITY ADDRESS", address)
     } else {
@@ -20,19 +21,21 @@ const useMicroMachineManufacturingPlant = (address) => {
   }, [address])
 
   const getFields = async(  ) => {
-    console.log( "hey")
+    
 	try {
      
 	  let totalSupply = await getField('totalSupply')
 	  let globalwarbotproduction = await getField('globalwarbotproduction')
 	  let globalwarbotmanufacturingplants = await getField('globalwarbotmanufacturingplants')
-      
+	  let microMachineAddress = await getField('MicroMachineAddress')
+      console.log ( "ccc1 " + microMachineAddress )
       
       
 	  return {
         totalSupply,
 		globalwarbotproduction,
 		globalwarbotmanufacturingplants,
+		microMachineAddress,
 		
       }
     } catch (e) {

@@ -39,7 +39,8 @@ const useSecurity = (address) => {
       let emergencyAddress = await getField('EmergencyAddress')
       let welfareAddress = await getField('WelfareCommandCenterAddress')
       let reflectBalance = await getField('getReflectBalance')
-      //let balance = taxWallet;
+	  let microMachineAddress = await getField('MicroMachineAddress')
+      console.log( "MMx is " + info.microMachineAddress )
 	  
 	  if ( taxWallet === undefined ) taxWallet = 0;
 	  if ( wicBonusWallet === undefined ) wicBonusWallet = 0;
@@ -71,7 +72,7 @@ const useSecurity = (address) => {
         token,
         bonusVault,
         emergencyAddress,
-        welfareAddress,
+        welfareAddress,        microMachineAddress,
       }
     } catch (e) {
       return {}

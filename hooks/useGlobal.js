@@ -3,6 +3,7 @@ import globalHook from './globalHook';
 
 const actions = {
   setSecurity: (store, security) => {
+	  console.log("SETTING Sec WITH " + welfare )
     if (security && security.startsWith('0x') && security.length == 42) {
       store.setState({ security, hasSecurity: true })
     } else {
@@ -42,6 +43,7 @@ const actions = {
   },
   setWelfare: (store, welfare) => {
     console.log("SET WELFARE")
+	console.log("SETTING WITH " + welfare )
     if (welfare && welfare.startsWith('0x') && welfare.length == 42) {
       store.setState({ welfare, hasWelfare: true })
     } else {
@@ -79,7 +81,7 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0xADF698bfbB5E44A594b40332a7EdBcC161414159',
+  security: '0x8E496a90a66E949C24d4AD0393c4441B77ae2EAF',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -90,22 +92,21 @@ const initialState = {
   hasBonus: true,
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
-  welfare: '0xc34885ec2a16C1BA95308F3bebdB7407766AAEe4',
-  hasWelfare: true,
+ 
   wicCardMinter: '0x4415F97e358b4C084DE270aa9E929b07311829dC',
   hasWicCardMinter: true,
   
-  micromachines: '0xc34885ec2a16C1BA95308F3bebdB7407766AAEe4',
+  micromachines: '0xEA0f4B6fF0E921dB09F4f2A214a5927B09EC8103',
   hasMicromachines: true,
-  nanomachines: '0x6b8f718E992F5184B43f591662655f79303F4f00',
+  nanomachines: '0x035B4Cfdb5B97a6Ee71a48c361FbE9af24B71186',
   hasNanomachines: true,
-  nanostaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
+  nanostaking:   '0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68',
   hasNanostaking: true,
   nanoLPstaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
   hasNanoLPstaking: true,
   microLPstaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
   hasMicroLPstaking: true,
-  warbotmanufacturer: '0xADF698bfbB5E44A594b40332a7EdBcC161414159',
+  warbotmanufacturer: '0x8E496a90a66E949C24d4AD0393c4441B77ae2EAF',
   warbotmanufacturer: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0

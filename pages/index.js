@@ -15,37 +15,29 @@ import PublicLayout from '../layouts/PublicLayout'
 import MicroMachineStakingForm from '../forms/MicroMachineStakingForm'
 import UserManufacturingCenters from '../forms/UserManufacturingCenters'
 import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
-import UserDepositsClosed from '../forms/UserDepositsClosed'
-import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
+//import UserDepositsClosed from '../forms/UserDepositsClosed'
+//import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
-import useWelfare from '../hooks/useWelfare'
-import useWicCardMinter from '../hooks/useWicCardMinter'
+import useMicroMachines from '../hooks/useMicroMachines'
+//import useWicCardMinter from '../hooks/useWicCardMinter'
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
 
-// import SettleForm from '../forms/SettleForm'
-// import PenaltyAdjustForm from '../forms/PenaltyAdjustForm'
-// import PullTaxForm from '../forms/PullTaxForm'
-
-// COMMAND CENTER: 0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6
-// BONUS: 0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c
-// WELFARE ADDRESS: 0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab
-// SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
 
 
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo', 'vaultCount', 'wicCardMinter'])
+  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'micromachines', 'securityInfo'])
   const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.security)
   const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
-  const [counter, setCounter] = useState(0)
+  //const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [welfare] = useWelfare(state.welfare)
-  const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
+  const [MicroMachines] = useMicroMachines(state.micromachines)
+ // const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
   
   useEffect(() => {
     if (state.hasSecurity && connected) {
@@ -57,7 +49,7 @@ export default function Dashboard() {
     setLoading(true)
 	
 	var WarBots = await security.totalSupply().call()
-    console.log( "WB-" + WarBots )
+
    
 
    

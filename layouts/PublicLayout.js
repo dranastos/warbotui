@@ -4,20 +4,17 @@ import Router from 'next/router'
 import { Layout, Menu, Breadcrumb, Space, Button, Typography, Drawer, Input, Form, Alert, Spin } from 'antd'
 import { useWallet } from 'use-wallet'
 import useGlobal from '../hooks/useGlobal';
-import useSecurity from '../hooks/useSecurity';
+
+import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant';
 const { Header, Content, Footer } = Layout
 const { Title, Text } = Typography
 
-// COMMAND CENTER: 0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6
-// BONUS: 0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c
-// WELFARE ADDRESS: 0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab
-// SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
 
 
 export default function PublicLayout({ children }) {
   const [drawer, showDrawer] = useState(false)
   const [state, actions] = useGlobal([])
-  const { security, getFields, connected } = useSecurity(state.security)
+  const { security, getFields, connected } = useMicroMachineManufacturingPlant(state.security)
   const [loading, setLoading] = useState(false)
   const wallet = useWallet()
   
@@ -30,18 +27,17 @@ export default function PublicLayout({ children }) {
 
   useEffect(() => {
     if (connected && state.hasSecurity) {
-      getSecurity()
+      getMicroMachineManufacturingPlant()
     }
   }, [connected, state.hasSecurity])
 
-  const getSecurity = async() => {
+  const getMicroMachineManufacturingPlant = async() => {
     setLoading(true)
-    console.log("GET INFO")
+    
     const info = await getFields()
+    console.dir (  info )
     actions.setSecurityInfo(info)
-    actions.setCenter(info.welfareAddress)
-    actions.setBonus(info.bonusVault)
-    actions.setWelfare(info.token)
+    actions.setWelfare(info.microMachineAddress)
     setLoading(false)
   }
 
@@ -99,7 +95,7 @@ export default function PublicLayout({ children }) {
 
           <Form.Item name="ss" label="Micromachine Manufacturing Plant">
            
-            <Text copyable>0xb28fA653aCdDC09B1B309510271A0633bF1FC9dA</Text>
+            <Text copyable>0x8E496a90a66E949C24d4AD0393c4441B77ae2EAF</Text>
             <Input
               name="social"
               placeholder="MicroMachineManufacturingPlant"
@@ -111,7 +107,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="nanomachines" label="Nanomachines Address">
-            <Text copyable>0x6b8f718E992F5184B43f591662655f79303F4f00</Text>
+            <Text copyable>0x035B4Cfdb5B97a6Ee71a48c361FbE9af24B71186</Text>
             <Input
               name="command"
               placeholder="Nanomachines Address"
@@ -123,7 +119,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="welfare" label="Micromachine Address">
-            <Text copyable>0xc34885ec2a16C1BA95308F3bebdB7407766AAEe4</Text>
+            <Text copyable>0xEA0f4B6fF0E921dB09F4f2A214a5927B09EC8103</Text>
             <Input
               name="command"
               placeholder="MicroMachines Contract"
@@ -135,7 +131,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="nanostaking" label="Nanomachines Staking">
-            <Text copyable>0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745</Text>
+            <Text copyable>0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68</Text>
             <Input
               name="command"
               placeholder="Nanomachines Staking"
