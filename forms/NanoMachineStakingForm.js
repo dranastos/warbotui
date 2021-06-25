@@ -9,15 +9,20 @@ import useWelfare from '../hooks/useWelfare'
 import useNanomachines from '../hooks/useNanomachines'
 import useNanostaking from '../hooks/useNanostaking'
 
+import useMasterchef from '../hooks/useMasterchef'
+
 const NanoMachineStakingForm = ({ onComplete, address }) => {
   const wallet = useWallet()
   const [state, actions] = useGlobal(['security', 'hasSecurity', 'welfare', 'hasWelfare'])
   const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
   const [welfare] = useWelfare(state.welfare)
   const [nanomachines] = useNanomachines(state.nanomachines)
+  console.log ( "NANNOOO ADDRESS" + state.nanomachines )
   const [nanostaking] = useNanostaking(state.nanostaking)
+  const [masterchef] = useMasterchef(state.masterchef)
   const [balance, setBalance] = useState(0)
   const [usershare, setUsershare] = useState(0)
+  const [stakedbalance, setStakedbalance] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
   const [canDeposit, setCanDeposit] = useState(false)
@@ -41,16 +46,23 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
   const getBalance = async() => {
     const balance = await nanomachines.balanceOf(wallet.account).call()
-	var userShare = await nanostaking.getUserShare(wallet.account,1).call()
-    console.dir( userShare['userShare']  )
+	//var userShare = await nanostaking.getUserShare(wallet.account,1).call()
+    var userShare = await masterchef.pendingSushi( '2' , wallet.account ).call()
+	var userInfo = await masterchef.userInfo( '2', wallet.account ).call()
+	var stakedBalance = userInfo['amount'] ;
 	
-	setBalance(web3.utils.fromWei(balance, 'gwei'))
-	setUsershare(web3.utils.fromWei(userShare['userShare'], 'gwei'))
+	
+	setBalance(web3.utils.fromWei(balance))
+	setUsershare(web3.utils.fromWei(userShare))
+	setStakedbalance(web3.utils.fromWei(stakedBalance))
+	
+	console.log("bb " + web3.utils.fromWei(balance))
+	console.log("cc " + usershare)
     setCounter(counter + 1)
   }
 
   const getAllowance = async() => {
-    const balance = await nanomachines.allowance(wallet.account, state.nanostaking).call()
+    const balance = await nanomachines.allowance(wallet.account, state.masterchef).call()
     setAllowance(web3.utils.fromWei(balance))
     setCounter(counter + 1)
   }
@@ -89,7 +101,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
         console.log("APPROVAL AMOUNT", value)
 
-        const tx = await nanomachines.approve(state.nanostaking, value).send({
+        const tx = await nanomachines.approve(state.masterchef, value).send({
           from: wallet.account,
           to: state.nanomachines
         })
@@ -125,9 +137,9 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
       console.log('STAKE NANOMACHINES',  value, parseInt(data.months))
 
-      const tx = await nanostaking
-        .deposit(value )
-        .send({ from: wallet.account, to: state.nanostaking })
+      const tx = await masterchef
+        .deposit( 2,value )
+        .send({ from: wallet.account, to: state.masterchef })
 
       if (tx.status) {
         setData({ amount: 0, months: 0 })
@@ -157,11 +169,11 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
       const value = web3.utils.toWei(data.amount.toString()).toString()
 
-      console.log('STAKE NANOMACHINES',  value, parseInt(data.months))
+      console.log('WITHDRAW NANOMACHINES',  value, parseInt(data.months))
 
-      const tx = await nanostaking
-        .deposit(value )
-        .send({ from: wallet.account, to: state.nanostaking })
+      const tx = await masterchef
+        .withdraw('2',value )
+        .send({ from: wallet.account, to: state.masterchef })
 
       if (tx.status) {
         setData({ amount: 0, months: 0 })
@@ -175,7 +187,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
     } catch (e) {
       notification.error({
-        message: 'Deposit Failed',
+        message: 'Withdrawal Failed',
         description: e.toString()
       })
     }
@@ -229,12 +241,13 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="Nanomachines Staking">
+      <Card title="Nanomachines Gamma Facility">
 	  <Card title="Build Nanomachines from Nanomachines">
         <Form
           size="large"
           layout="vertical">
-          <Statistic title="Balance" value={web3.utils.fromWei(balance.toString(),'gwei')} />
+          <Statistic title="Wallet Balance of Nano" value={balance} />
+		  <Statistic title="Staked Balance" value={stakedbalance} />
           <Statistic title="Approved" value={allowance} />
           <Form.Item name="vAmount" label="Deposit Amount" rules={[{ required: true, message: 'Enter deposit amount' }]}>
             <Input type="number" placeholder="e.g 10000" value={data.amount} onChange={handleAmount} />

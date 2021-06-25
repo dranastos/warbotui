@@ -9,7 +9,7 @@ const useMicroMachineManufacturingPlant = (address) => {
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-    console.log("ADDRESS WE HAVE for SS ", address)
+   
 	if (address) {
       Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(MicroMachineManufacturingPlant.abi, address))
@@ -28,7 +28,9 @@ const useMicroMachineManufacturingPlant = (address) => {
 	  let globalwarbotproduction = await getField('globalwarbotproduction')
 	  let globalwarbotmanufacturingplants = await getField('globalwarbotmanufacturingplants')
 	  let microMachineAddress = await getField('MicroMachineAddress')
-      console.log ( "ccc1 " + microMachineAddress )
+      let nanoMachineAddress = await getField('nanomachines')
+      
+	  console.log ( "ccc4 " + nanoMachineAddress )
       
       
 	  return {
@@ -36,6 +38,7 @@ const useMicroMachineManufacturingPlant = (address) => {
 		globalwarbotproduction,
 		globalwarbotmanufacturingplants,
 		microMachineAddress,
+		nanoMachineAddress,
 		
       }
     } catch (e) {

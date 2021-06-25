@@ -1,26 +1,26 @@
 import { useState, useEffect, useMemo } from 'react'
 import Contract from 'web3-eth-contract'
-import Welfare from '../build/contracts/Welfare.json'
+import Masterchef from '../build/contracts/Masterchef.json'
 import useWeb3 from './useWeb3'
 
-const useWelfare = (address) => {
+const useMasterchef = (address) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-	 
+	  console.log("ADDRESS WE HAVE for Masterchef ", address)
     if (address) {
       Contract.setProvider(global.window && window.ethereum)
-      setContract(new Contract(Welfare.abi, address))
+      setContract(new Contract(Masterchef.abi, address))
 	  setConnected(true)
-      console.log("WELFARE ADDRESS", address)
+      console.log("MASTERCHEF ADDRESS", address)
     } else {
-      console.log("WELFARE NOT SET")
+      console.log("MASTERCHEF NOT SET")
     }
   }, [address])
 
   return [contract.methods, web3]
 }
 
-export default useWelfare
+export default useMasterchef

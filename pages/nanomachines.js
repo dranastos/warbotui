@@ -13,7 +13,7 @@ import {
 
 import PublicLayout from '../layouts/PublicLayout'
 import NanoMachineStakingForm from '../forms/NanoMachineStakingForm'
-import NanoMachinesNanoLPStakingForm from '../forms/NanoMachinesNanoLPStakingForm'
+
 import NanoMachinesMicroLPStakingForm from '../forms/NanoMachinesMicroLPStakingForm'
 import UserManufacturingCenters from '../forms/UserManufacturingCenters'
 import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
@@ -23,6 +23,7 @@ import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useWelfare from '../hooks/useWelfare'
 import useWicCardMinter from '../hooks/useWicCardMinter'
+import NanoMachinesNanoLPStakingForm from '../forms/NanoMachinesNanoLPStakingForm'
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
@@ -59,7 +60,9 @@ export default function Dashboard() {
     setLoading(true)
 	
 	var WarBots = await security.totalSupply().call()
-    console.log( "WB-" + WarBots )
+    //var nanomachines = await security.nanomachines()
+	
+	//console.log( "NANOM" + nanomachines )
    
 
    
@@ -104,18 +107,19 @@ export default function Dashboard() {
               <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
                 <Tabs.TabPane tab="Nanomachine Dashboard" key="dashboard">
                   <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
+                    
                     <Col xs={8}>
-                      <NanoMachineStakingForm />
-                    </Col>
-                    <Col xs={8}>
-					  
+					 <NanoMachinesNanoLPStakingForm /> 
 					   <Space style={{ marginTop: 20 }}></Space>
 					  
                     </Col>
 					<Col xs={8}>
-					 
+					 <NanoMachinesMicroLPStakingForm />  
 					   <Space style={{ marginTop: 20 }}></Space>
 					  
+                    </Col>
+					<Col xs={8}>
+                     <NanoMachineStakingForm />
                     </Col>
                   </Row>
                 </Tabs.TabPane>

@@ -6,23 +6,13 @@ import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 import useWelfare from '../hooks/useWelfare'
-import useNanomachines from '../hooks/useNanomachines'
-import useNanostaking from '../hooks/useNanostaking'
-import useMicrobnblp from '../hooks/useMicrobnblp'
-import useMasterchef from '../hooks/useMasterchef'
 
-const NanoMachineStakingForm = ({ onComplete, address }) => {
+const MicroMachineStakingForm = ({ onComplete, address }) => {
   const wallet = useWallet()
   const [state, actions] = useGlobal(['security', 'hasSecurity', 'welfare', 'hasWelfare'])
   const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
   const [welfare] = useWelfare(state.welfare)
-  const [nanomachines] = useNanomachines(state.nanomachines)
-  const [nanostaking] = useNanostaking(state.nanostaking)
-  const [microbnblp] = useMicrobnblp(state.microbnblp)
-  const [masterchef] = useMasterchef(state.masterchef)
   const [balance, setBalance] = useState(0)
-  const [usershare, setUsershare] = useState(0)
-  const [stakedbalance, setStakedbalance] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
   const [canDeposit, setCanDeposit] = useState(false)
@@ -37,38 +27,26 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
   }, [data])
 
   useEffect(() => {
-	  
-    if (connected && nanomachines && state.hasNanomachines) {
+    if (connected && welfare && state.hasSecurity) {
       getBalance()
       getAllowance()
     }
   }, [connected, welfare, state.hasSecurity])
 
   const getBalance = async() => {
-    const balance = await microbnblp.balanceOf(wallet.account).call()
-	//var userShare = await nanostaking.getUserShare(wallet.account,1).call()
-    var userShare = await masterchef.pendingSushi( '1' , wallet.account ).call()
-	var userInfo = await masterchef.userInfo( '1', wallet.account ).call()
-	var stakedBalance = userInfo['amount'] ;
-	
-	
-	setBalance(web3.utils.fromWei(balance))
-	setUsershare(web3.utils.fromWei(userShare))
-	setStakedbalance(web3.utils.fromWei(stakedBalance))
-	
-	console.log("bb " + web3.utils.fromWei(balance))
-	console.log("cc " + usershare)
+    const balance = await welfare.balanceOf(wallet.account).call()
+    setBalance(web3.utils.fromWei(balance, 'nano'))
     setCounter(counter + 1)
   }
 
   const getAllowance = async() => {
-    const balance = await microbnblp.allowance(wallet.account, state.masterchef).call()
-    setAllowance(web3.utils.fromWei(balance))
+    const balance = await welfare.allowance(wallet.account, state.security).call()
+    setAllowance(web3.utils.fromWei(balance, 'nano'))
     setCounter(counter + 1)
   }
 
   const getTimeDeposit = async() => {
-    const weiValue = web3.utils.toWei((data.amount || 0).toString()).toString()
+    const weiValue = web3.utils.toWei((data.amount || 0).toString(), 'nano').toString()
     //const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
 
     console.log("VALUE", weiValue)
@@ -97,13 +75,13 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
     try {
 
       if (data.amount > 0) {
-        const value = web3.utils.toWei(data.amount.toString()).toString()
+        const value = web3.utils.toWei(((data.amount || 0) * 1.0).toString(), 'nano').toString()
 
         console.log("APPROVAL AMOUNT", value)
 
-        const tx = await microbnblp.approve(state.masterchef, value).send({
+        const tx = await welfare.approve(state.security, value).send({
           from: wallet.account,
-          to: state.nanomachines
+          to: state.security
         })
 
         if (tx.status) {
@@ -133,81 +111,13 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
     try {
 
-      const value = web3.utils.toWei(data.amount.toString()).toString()
+      const value = web3.utils.toWei(data.amount.toString(), 'nano').toString()
 
-      console.log('STAKE MICRO/BNB LP',  value, parseInt(data.months))
+      console.log('STAKE MICROMACHINES',  value, parseInt(data.months))
 
-      const tx = await masterchef
-        .deposit( 1,value )
-        .send({ from: wallet.account, to: state.masterchef })
-
-      if (tx.status) {
-        setData({ amount: 0, months: 0 })
-        notification.success({
-          message: 'Deposit Successful',
-          description: tx.transactionHash
-        })
-
-        actions.addVaultCount()
-      }
-
-    } catch (e) {
-      notification.error({
-        message: 'Deposit Failed',
-        description: e.toString()
-      })
-    }
-
-    setLoading(false)
-
-  }
-  
-  const handleWithdrawal = async() => {
-    setLoading(true)
-
-    try {
-
-      const value = web3.utils.toWei(data.amount.toString()).toString()
-
-      console.log('WITHDRAW NANOMACHINES',  value, parseInt(data.months))
-
-      const tx = await masterchef
-        .withdraw('1',value )
-        .send({ from: wallet.account, to: state.masterchef })
-
-      if (tx.status) {
-        setData({ amount: 0, months: 0 })
-        notification.success({
-          message: 'Deposit Successful',
-          description: tx.transactionHash
-        })
-
-        actions.addVaultCount()
-      }
-
-    } catch (e) {
-      notification.error({
-        message: 'Withdrawal Failed',
-        description: e.toString()
-      })
-    }
-
-    setLoading(false)
-
-  }
-
-  const handleNanoWithdrawal = async() => {
-    setLoading(true)
-
-    try {
-
-      const value = web3.utils.toWei(data.amount.toString()).toString()
-
-      console.log('Withdraw NANOMACHINES',  value, parseInt(data.months))
-
-      const tx = await masterchef
-        .deposit(value )
-        .send({ from: wallet.account, to: state.nanostaking })
+      const tx = await security
+        .stakeMicroMachines(value, parseInt(data.months))
+        .send({ from: wallet.account, to: state.security })
 
       if (tx.status) {
         setData({ amount: 0, months: 0 })
@@ -229,7 +139,6 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
     setLoading(false)
 
   }
-
 
   const handleTimeLock = (months, amount ) => {
     setData({ ...data, months })
@@ -241,32 +150,30 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="Nanomachines Beta Facility">
-	  <Card title="Build Nanomachines from Micro/BNB LP">
+      <Card title="Micromachine Staking">
+	  <Card title="Build a WarBot Manufacturing Center">
         <Form
           size="large"
           layout="vertical">
-          <Statistic title="Wallet Balance of Micro/BNB LP" value={balance} />
-		  <Statistic title="Staked Balance" value={stakedbalance} />
+          <Statistic title="Balance" value={balance} />
           <Statistic title="Approved" value={allowance} />
           <Form.Item name="vAmount" label="Deposit Amount" rules={[{ required: true, message: 'Enter deposit amount' }]}>
             <Input type="number" placeholder="e.g 10000" value={data.amount} onChange={handleAmount} />
           </Form.Item>
-          
+          <Form.Item name="vTimelock" label="Time Lock" name="timelock">
+            <Slider min={1} max={12} defaultValue={1} value={data.months} onChange={handleTimeLock} />
+            <Space>
+              <Text>{data.months} Month(s)</Text>
+              <Text>{parseFloat(parseInt(data.months) / 12).toFixed(1)} Year(s)</Text>
+            </Space>
+          </Form.Item>
           <Space>
-           <Button size="large" onClick={approve}>Approve</Button>
-            <Button size="large" type="primary" onClick={handleDeposit}>Stake</Button>
-			 
+            <Button size="large" onClick={approve}>Approve</Button>
+            <Button size="large" type="primary" onClick={handleDeposit}>Stake MicroMachines</Button>
           </Space>
-		  <Space>
-           
-			<Button size="large" type="primary" onClick={handleWithdrawal}>Unstake</Button>
-          </Space>
-		  
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
-            <Title level={3} type="success"  strong>Nanomachines Produced:</Title>
-			<Button size="large" type="primary" onClick={handleNanoWithdrawal}>Withdraw {usershare}</Button>
-            <Text level={5} strong></Text>
+            <Title level={3} type="success" copyable strong>{timeValue}</Title>
+            <Text level={5} strong>Build {data.amount * data.months} WarBots a months by locking your MicroMachines for {data.months} month(s) for a total of {data.amount * data.months * data.months} WarBots</Text>
           </Card>
         </Form>
 		</Card>
@@ -278,4 +185,4 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 // <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
 
 
-export default NanoMachineStakingForm
+export default MicroMachineStakingForm

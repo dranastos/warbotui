@@ -40,6 +40,7 @@ const useSecurity = (address) => {
       let welfareAddress = await getField('WelfareCommandCenterAddress')
       let reflectBalance = await getField('getReflectBalance')
 	  let microMachineAddress = await getField('MicroMachineAddress')
+	  let nanomachineAddress = await getField('nanomachines')
       console.log( "MMx is " + info.microMachineAddress )
 	  
 	  if ( taxWallet === undefined ) taxWallet = 0;

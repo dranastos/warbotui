@@ -8,6 +8,7 @@ const useNanomachines = (address) => {
   const [contract, setContract] = useState({})
 
   useEffect(() => {
+	 
     if (address) {
       Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(Nanomachines.abi, address))

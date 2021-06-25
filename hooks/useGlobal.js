@@ -74,6 +74,14 @@ const actions = {
       store.setState({ nanostaking: '', hasNanostaking: false })
     }
   },
+  setMasterchef: (store, masterchef) => {
+    console.log("SET MASTERCHEF")
+    if (masterchef && masterchef.startsWith('0x') && masterchef.length == 42) {
+      store.setState({ masterchef, hasMasterchef: true })
+    } else {
+      store.setState({ masterchef: '', hasMasterchef: false })
+    }
+  },
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -81,7 +89,7 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0x8E496a90a66E949C24d4AD0393c4441B77ae2EAF',
+  security: '0xD2511C55246Bd9f697931C5e5CAfD64c30882B91',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -93,18 +101,19 @@ const initialState = {
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
  
-  
+  masterchef: '0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb',
+  hasMasterchef: true,
   micromachines: '0xEA0f4B6fF0E921dB09F4f2A214a5927B09EC8103',
   hasMicromachines: true,
-  nanomachines: '0x035B4Cfdb5B97a6Ee71a48c361FbE9af24B71186',
+  nanomachines: '0x9E59667490263361F39774D4e31678340795Ac81',
   hasNanomachines: true,
   nanostaking:   '0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68',
   hasNanostaking: true,
-  nanoLPstaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
-  hasNanoLPstaking: true,
-  microLPstaking:   '0x5E9D5CD306292E21DaCE071694c7a9Eef79b2745',
-  hasMicroLPstaking: true,
-  warbotmanufacturer: '0x8E496a90a66E949C24d4AD0393c4441B77ae2EAF',
+  nanobnblp:   '0xad7806487D47613ce9Ce9e78633058381Abd784C',
+  hasNanobnblp: true,
+  microbnblp:   '0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB',
+  hasMicrobnblp: true,
+  warbotmanufacturer: '0xD2511C55246Bd9f697931C5e5CAfD64c30882B91',
   warbotmanufacturer: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0

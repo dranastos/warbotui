@@ -95,7 +95,7 @@ export default function PublicLayout({ children }) {
 
           <Form.Item name="ss" label="Micromachine Manufacturing Plant">
            
-            <Text copyable>0x8E496a90a66E949C24d4AD0393c4441B77ae2EAF</Text>
+            <Text copyable>0xD2511C55246Bd9f697931C5e5CAfD64c30882B91</Text>
             <Input
               name="social"
               placeholder="MicroMachineManufacturingPlant"
@@ -107,7 +107,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="nanomachines" label="Nanomachines Address">
-            <Text copyable>0x035B4Cfdb5B97a6Ee71a48c361FbE9af24B71186</Text>
+            <Text copyable>0x9E59667490263361F39774D4e31678340795Ac81</Text>
             <Input
               name="command"
               placeholder="Nanomachines Address"
@@ -130,37 +130,37 @@ export default function PublicLayout({ children }) {
             />
           </Form.Item>
 
-          <Form.Item name="nanostaking" label="Nanomachines Staking">
-            <Text copyable>0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68</Text>
+          <Form.Item name="nanobnblp" label="Nano/BNB LP Address">
+            <Text copyable>0xad7806487D47613ce9Ce9e78633058381Abd784C</Text>
             <Input
               name="command"
               placeholder="Nanomachines Staking"
               allowClear
-              value={state.nanostaking}
+              value={state.nanobnblp}
               size="large"
               onChange={e => actions.setBonus(e.target.value)}
             />
           </Form.Item>
 		  
-		  <Form.Item name="nanolpstaking" label="Nanomachines Nano LP Staking">
-            <Text copyable>0x390895B239a6e1FaBd22FecBaBC71F39948f39cC</Text>
+		  <Form.Item name="masterchef" label="Masterchef">
+            <Text copyable>0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb</Text>
             <Input
               name="command"
-              placeholder="Nanomachines Nano LP Staking"
+              placeholder="Masterchef"
               allowClear
-              value={state.nanolpstaking}
+              value={state.masterchef}
               size="large"
-              onChange={e => actions.setWicBonus(e.target.value)}
+              onChange={e => actions.setMasterchef(e.target.value)}
             />
           </Form.Item>
 		  
-		  <Form.Item name="microlpstaking" label="Nanomachines Micro LP Staking">
-            <Text copyable>0x4415F97e358b4C084DE270aa9E929b07311829dC</Text>
+		  <Form.Item name="microbnblp" label="Micro/BNB LP Address">
+            <Text copyable>0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB</Text>
             <Input
               name="command"
-              placeholder="Nanomachines Micro LP Staking"
+              placeholder="Micro LP Address"
               allowClear
-              value={state.microlpstaking}
+              value={state.microbnblp}
               size="large"
               onChange={e => actions.setBonus(e.target.value)}
             />
