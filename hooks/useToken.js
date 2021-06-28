@@ -6,19 +6,21 @@ import useWeb3 from './useWeb3'
 const useToken = (address) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
+  const [connected, setConnected] = useState(false)
 
   useEffect(() => {
 	 
     if (address) {
       Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(ERC20.abi, address))
+	  setConnected(true)
       console.log("TOKEN ADDRESS", address)
     } else {
       console.log("TOKEN NOT SET")
     }
   }, [address])
 
-  return [contract.methods, web3]
+  return [contract.methods, web3, connected]
 }
 
 export default useToken

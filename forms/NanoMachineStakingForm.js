@@ -271,7 +271,4 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
   )
 }
 
-// <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
-
-
 export default NanoMachineStakingForm

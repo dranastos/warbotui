@@ -2,11 +2,6 @@ import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import moment from 'moment'
 import Head from 'next/head'
-import logo from '../images/badguy1.jpeg'
-
-
-//import Image from 'next/image'
-//import profilePic from '../images/badguy1.jpeg'
 
 import {
   Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert,
@@ -18,12 +13,9 @@ import PublicLayout from '../layouts/PublicLayout'
 import MicroMachineStakingForm from '../forms/MicroMachineStakingForm'
 import UserManufacturingCenters from '../forms/UserManufacturingCenters'
 import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
-//import UserDepositsClosed from '../forms/UserDepositsClosed'
-//import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useMicroMachines from '../hooks/useMicroMachines'
-//import useWicCardMinter from '../hooks/useWicCardMinter'
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
@@ -33,20 +25,19 @@ const { Item } = Descriptions
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'micromachines', 'securityInfo'])
-  const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.security)
+  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'micromachines', 'securityInfo', 'warbotmanufacturer', 'hasWarbotmanufacturer' ])
+  console.dir( "WARBOT MM " + state.warbotmanufacturer)
+  const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   const [show, setShow] = useState(false)
-  const [pension, setPension] = useState({ })
-  //const [counter, setCounter] = useState(0)
+  const [data, setData] = useState({ })
   const [loading, setLoading] = useState(false)
   const [MicroMachines] = useMicroMachines(state.micromachines)
- // const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
   
   useEffect(() => {
-    if (state.hasSecurity && connected) {
+    if (state.warbotmanufacturer && connected) {
       getInfo()
     }
-  }, [state.hasSecurity, state.vaultCount, connected])
+  }, [state.hasWarbotmanufacturer,  connected])
 
   const getInfo = async() => {
     setLoading(true)
@@ -58,7 +49,7 @@ export default function Dashboard() {
    
 	
 	const securityInfo = await getFields( )
-    setPension(securityInfo)
+    setData(securityInfo)
     actions.setSecurityInfo(securityInfo)
     setLoading(false)
   }
@@ -68,20 +59,20 @@ export default function Dashboard() {
       <Card title="Warbot Manufacturing Center" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
            <Col span={8}>
-            <Statistic title="WarBots in Existence" value={pension.totalSupply} />
+            <Statistic title="WarBots in Existence" value={data.totalSupply} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Total Manufacturing Plants" value={pension.globalwarbotmanufacturingplants} />
+            <Statistic title="Total Manufacturing Plants" value={data.globalwarbotmanufacturingplants} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Warbots Manufactured Per Month" value={pension.globalwarbotproduction} />
+            <Statistic title="Warbots Manufactured Per Month" value={data.globalwarbotproduction} />
           </Col>
 		  
         
         </Row>
       </Card>
     </Spin>
-  ), [pension, loading])
+  ), [ loading])
 
   return (
     <PublicLayout>
@@ -124,24 +115,3 @@ export default function Dashboard() {
     </PublicLayout>
   )
 }
-
-        //
-        // {
-        //   (wallet.status == 'connected' && pension.owner == wallet.account) && (
-        //     <div>
-        //       <Title level={2}>Pension Depositor Only</Title>
-        //       <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
-        //         <Col xs={8}>
-        //           <PullTaxForm />
-        //         </Col>
-        //         <Col xs={8}>
-        //           <SettleForm />
-        //         </Col>
-        //         <Col xs={8}>
-        //           <PenaltyAdjustForm />
-        //         </Col>
-        //       </Row>
-        //     </div>
-        //
-        //   )
-        // }

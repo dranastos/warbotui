@@ -5,13 +5,15 @@ import { useWallet } from 'use-wallet'
 import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
-import useWelfare from '../hooks/useWelfare'
+
+import useMicromachines from '../hooks/useMicromachines'
 
 const MicroMachineStakingForm = ({ onComplete, address }) => {
   const wallet = useWallet()
-  const [state, actions] = useGlobal(['security', 'hasSecurity', 'welfare', 'hasWelfare'])
-  const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
-  const [welfare] = useWelfare(state.welfare)
+  const [state, actions] = useGlobal([ 'warbotmanufacturer', 'hasWarbotmanufacturer', 'micromachines', 'hasMicromachines'])
+  const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
+  //const [welfare] = useWelfare(state.welfare)
+  const [micromachines] = useMicromachines(state.micromachines)
   const [balance, setBalance] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
@@ -21,26 +23,26 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
   const [counter, setCounter] = useState(0)
 
   useEffect(() => {
-    if (connected && state.hasSecurity) {
+    if (connected && state.hasWarbotmanufacturer) {
       getTimeDeposit()
     }
   }, [data])
 
   useEffect(() => {
-    if (connected && welfare && state.hasSecurity) {
+    if (connected && micromachines && state.hasMicromachines) {
       getBalance()
       getAllowance()
     }
-  }, [connected, welfare, state.hasSecurity])
+  }, [connected, micromachines, state.hasMicromachines])
 
   const getBalance = async() => {
-    const balance = await welfare.balanceOf(wallet.account).call()
+    const balance = await micromachines.balanceOf(wallet.account).call()
     setBalance(web3.utils.fromWei(balance, 'nano'))
     setCounter(counter + 1)
   }
 
   const getAllowance = async() => {
-    const balance = await welfare.allowance(wallet.account, state.security).call()
+    const balance = await micromachines.allowance(wallet.account, state.warbotmanufacturer).call()
     setAllowance(web3.utils.fromWei(balance, 'nano'))
     setCounter(counter + 1)
   }
@@ -54,20 +56,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
 
   }
 
-  // blockHash: "0x7ccbdaa8ae5f8eeb4f12e91ee12438222cf9d7c9b4c05ba438ce5b422de595af"
-  // blockNumber: 9232781
-  // contractAddress: null
-  // cumulativeGasUsed: 1657512
-  // events: {0: {…}, 1: {…}, 2: {…}, 3: {…}, 4: {…}, OwnershipTransferred: {…}}
-  // from: "0x46a9f0c9818f96e99ee2db24e85cd4f2fab827e8"
-  // gasUsed: 1561590
-  // logsBloom: "0x00000000000000000000000000000000000000000000100000800000000000000000000000000000080000000001000000000000000040000000000000200800010000000000000000008008000000000001000000000000000000000000000000000000020000080000000000000800000000000030000000000010000000400000000000000004000000400000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000001000000000000000020000410000000000000000000000000000000000400000000000000000000010000"
-  // status: true
-  // to: "0x5d09f5e94f8f2cab11db1a7d1c71cdd80e7c0e69"
-  // transactionHash: "0x3c4427004adf5f1a8655da0f24ab8ffca4ffa1e17c9979ab4d03b8768508faf2"
-  // transactionIndex: 1
-  // type: "0x0"
-
+  
 
   const approve = async() => {
     setLoading(true)
@@ -79,9 +68,9 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
 
         console.log("APPROVAL AMOUNT", value)
 
-        const tx = await welfare.approve(state.security, value).send({
+        const tx = await micromachines.approve(state.warbotmanufacturer, value).send({
           from: wallet.account,
-          to: state.security
+          to: state.warbotmanufacturer
         })
 
         if (tx.status) {
@@ -113,11 +102,11 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
 
       const value = web3.utils.toWei(data.amount.toString(), 'nano').toString()
 
-      console.log('STAKE MICROMACHINES',  value, parseInt(data.months))
-
-      const tx = await security
+      console.log('STAKE MICROMACHINES ',  value, parseInt(data.months))
+      console.log ( 'WARBOT DEPOSIT ' + state.warbotmanufacturer )
+      const tx = await warbotmanufacturer
         .stakeMicroMachines(value, parseInt(data.months))
-        .send({ from: wallet.account, to: state.security })
+        .send({ from: wallet.account, to: state.warbotmanufacturer })
 
       if (tx.status) {
         setData({ amount: 0, months: 0 })
@@ -163,8 +152,8 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
           <Form.Item name="vTimelock" label="Time Lock" name="timelock">
             <Slider min={1} max={12} defaultValue={1} value={data.months} onChange={handleTimeLock} />
             <Space>
-              <Text>{data.months} Month(s)</Text>
-              <Text>{parseFloat(parseInt(data.months) / 12).toFixed(1)} Year(s)</Text>
+              <Text>{data.months} Quarter(s)</Text>
+              <Text>{parseFloat(parseInt(data.months) / 4).toFixed(1)} Year(s)</Text>
             </Space>
           </Form.Item>
           <Space>
@@ -172,8 +161,8 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
             <Button size="large" type="primary" onClick={handleDeposit}>Stake MicroMachines</Button>
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
-            <Title level={3} type="success" copyable strong>{timeValue}</Title>
-            <Text level={5} strong>Build {data.amount * data.months} WarBots a months by locking your MicroMachines for {data.months} month(s) for a total of {data.amount * data.months * data.months} WarBots</Text>
+           
+            <Text level={5} strong>Build {data.amount * data.months} WarBots a period by locking your MicroMachines for {data.months} month(s) for a total of {data.amount * data.months * data.months} WarBots</Text>
           </Card>
         </Form>
 		</Card>
@@ -182,7 +171,6 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
   )
 }
 
-// <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
 
 
 export default MicroMachineStakingForm

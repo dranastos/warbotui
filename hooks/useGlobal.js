@@ -98,6 +98,14 @@ const actions = {
       store.setState({ nanosales: '', hasNanosales: false })
     }
   },
+   setWarbotmanufacturer: (store, warbotmanufacturer) => {
+    console.log("SET Warbotmanufacturer")
+    if (warbotmanufacturer && warbotmanufacturer.startsWith('0x') && busd.length == 42) {
+      store.setState({ warbotmanufacturer, hasWarbotmanufacturer: true })
+    } else {
+      store.setState({ warbotmanufacturer: '', hasWarbotmanufacturer: false })
+    }
+  },
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -134,7 +142,7 @@ const initialState = {
   microbnblp:   '0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB',
   hasMicrobnblp: true,
   warbotmanufacturer: '0xD2511C55246Bd9f697931C5e5CAfD64c30882B91',
-  warbotmanufacturer: {},
+  warbotmanufacturerInfo: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0
 }

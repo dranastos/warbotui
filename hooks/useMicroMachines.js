@@ -20,7 +20,7 @@ const useMicroMachines = (address) => {
     }
   }, [address])
 
-  return [contract.methods, web3]
+  return [contract.methods, web3, connected]
 }
 
 export default useMicroMachines

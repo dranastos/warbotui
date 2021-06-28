@@ -3,43 +3,31 @@ import { Typography, Space, Row, Col, Card, Statistic, Slider, Form, Spin, Butto
 const { Title, Text } = Typography
 import { useWallet } from 'use-wallet'
 import useWeb3 from '../hooks/useWeb3'
-import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
-import useWelfare from '../hooks/useWelfare'
 import useToken from '../hooks/useToken'
 import useNanosales from '../hooks/useNanosales'
 
+
+
 const NanoSalesForm = ({ onComplete, address }) => {
   const wallet = useWallet()
-  const [state, actions] = useGlobal(['security', 'hasSecurity', 'welfare', 'hasWelfare'])
-  const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
-  const [welfare] = useWelfare(state.welfare)
+  const [state, actions] = useGlobal([  'busd', 'hasBusd', 'nanosales', 'hasNanosales' ])
+  const [busd, web3, connected ] = useToken(state.busd)
   const [balance, setBalance] = useState(0)
   const [allowance, setAllowance] = useState(0)
-  const [timeValue, setTimeValue] = useState(0)
-  const [canDeposit, setCanDeposit] = useState(false)
-  const [data, setData] = useState({ months: 0, amount: 0, timelock: 0 })
+  const [data, setData] = useState({  amount: 0 })
   const [loading, setLoading] = useState(false)
-  const [counter, setCounter] = useState(0)
-  const [busd] = useToken(state.busd)
   const [nanosales] = useNanosales(state.nanosales)
   const [purchaseamount, setPurchaseamount] = useState(0)
   const [currentprice, setCurrentprice] = useState(0)
   
-
-  useEffect(() => {
-    if (connected && state.hasBusd) {
-      
-    }
-  }, [data])
-
   useEffect(() => {
     if (connected && busd && state.hasBusd) {
       console.log( "busd  " + state.busd )
 	  getBalance()
       getAllowance()
     }
-  }, [connected, busd, state.hasBUSD])
+  }, [connected, busd, state.hasBusd, data])
 
   const getBalance = async() => {
 	  
@@ -48,13 +36,12 @@ const NanoSalesForm = ({ onComplete, address }) => {
 	console.log( "current price " + currentprice[1] )
 	setCurrentprice(web3.utils.fromWei(currentprice[0]))
 	setBalance(web3.utils.fromWei(balance))
-    setCounter(counter + 1)
+   
   }
 
   const getAllowance = async() => {
     const balance = await busd.allowance(wallet.account, state.nanosales).call()
     setAllowance(web3.utils.fromWei(balance))
-    setCounter(counter + 1)
   }
 
 
@@ -101,10 +88,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
     try {
 
       const value = web3.utils.toWei(data.amount.toString()).toString()
-
-      console.log('PURCHASE NANOMACHINES',  value, parseInt(data.months))
-
-      const tx = await nanosales
+	  const tx = await nanosales
         .purchase(value)
         .send({ from: wallet.account, to: state.nanosales })
 
@@ -156,7 +140,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
         <Form
           size="large"
           layout="vertical">
-          <Statistic title="BUSD Balance" value={balance} />
+          <Statistic class="ant-alert" title="BUSD Balance" value={balance} />
           <Statistic title="Approved" value={allowance} />
          <Text level={5} strong> Next Nanomachine token price is {currentprice} BUSD</Text>         
 		 <Form.Item name="vAmount" label="Purchase Nanomachines" rules={[{ required: true, message: 'Enter deposit amount' }]}>
@@ -168,8 +152,8 @@ const NanoSalesForm = ({ onComplete, address }) => {
             <Button size="large" type="primary" onClick={handleDeposit}>Purchase NanoMachines</Button>
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
-            <Title level={3} type="success" copyable strong>{timeValue}</Title>
-            <Text level={5} strong> {data.amount} Nanomachines will cost you {purchaseamount} BUSD You will be vested until DATE</Text>
+           
+            <Text level={5} strong> {data.amount} Nanomachines will cost you {purchaseamount} BUSD. You will be vested for 90 days.</Text>
           </Card>
         </Form>
 		
@@ -178,8 +162,6 @@ const NanoSalesForm = ({ onComplete, address }) => {
     </Spin>
   )
 }
-
-// <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
 
 
 export default NanoSalesForm

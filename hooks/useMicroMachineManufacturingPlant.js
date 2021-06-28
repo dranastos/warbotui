@@ -61,7 +61,8 @@ const useMicroMachineManufacturingPlant = (address) => {
   }
 
   return {
-    security: contract.methods,
+	  security: contract.methods,
+    warbotmanufacturer: contract.methods,
     web3,
     getField,
     sendTx,

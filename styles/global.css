@@ -1,7 +1,27 @@
 @import 'antd/dist/antd.css';
 
+@font-face {
+  font-family: 'IronMan';
+  src: url('../public/fonts/IronMan.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+@font-face {
+  font-family: 'destructobeambb_reg';
+  src: url('../public/fonts/destructobeambb_reg.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   background-color: #0038ff !important;
+  font-family: destructobeambb_reg;
+  font-size: 1em
 }
 
 .ant-descriptions-view, .ant-descriptions-row {
@@ -10,13 +30,15 @@ body {
 
 .ant-descriptions-item-content {
   font-weight: bold;
-  font-size: 1em
+  font-size: 1em;
+ 
 }
 
 .ant-descriptions-item-label {
   background: #000000 !important;
   border-width: 0px !important;
   font-size: 0.9em;
+   font-family: destructobeambb_reg;
 }
 
 .ant-notification {
@@ -25,6 +47,7 @@ body {
 
 .ant-layout-content.site-layout, .ant-layout-footer {
   background-color: #0038ff !important;
+   font-family: destructobeambb_reg;
 }
 
 .ant-layout-header {
@@ -37,10 +60,12 @@ body {
   background: transparent !important;
   font-weight: bolder;
   font-size: 1.1em;
+   font-family: destructobeambb_reg;
 }
 
 .ant-menu > .ant-menu-item {
   border: 0px !important;
+   font-family: destructobeambb_reg;
 }
 
 .ant-menu > .ant-menu-item:hover {
@@ -51,42 +76,49 @@ body {
 .ant-menu > .ant-menu-item-selected {
   background: rgba(0, 0, 0, 0.7) !important;
   color: white !important;
+   font-family: destructobeambb_reg;
 }
 
 .ant-btn {
   border: 0px !important;
   border-radius: 4px !important;
+   font-family: destructobeambb_reg;
 }
 
 .ant-card {
   border-radius: 10px;
   border: 0px !important;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+   font-family: destructobeambb_reg;
 }
 
 .ant-tabs-tab {
-
+    font-family: destructobeambb_reg;
 }
 
 .ant-tabs-tab-btn {
   font-weight: bolder;
   font-size: 1.5em;
   color: #000000 !important;
+   font-family: destructobeambb_reg;
 }
 
 .ant-tabs-ink-bar {
   background: #000000 !important;
+   font-family: destructobeambb_reg;
 }
 
 .ant-alert {
   border-radius: 10px;
   border-width: 4px;
+   font-family: destructobeambb_reg;
 }
 
 .ant-collapse {
   margin-bottom: 20px;
   border-radius: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+   font-family: destructobeambb_reg;
 }
 
 .ant-collapse-content, .ant-collapse-content-box, .ant-collapse-item {
