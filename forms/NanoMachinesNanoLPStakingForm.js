@@ -54,7 +54,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
   const getBalance = async() => {
      
 	const balance = await nanobnblp.balanceOf(wallet.account).call()
-	//var userShare = await nanostaking.getUserShare(wallet.account,1).call()
+	
     var userShare = await masterchef.pendingSushi( '0' , wallet.account ).call()
 	var userInfo = await masterchef.userInfo( '0', wallet.account ).call()
 	var stakedBalance = userInfo['amount'] ;
@@ -64,8 +64,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
 	setUsershare(web3.utils.fromWei(userShare))
 	setStakedbalance(web3.utils.fromWei(stakedBalance))
 	
-	console.log("bb " + web3.utils.fromWei(balance))
-	console.log("cc " + usershare)
+	
     setCounter(counter + 1)
   }
 
@@ -76,7 +75,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
   }
 
   const getTimeDeposit = async() => {
-	  console.log("FUCK YOU") 
+	 
     const weiValue = web3.utils.toWei((data.amount || 0).toString()).toString()
     //const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
 

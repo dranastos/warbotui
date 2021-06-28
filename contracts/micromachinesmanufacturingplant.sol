@@ -339,7 +339,7 @@ interface IERC721Receiver {
 
 
 
-pragma solidity ^0.8.0;
+
 
 
 /**
@@ -368,7 +368,7 @@ interface IERC721Metadata is IERC721 {
 
 
 
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev Collection of functions related to the address type
@@ -560,7 +560,7 @@ library Address {
 
 
 
-pragma solidity ^0.8.0;
+
 
 /*
  * @dev Provides information about the current execution context, including the
@@ -587,7 +587,6 @@ abstract contract Context {
 
 
 
-pragma solidity ^0.8.0;
 
 /**
  * @dev String operations.
@@ -657,7 +656,7 @@ library Strings {
 
 
 
-pragma solidity ^0.8.0;
+
 
 
 /**
@@ -687,7 +686,7 @@ abstract contract ERC165 is IERC165 {
 
 
 
-pragma solidity ^0.8.0;
+
 
 
 
@@ -1072,14 +1071,13 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
 
 
 
-pragma solidity ^0.8.0;
+
 
 
 // File: node_modules\@openzeppelin\contracts\token\ERC721\extensions\IERC721Enumerable.sol
 
 
 
-pragma solidity ^0.8.0;
 
 
 /**
@@ -1110,7 +1108,6 @@ interface IERC721Enumerable is IERC721 {
 
 
 
-pragma solidity ^0.8.0;
 
 
 
@@ -1271,7 +1268,6 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
 
 
 
-pragma solidity ^0.8.0;
 
 
 /**
@@ -1339,7 +1335,7 @@ abstract contract ERC721URIStorage is ERC721 {
 
 
 
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -1409,7 +1405,7 @@ abstract contract Ownable is Context {
 // File: contracts\ComicMinter.sol
 
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+
 
 
 

@@ -9,7 +9,7 @@ const useMicroMachines = (address) => {
   const [connected, setConnected] = useState(false)
 
   useEffect(() => {
-	  console.log("ADDRESS WE HAVE for uMicroMachines ", address)
+	 
     if (address) {
       Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(MicroMachines.abi, address))

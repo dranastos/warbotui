@@ -1,5 +1,5 @@
-const Pension = artifacts.require("Pension");
+const Migrations = artifacts.require("Migrations");
 
 module.exports = function (deployer) {
-  deployer.deploy(Pension);
+  deployer.deploy(Migrations);
 };

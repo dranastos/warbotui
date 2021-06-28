@@ -17,7 +17,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
   const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
   const [welfare] = useWelfare(state.welfare)
   const [nanomachines] = useNanomachines(state.nanomachines)
-  console.log ( "NANNOOO ADDRESS" + state.nanomachines )
+  
   const [nanostaking] = useNanostaking(state.nanostaking)
   const [masterchef] = useMasterchef(state.masterchef)
   const [balance, setBalance] = useState(0)
@@ -46,8 +46,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
   const getBalance = async() => {
     const balance = await nanomachines.balanceOf(wallet.account).call()
-	//var userShare = await nanostaking.getUserShare(wallet.account,1).call()
-    var userShare = await masterchef.pendingSushi( '2' , wallet.account ).call()
+	var userShare = await masterchef.pendingSushi( '2' , wallet.account ).call()
 	var userInfo = await masterchef.userInfo( '2', wallet.account ).call()
 	var stakedBalance = userInfo['amount'] ;
 	
@@ -55,10 +54,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 	setBalance(web3.utils.fromWei(balance))
 	setUsershare(web3.utils.fromWei(userShare))
 	setStakedbalance(web3.utils.fromWei(stakedBalance))
-	
-	console.log("bb " + web3.utils.fromWei(balance))
-	console.log("cc " + usershare)
-    setCounter(counter + 1)
+	setCounter(counter + 1)
   }
 
   const getAllowance = async() => {

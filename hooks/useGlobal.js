@@ -82,6 +82,22 @@ const actions = {
       store.setState({ masterchef: '', hasMasterchef: false })
     }
   },
+  setBusd: (store, busd) => {
+    console.log("SET BUSD")
+    if (busd && busd.startsWith('0x') && busd.length == 42) {
+      store.setState({ busd, hasBusd: true })
+    } else {
+      store.setState({ busd: '', hasBusd: false })
+    }
+  },
+  setNanosales: (store, busd) => {
+    console.log("SET NANOSALES")
+    if (nanosales && nanosales.startsWith('0x') && busd.length == 42) {
+      store.setState({ nanosales, hasNanosales: true })
+    } else {
+      store.setState({ nanosales: '', hasNanosales: false })
+    }
+  },
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -100,7 +116,11 @@ const initialState = {
   hasBonus: true,
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
- 
+  
+  nanosales: '0x0e92A7fE6b298671ED6b6cA7Df0962eE757c9A3F',
+  hasNanosales: true, 
+  busd : '0x470DCDDAc217CCF1Cdaeab7b145A02D2EAd1388C',
+  hasBusd: true, 
   masterchef: '0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb',
   hasMasterchef: true,
   micromachines: '0xEA0f4B6fF0E921dB09F4f2A214a5927B09EC8103',

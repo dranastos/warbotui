@@ -182,9 +182,9 @@ export default function PublicLayout({ children }) {
          
 		  <Menu.Item key="4" onClick={() => Router.push('/nanomachines')}>Nanomachines</Menu.Item>
 		  <Menu.Item key="4" onClick={() => Router.push('/warbots')}>Warbots</Menu.Item>
-		  <Menu.Item key="4" onClick={() => Router.push('/weaponsfacility')}>Upgrades</Menu.Item>
-		  <Menu.Item key="4" onClick={() => Router.push('/defense')}>Combat Zone</Menu.Item>
-         
+		  <Menu.Item key="4" onClick={() => Router.push('/upgrades')}>Upgrades</Menu.Item>
+		  <Menu.Item key="4" onClick={() => Router.push('/combatzone')}>Combat Zone</Menu.Item>
+          <Menu.Item key="4" onClick={() => Router.push('/nanosale')}>Nano Sale</Menu.Item>
         </Menu>
         <div style={{ flex: 1 }} />
         {renderWallet()}
