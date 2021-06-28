@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import Contract from 'web3-eth-contract'
-import Masterchef from '../build/contracts/Masterchef.json'
+import Masterchef from '../build/contracts/MasterChef.json'
 import useWeb3 from './useWeb3'
 
 const useMasterchef = (address) => {
