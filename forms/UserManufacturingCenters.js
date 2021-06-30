@@ -61,21 +61,13 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
     setLoading(false)
   }
 
-  const handleSettle = async(id) => {
-    const tx = await security.settle(id).send({ from: wallet.account, to: state.security })
-    if (tx.status) {
-      notification.success({
-        message: 'Settlement Successful',
-        description: tx.transactionHash
-      })
-    }
-  }
   
   const manufacture = async(id) => {
-    const tx = await security.manufacture(id).send({ from: wallet.account, to: state.warbotmanufacturer })
+    
+	const tx = await security.manufacture(id).send({ from: wallet.account, to: state.warbotmanufacturer })
     if (tx.status) {
       notification.success({
-        message: 'Settlement Successful',
+        message: vaults[id].MonthlyProductionRate + ' Warbot(s) Succesfully Manufactured',
         description: tx.transactionHash
       })
     }
@@ -95,9 +87,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
 	var mmstaked = "MicroMachines Staked:" + vaults[id].MicroMachinesStaked
 	var expiration = "Lease Expires: " + moment.unix(vaults[id].timeAtExpiration).format('MM/DD/YYYY HH:mm')
 	
- 	//if ( timeNow > expiry ) {expiry = "EXPIRED"} else {expiry = vaults[id].timeAtExpiration}
-	//if ( vaultStatus == "Inactive" ) expiry = "EXPIRED"
-	 if ( vaults[id].PlantStatus == "Inactive" ) return( <div></div> )
+	if ( vaults[id].PlantStatus == "Inactive" ) return( <div></div> )
 	
 	
 		

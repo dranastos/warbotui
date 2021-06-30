@@ -119,7 +119,7 @@ export default function PublicLayout({ children }) {
           </Form.Item>
 
           <Form.Item name="welfare" label="Micromachine Address">
-            <Text copyable>0x403f2fE54031CCe609686c3DcbddEAAaC9366e1D</Text>
+            <Text copyable>0xc50Dcd6612eEE0A69822C2a0ABa2572ee65bD853</Text>
             <Input
               name="command"
               placeholder="MicroMachines Contract"
