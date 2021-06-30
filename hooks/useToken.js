@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import Contract from 'web3-eth-contract'
-import ERC20 from '../build/contracts/Micromachines.json'
+import ERC20 from '../build/contracts/MicroMachines.json'
 import useWeb3 from './useWeb3'
 
 const useToken = (address) => {
