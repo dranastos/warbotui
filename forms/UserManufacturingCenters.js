@@ -36,7 +36,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
     
     const deps = await security.getUserManufacturingPlants(wallet.account).call()
 	const totalDeps = await security.userManufacturingPlantCount(wallet.account).call()
-    console.log(totalDeps)
+    
     
 	
 	setDeposits(deps)
@@ -45,7 +45,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
     for (let dep of deps) {
 	  const rawdata = await security.ManufacturingPlants(dep).call()
        const data = await getVault( rawdata )
-	  console.log( data )
+	  console.dir( data )
 
       vaults[dep] = {
         
@@ -70,12 +70,22 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
       })
     }
   }
+  
+  const manufacture = async(id) => {
+    const tx = await security.manufacture(id).send({ from: wallet.account, to: state.warbotmanufacturer })
+    if (tx.status) {
+      notification.success({
+        message: 'Settlement Successful',
+        description: tx.transactionHash
+      })
+    }
+  }
 
   const renderDeposit = (id, key) => {
-    console.log( "HERE" )
+    
 	
 	if (vaults[id] == undefined) return null;
-	console.log( vaults[id])
+	
 	var timeNow = new Date().getTime()/1000
 	var expirationTime = vaults[id].timeAtExpirationUnix
 	var expiry = vaults[id].timeAtExpirationUnix
@@ -101,12 +111,12 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
                  
                   <Button
                     type="primary"
-                    onClick={() => sendVaultTx('manufacture', vaults[id].address, wallet.account,id)}>
+                    onClick={() => manufacture(id)}>
                     Manufacture WarBots
                   </Button>
                   <Button
                     type="danger"
-                    onClick={() => sendVaultTx('unstakeMicroMachines', vaults[id].address, wallet.account,id)}>
+                    onClick={() => sendVaultTx('unstakeMicroMachines', state.warbotmanufacturer, wallet.account,id)}>
                     Shutdown Plant
                   </Button>
                   </Space>

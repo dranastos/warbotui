@@ -30,7 +30,7 @@ const useMicroMachineManufacturingPlant = (address) => {
 	  let microMachineAddress = await getField('MicroMachineAddress')
       let nanoMachineAddress = await getField('nanomachines')
       
-	  console.log ( "ccc4 " + nanoMachineAddress )
+	 
       
       
 	  return {
@@ -61,7 +61,7 @@ const useMicroMachineManufacturingPlant = (address) => {
   }
 
   return {
-	  security: contract.methods,
+	security: contract.methods,
     warbotmanufacturer: contract.methods,
     web3,
     getField,

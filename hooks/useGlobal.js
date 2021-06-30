@@ -113,7 +113,7 @@ const actions = {
 
 const initialState = {
   chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0xD2511C55246Bd9f697931C5e5CAfD64c30882B91',
+  security: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -131,7 +131,7 @@ const initialState = {
   hasBusd: true, 
   masterchef: '0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb',
   hasMasterchef: true,
-  micromachines: '0xEA0f4B6fF0E921dB09F4f2A214a5927B09EC8103',
+  micromachines: '0xc50Dcd6612eEE0A69822C2a0ABa2572ee65bD853',
   hasMicromachines: true,
   nanomachines: '0x9E59667490263361F39774D4e31678340795Ac81',
   hasNanomachines: true,
@@ -141,7 +141,7 @@ const initialState = {
   hasNanobnblp: true,
   microbnblp:   '0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB',
   hasMicrobnblp: true,
-  warbotmanufacturer: '0xD2511C55246Bd9f697931C5e5CAfD64c30882B91',
+  warbotmanufacturer: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
   warbotmanufacturerInfo: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0

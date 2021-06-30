@@ -23,7 +23,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
   
   useEffect(() => {
     if (connected && busd && state.hasBusd) {
-      console.log( "busd  " + state.busd )
+      
 	  getBalance()
       getAllowance()
     }
@@ -33,7 +33,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
 	  
     const balance = await busd.balanceOf(wallet.account).call()
     const currentprice = await nanosales.calculatePrice( "1000000000000000000" ).call()
-	console.log( "current price " + currentprice[1] )
+	
 	setCurrentprice(web3.utils.fromWei(currentprice[0]))
 	setBalance(web3.utils.fromWei(balance))
    

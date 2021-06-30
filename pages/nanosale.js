@@ -2,11 +2,6 @@ import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import moment from 'moment'
 import Head from 'next/head'
-import logo from '../images/badguy1.jpeg'
-
-
-//import Image from 'next/image'
-//import profilePic from '../images/badguy1.jpeg'
 
 import {
   Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert,
@@ -20,13 +15,11 @@ import NanoSalesForm from '../forms/NanoSalesForm'
 import NanosPurchased from '../forms/NanosPurchased'
 import UserManufacturingCenters from '../forms/UserManufacturingCenters'
 import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
-//import UserDepositsClosed from '../forms/UserDepositsClosed'
-//import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useMicroMachines from '../hooks/useMicroMachines'
 import useToken from '../hooks/useToken'
-//import useWicCardMinter from '../hooks/useWicCardMinter'
+
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
@@ -40,12 +33,12 @@ export default function Dashboard() {
   const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.security)
   const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
-  //const [counter, setCounter] = useState(0)
+ 
   const [loading, setLoading] = useState(false)
   const [MicroMachines] = useMicroMachines(state.micromachines)
   const [busd] = useToken(state.busd)
  
- // const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
+
   
   useEffect(() => {
     if (state.hasSecurity && connected) {
@@ -120,23 +113,4 @@ export default function Dashboard() {
   )
 }
 
-        //
-        // {
-        //   (wallet.status == 'connected' && pension.owner == wallet.account) && (
-        //     <div>
-        //       <Title level={2}>Pension Depositor Only</Title>
-        //       <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
-        //         <Col xs={8}>
-        //           <PullTaxForm />
-        //         </Col>
-        //         <Col xs={8}>
-        //           <SettleForm />
-        //         </Col>
-        //         <Col xs={8}>
-        //           <PenaltyAdjustForm />
-        //         </Col>
-        //       </Row>
-        //     </div>
-        //
-        //   )
-        // }
+       

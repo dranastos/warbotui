@@ -8,11 +8,13 @@ import useWeb3 from './useWeb3'
 import moment from 'moment'
 import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
+import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 
 const useStaking = () => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
   const [state, actions] = useGlobal(['security', 'hasSecurity', 'vaultCount'])
+  const { warbotmanufacturer,  connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
  
   useEffect(() => {
     Contract.setProvider(global.window && window.ethereum)
@@ -34,6 +36,9 @@ const useStaking = () => {
 
   const getVault = async(rawdata) => {
     
+	
+	const timeperiod = await warbotmanufacturer.manufacturingPeriod().call(); 
+	
 	const owner = rawdata['_owner']	    const micromachinesstaked = rawdata['_micromachinesstaked']
 	const timeofexpiration = rawdata['_timeofexpiration']
 	const timeunitslocked = rawdata['_timeunitslocked']
@@ -41,23 +46,28 @@ const useStaking = () => {
     const lastmanufacture = rawdata['_lastmanufacture']
 	const warbotsmanufactured = rawdata['_warbotsmanufactured']
 	const periodproductionrate = rawdata['_periodproductionrate']
+	const periodsmanufactured = rawdata['_periodsmanufactured']
     const status = rawdata['_status']
 	
 	var timeNow = new Date().getTime()/1000
     const timeLeft = timeofexpiration - timeNow;
    
+     
+   
     return {
       
       "MicroMachinesStaked" :  web3.utils.fromWei( micromachinesstaked.toString(), 'nano') ,
       "PlantStatus": status ? 'Active' : 'Inactive',
-      "Last Manufacture":moment.unix(lastmanufacture).format('MM/DD/YYYY HH:mm'),
+	  "NextBatch/Shutdown": (parseInt(lastmanufacture) + parseInt(timeperiod)) > timeNow ? "Not Ready":"Ready" ,
+      "Last Manufacture": lastmanufacture==timeinitiated?"Manufacturing Initiated": moment.unix(lastmanufacture).format('MM/DD/YYYY HH:mm'),
       "Time At Deposit": moment.unix(timeinitiated).format('MM/DD/YYYY HH:mm'),
       "timeAtExpiration": moment.unix(timeofexpiration).format('MM/DD/YYYY HH:mm'),
       "timeAtExpirationUnix": timeofexpiration,
       "Time Left to Expiration": timeLeft<0?0:(timeLeft/60) + " Minutes",
-      "Total Months Locked":timeunitslocked,
+      "Total Periods Locked":timeunitslocked,
 	  "MonthlyProductionRate":periodproductionrate,
 	  "WarBotsManufactured":warbotsmanufactured,
+	  "Periods Manufactured":periodsmanufactured,
       
     }
   }

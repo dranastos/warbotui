@@ -26,12 +26,16 @@ export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
   const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'micromachines', 'securityInfo', 'warbotmanufacturer', 'hasWarbotmanufacturer' ])
-  console.dir( "WARBOT MM " + state.warbotmanufacturer)
+ 
   const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   const [show, setShow] = useState(false)
   const [data, setData] = useState({ })
   const [loading, setLoading] = useState(false)
   const [MicroMachines] = useMicroMachines(state.micromachines)
+  const [warbotsupply, setWarbotsupply] = useState(0)
+  const [plants, setPlants] = useState(0)
+  const [warbotproduction, setWarbotproduction] = useState(0)
+  const [manufacturingperiod, setManufacturingPeriod] = useState(0)
   
   useEffect(() => {
     if (state.warbotmanufacturer && connected) {
@@ -43,12 +47,18 @@ export default function Dashboard() {
     setLoading(true)
 	
 	var WarBots = await security.totalSupply().call()
-
-   
+	var plants = await security.ManufacturingPlantCount().call()
+    var warbotproduction = await security.globalwarbotproduction().call()
+    var manufacturingPeriod =await security.manufacturingPeriod().call()
 
    
 	
 	const securityInfo = await getFields( )
+	console.log( "secinfo " + securityInfo )
+	setWarbotsupply( WarBots )
+	setPlants( plants )
+	setWarbotproduction( warbotproduction )
+	setManufacturingPeriod( manufacturingPeriod )
     setData(securityInfo)
     actions.setSecurityInfo(securityInfo)
     setLoading(false)
@@ -59,15 +69,17 @@ export default function Dashboard() {
       <Card title="Warbot Manufacturing Center" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
            <Col span={8}>
-            <Statistic title="WarBots in Existence" value={data.totalSupply} />
+            <Statistic title="WarBots in Existence:" value={warbotsupply} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Total Manufacturing Plants" value={data.globalwarbotmanufacturingplants} />
+            <Statistic title="Total Manufacturing Plants:" value={plants} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Warbots Manufactured Per Month" value={data.globalwarbotproduction} />
+            <Statistic title="Warbots Manufactured Per Period:" value={warbotproduction} />
           </Col>
-		  
+		    <Col span={8}>
+            <Statistic title="Manufacturing Period in Seconds:" value={manufacturingperiod} />
+          </Col>
         
         </Row>
       </Card>

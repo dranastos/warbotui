@@ -6,14 +6,14 @@ import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 
-import useMicromachines from '../hooks/useMicromachines'
+import useMicroMachines from '../hooks/useMicroMachines'
 
 const MicroMachineStakingForm = ({ onComplete, address }) => {
   const wallet = useWallet()
   const [state, actions] = useGlobal([ 'warbotmanufacturer', 'hasWarbotmanufacturer', 'micromachines', 'hasMicromachines'])
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   //const [welfare] = useWelfare(state.welfare)
-  const [micromachines] = useMicromachines(state.micromachines)
+  const [micromachines] = useMicroMachines(state.micromachines)
   const [balance, setBalance] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
@@ -140,7 +140,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
   return (
     <Spin spinning={loading}>
       <Card title="Micromachine Staking">
-	  <Card title="Build a WarBot Manufacturing Center">
+	  <Card title="Build WarBot Manufacturing Center">
         <Form
           size="large"
           layout="vertical">
