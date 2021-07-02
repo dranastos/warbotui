@@ -15,15 +15,17 @@ import PublicLayout from '../layouts/PublicLayout'
 import NanoMachineStakingForm from '../forms/NanoMachineStakingForm'
 
 import NanoMachinesMicroLPStakingForm from '../forms/NanoMachinesMicroLPStakingForm'
-import UserManufacturingCenters from '../forms/UserManufacturingCenters'
-import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
-import UserDepositsClosed from '../forms/UserDepositsClosed'
-import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
+//import UserManufacturingCenters from '../forms/UserManufacturingCenters'
+//import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
+//import UserDepositsClosed from '../forms/UserDepositsClosed'
+//import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
-import useWelfare from '../hooks/useWelfare'
-import useWicCardMinter from '../hooks/useWicCardMinter'
+//import useWelfare from '../hooks/useWelfare'
+//import useWicCardMinter from '../hooks/useWicCardMinter'
 import NanoMachinesNanoLPStakingForm from '../forms/NanoMachinesNanoLPStakingForm'
+import useNanomachines from '../hooks/useNanomachines'
+import useMasterchef from '../hooks/useMasterchef'
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
@@ -41,14 +43,20 @@ const { Item } = Descriptions
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'welfare', 'securityInfo', 'vaultCount', 'wicCardMinter'])
+  const [state, actions] = useGlobal(['chain', 'nanomachines', 'masterchef'])
   const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.security)
   const [show, setShow] = useState(false)
   const [pension, setPension] = useState({ })
-  const [counter, setCounter] = useState(0)
+  const [masterchef] = useMasterchef(state.masterchef)
+  //const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [welfare] = useWelfare(state.welfare)
-  const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
+  //const [welfare] = useWelfare(state.welfare)
+  const [nanomachines] = useNanomachines(state.nanomachines)
+  //const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
+  
+  const [nanomachinesupply, setNanomachinesupply] = useState(0)
+  const [nanoproduction, setNanoproduction] = useState(0)
+  const [dailyproduction, setDailyproduction] = useState(0)
   
   useEffect(() => {
     if (state.hasSecurity && connected) {
@@ -59,14 +67,17 @@ export default function Dashboard() {
   const getInfo = async() => {
     setLoading(true)
 	
-	var WarBots = await security.totalSupply().call()
-    //var nanomachines = await security.nanomachines()
+	var nanomachinesupply = await nanomachines.totalSupply().call()
+    var nanoproduction = await masterchef.sushiPerBlock().call()
+	var dailyproduction = nanoproduction * 30 *60 *24
+	//var nanomachines = await security.nanomachines()
 	
-	//console.log( "NANOM" + nanomachines )
+   console.log( "Nanomachines in Existence" + nanoproduction)
    
 
-   
-	
+    setNanomachinesupply(nanomachinesupply)
+	setNanoproduction(nanoproduction)
+	setDailyproduction(dailyproduction)
 	const securityInfo = await getFields( )
     setPension(securityInfo)
     actions.setSecurityInfo(securityInfo)
@@ -78,13 +89,13 @@ export default function Dashboard() {
       <Card title="Nanomachine Production Facilty" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
            <Col span={8}>
-            <Statistic title="WarBots in Existence" value={pension.totalSupply} />
+            <Statistic title="Nanomachines in Existence" value={web3.utils.fromWei(nanomachinesupply.toString())} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Total Manufacturing Plants" value={pension.globalwarbotmanufacturingplants} />
+            <Statistic title="Nanomachines Manufactured per Block" value={web3.utils.fromWei(nanoproduction.toString())} />
           </Col>
 		  <Col span={8}>
-            <Statistic title="Warbots Manufactured Per Month" value={pension.globalwarbotproduction} />
+            <Statistic title="Nanomachines Manufactured Per Day" value={web3.utils.fromWei(dailyproduction.toString())} />
           </Col>
 		  
         

@@ -37,7 +37,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
   useEffect(() => {
     if (connected && state.hasSecurity) {
       
-	  getTimeDeposit()
+	 
 	  
     }
   }, [data])
@@ -60,9 +60,9 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
 	var stakedBalance = userInfo['amount'] ;
 	
 	
-	setBalance(web3.utils.fromWei(balance))
-	setUsershare(web3.utils.fromWei(userShare))
-	setStakedbalance(web3.utils.fromWei(stakedBalance))
+	setBalance(balance)
+	setUsershare(userShare)
+	setStakedbalance(stakedBalance)
 	
 	
     setCounter(counter + 1)
@@ -70,42 +70,20 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
 
   const getAllowance = async() => {
     const balance = await nanobnblp.allowance(wallet.account, state.masterchef).call()
-    setAllowance(web3.utils.fromWei(balance))
+    setAllowance(balance)
     setCounter(counter + 1)
   }
 
-  const getTimeDeposit = async() => {
-	 
-    const weiValue = web3.utils.toWei((data.amount || 0).toString()).toString()
-    //const bonus = await security.timeValueDepositAmount(weiValue, parseInt(data.months)).call()
-
-    console.log("VALUE", weiValue)
-
-
-  }
-
-  // blockHash: "0x7ccbdaa8ae5f8eeb4f12e91ee12438222cf9d7c9b4c05ba438ce5b422de595af"
-  // blockNumber: 9232781
-  // contractAddress: null
-  // cumulativeGasUsed: 1657512
-  // events: {0: {…}, 1: {…}, 2: {…}, 3: {…}, 4: {…}, OwnershipTransferred: {…}}
-  // from: "0x46a9f0c9818f96e99ee2db24e85cd4f2fab827e8"
-  // gasUsed: 1561590
-  // logsBloom: "0x00000000000000000000000000000000000000000000100000800000000000000000000000000000080000000001000000000000000040000000000000200800010000000000000000008008000000000001000000000000000000000000000000000000020000080000000000000800000000000030000000000010000000400000000000000004000000400000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000001000000000000000020000410000000000000000000000000000000000400000000000000000000010000"
-  // status: true
-  // to: "0x5d09f5e94f8f2cab11db1a7d1c71cdd80e7c0e69"
-  // transactionHash: "0x3c4427004adf5f1a8655da0f24ab8ffca4ffa1e17c9979ab4d03b8768508faf2"
-  // transactionIndex: 1
-  // type: "0x0"
-
+  
+ 
 
   const approve = async() => {
     setLoading(true)
-
+     
     try {
 
       if (data.amount > 0) {
-        const value = web3.utils.toWei(data.amount.toString()).toString()
+        const value = data.amount.toString()
 
         console.log("APPROVAL AMOUNT", value)
 
@@ -141,7 +119,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
 
     try {
 
-      const value = web3.utils.toWei(data.amount.toString()).toString()
+      const value = data.amount.toString()
 
       console.log('STAKE NANOMACHINES',  value, parseInt(data.months))
 
@@ -244,7 +222,9 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
 	
   }
   const handleAmount = (e) => {
-    setData({ ...data, amount: parseInt(e.target.value) })
+    
+	console.log ( "AMMM" + web3.utils.toWei(e.target.value.toString()) )
+	setData({ ...data, amount: parseInt(web3.utils.toWei(e.target.value.toString())) })
   }
 
   return (
@@ -254,9 +234,9 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
         <Form
           size="large"
           layout="vertical">
-          <Statistic title="Wallet Balance of Nano/BNB LP" value={balance} />
-		  <Statistic title="Staked Balance" value={stakedbalance} />
-          <Statistic title="Approved" value={allowance} />
+          <Statistic title="Wallet Balance of Micro/BNB LP" value={ web3.utils.fromWei(balance.toString()) } />
+		  <Statistic title="Staked Balance" value={ web3.utils.fromWei(stakedbalance.toString()) } />
+          <Statistic title="Approved" value={ web3.utils.fromWei(allowance.toString()) } />
           <Form.Item name="vAmount" label="Deposit Amount" rules={[{ required: true, message: 'Enter deposit amount' }]}>
             <Input type="number" placeholder="e.g 10000" value={data.amount} onChange={handleAmount} />
           </Form.Item>
@@ -273,7 +253,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
 		  
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
             <Title level={3} type="success"  strong>Nanomachines Produced:</Title>
-			<Button size="large" type="primary" onClick={handleNanoWithdrawal}>Withdraw {usershare}</Button>
+			<Button size="large" type="primary" onClick={handleNanoWithdrawal}>Withdraw {web3.utils.fromWei(usershare.toString())}</Button>
             <Text level={5} strong></Text>
           </Card>
         </Form>
@@ -283,7 +263,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
   )
 }
 
-// <Button size="large" onClick={getTimeDeposit}>Calculate</Button>
+
 
 
 export default NanoMachinesNanoLPStakingForm

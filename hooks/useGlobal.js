@@ -112,8 +112,10 @@ const actions = {
 }
 
 const initialState = {
-  chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
+  chain: 137, // 56 - Mainnet | 97 - Testnet
+  //bsc chain: 97, // 56 - Mainnet | 97 - Testnet
+  security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
+  // BNB security: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -125,23 +127,37 @@ const initialState = {
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
   
-  nanosales: '0x0e92A7fE6b298671ED6b6cA7Df0962eE757c9A3F',
+  nanosales: '0xC35FB261F6842966d6722A0b3eF74d52Fcb60E5F',
+  //bnb nanosales: '0x0e92A7fE6b298671ED6b6cA7Df0962eE757c9A3F',
   hasNanosales: true, 
+  
   busd : '0x470DCDDAc217CCF1Cdaeab7b145A02D2EAd1388C',
   hasBusd: true, 
-  masterchef: '0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb',
+  
+  masterchef: '0xe7576D71f162dfCC64c7128d46Ac41Ee8116d424',
+  //bnb masterchef: '0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb',
   hasMasterchef: true,
-  micromachines: '0xc50Dcd6612eEE0A69822C2a0ABa2572ee65bD853',
+  
+  micromachines: '0x9c053B671de651fA1d4C7eDE10a09789218068c1',
+  //bnb micromachines: '0xc50Dcd6612eEE0A69822C2a0ABa2572ee65bD853',
   hasMicromachines: true,
-  nanomachines: '0x9E59667490263361F39774D4e31678340795Ac81',
+  
+  nanomachines: '0xc10006027DCFdABdce5BA9c589b7900241681510',
+  //bnb nanomachines: '0x9E59667490263361F39774D4e31678340795Ac81',
   hasNanomachines: true,
+  
   nanostaking:   '0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68',
   hasNanostaking: true,
-  nanobnblp:   '0xad7806487D47613ce9Ce9e78633058381Abd784C',
+  
+  nanobnblp:   '0x3BeD127C91E82A8FfE331C1Fd9d25d7e0d5B8E7e',
+  // bnb nanobnblp:   '0xad7806487D47613ce9Ce9e78633058381Abd784C',
   hasNanobnblp: true,
-  microbnblp:   '0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB',
+  
+  microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
+  //bnb microbnblp:   '0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB',
   hasMicrobnblp: true,
-  warbotmanufacturer: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
+  warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
+  // BNB warbotmanufacturer: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
   warbotmanufacturerInfo: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0

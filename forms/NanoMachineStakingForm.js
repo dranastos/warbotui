@@ -17,7 +17,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
   const { security, web3, connected } = useMicroMachineManufacturingPlant(state.security)
   const [welfare] = useWelfare(state.welfare)
   const [nanomachines] = useNanomachines(state.nanomachines)
-  
+ 
   const [nanostaking] = useNanostaking(state.nanostaking)
   const [masterchef] = useMasterchef(state.masterchef)
   const [balance, setBalance] = useState(0)
@@ -49,7 +49,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 	var userShare = await masterchef.pendingSushi( '2' , wallet.account ).call()
 	var userInfo = await masterchef.userInfo( '2', wallet.account ).call()
 	var stakedBalance = userInfo['amount'] ;
-	
+	console.log ( "WHAT THE FUCK??? " + balance )
 	
 	setBalance(web3.utils.fromWei(balance))
 	setUsershare(web3.utils.fromWei(userShare))
