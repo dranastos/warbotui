@@ -127,11 +127,11 @@ const initialState = {
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
   
-  nanosales: '0xC35FB261F6842966d6722A0b3eF74d52Fcb60E5F',
+  nanosales: '0xcd62fAf0AE83EbfE726AD6BbA966c9084c3AD866',
   //bnb nanosales: '0x0e92A7fE6b298671ED6b6cA7Df0962eE757c9A3F',
   hasNanosales: true, 
   
-  busd : '0x470DCDDAc217CCF1Cdaeab7b145A02D2EAd1388C',
+  busd : '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
   hasBusd: true, 
   
   masterchef: '0xe7576D71f162dfCC64c7128d46Ac41Ee8116d424',

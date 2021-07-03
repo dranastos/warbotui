@@ -140,7 +140,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
         <Form
           size="large"
           layout="vertical">
-          <Statistic class="ant-alert" title="BUSD Balance" value={balance} />
+          <Statistic class="ant-alert" title="DAI Balance" value={balance} />
           <Statistic title="Approved" value={allowance} />
          <Text level={5} strong> Next Nanomachine token price is {currentprice} BUSD</Text>         
 		 <Form.Item name="vAmount" label="Purchase Nanomachines" rules={[{ required: true, message: 'Enter deposit amount' }]}>
@@ -153,7 +153,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
            
-            <Text level={5} strong> {data.amount} Nanomachines will cost you {purchaseamount} BUSD. You will be vested for 90 days.</Text>
+            <Text level={5} strong> {data.amount} Nanomachines will cost you {purchaseamount} DAI. You will be vested for 90 days.</Text>
           </Card>
         </Form>
 		
