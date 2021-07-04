@@ -36,7 +36,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
     
     const deps = await security.getUserManufacturingPlants(wallet.account).call()
 	const totalDeps = await security.userManufacturingPlantCount(wallet.account).call()
-    console.log(totalDeps)
+  
     
 	
 	setDeposits(deps)
@@ -45,7 +45,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
     for (let dep of deps) {
 	  const rawdata = await security.ManufacturingPlants(dep).call()
        const data = await getVault( rawdata )
-	  console.log( data )
+	  
 
       vaults[dep] = {
         
@@ -72,10 +72,10 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
   }
 
   const renderDeposit = (id, key) => {
-    console.log( "HERE" )
+    
 	
 	if (vaults[id] == undefined) return null;
-	console.log( vaults[id])
+	
 	var timeNow = new Date().getTime()/1000
 	var expirationTime = vaults[id].timeAtExpirationUnix
 	var expiry = vaults[id].timeAtExpirationUnix

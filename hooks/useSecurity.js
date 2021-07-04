@@ -41,7 +41,7 @@ const useSecurity = (address) => {
       let reflectBalance = await getField('getReflectBalance')
 	  let microMachineAddress = await getField('MicroMachineAddress')
 	  let nanomachineAddress = await getField('nanomachines')
-      console.log( "MMx is " + info.microMachineAddress )
+      
 	  
 	  if ( taxWallet === undefined ) taxWallet = 0;
 	  if ( wicBonusWallet === undefined ) wicBonusWallet = 0;

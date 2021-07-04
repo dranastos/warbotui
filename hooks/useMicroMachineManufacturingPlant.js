@@ -14,9 +14,9 @@ const useMicroMachineManufacturingPlant = (address) => {
       Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(MicroMachineManufacturingPlant.abi, address))
       setConnected(true)
-      console.log("SOCIAL SECURITY ADDRESS", address)
+      console.log("Warbot Manufacturing Plant", address)
     } else {
-      console.log("SOCIAL SECURITY ADDRESS NOT SET")
+      console.log("Warbot Manufacturing Plant NOT SET")
     }
   }, [address])
 

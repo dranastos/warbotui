@@ -25,9 +25,9 @@ const { Item } = Descriptions
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'security', 'hasSecurity', 'micromachines', 'securityInfo', 'warbotmanufacturer', 'hasWarbotmanufacturer' ])
+  const [state, actions] = useGlobal(['chain',  'micromachines', 'warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotmanufacturerInfo' ])
  
-  const { security, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
+  const { warbotmanufacturer, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   const [show, setShow] = useState(false)
   const [data, setData] = useState({ })
   const [loading, setLoading] = useState(false)
@@ -46,21 +46,21 @@ export default function Dashboard() {
   const getInfo = async() => {
     setLoading(true)
 	
-	var WarBots = await security.totalSupply().call()
-	var plants = await security.ManufacturingPlantCount().call()
-    var warbotproduction = await security.globalwarbotproduction().call()
-    var manufacturingPeriod =await security.manufacturingPeriod().call()
+	var WarBots = await warbotmanufacturer.totalSupply().call()
+	var plants = await warbotmanufacturer.ManufacturingPlantCount().call()
+    var warbotproduction = await warbotmanufacturer.globalwarbotproduction().call()
+    var manufacturingPeriod =await warbotmanufacturer.manufacturingPeriod().call()
 
    
 	
-	const securityInfo = await getFields( )
-	console.log( "secinfo " + securityInfo )
+	const warbotInfo = await getFields( )
+	
 	setWarbotsupply( WarBots )
 	setPlants( plants )
 	setWarbotproduction( warbotproduction )
 	setManufacturingPeriod( manufacturingPeriod )
-    setData(securityInfo)
-    actions.setSecurityInfo(securityInfo)
+    setData(warbotInfo)
+    actions.setSecurityInfo(warbotInfo)
     setLoading(false)
   }
 

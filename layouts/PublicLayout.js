@@ -35,7 +35,7 @@ export default function PublicLayout({ children }) {
     setLoading(true)
     
     const info = await getFields()
-    console.dir (  info )
+    
     actions.setSecurityInfo(info)
     actions.setWelfare(info.microMachineAddress)
     setLoading(false)
