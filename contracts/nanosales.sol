@@ -853,9 +853,253 @@ interface IMigratorChef {
 }
 
 
+contract ERC20 is IERC20 {
+    using SafeMath for uint256;
+    
+    
+
+    mapping (address => uint256) private _balances;
+
+    mapping (address => mapping (address => uint256)) private _allowances;
+
+    uint256 private _totalSupply;
+
+    
+   function setTotalSupply ( uint256 _amount )  internal {
+       
+       _totalSupply = _amount;
+       
+   }
+   
+   function setInitialBalance () internal {
+       
+       _balances[msg.sender] = _totalSupply; 
+   }
+    
+   function mint(address account, uint256 amount)  public returns(bool){
+       _mint( account,  amount);
+       return true;
+   }  
+   
+   
+   function burn(uint256 amount)  public {
+       require ( balanceOf( msg.sender) >= amount );
+       _burn( msg.sender,  amount);
+   } 
+    
+    /**
+     * @dev See `IERC20.totalSupply`.
+     */
+    function totalSupply() public view override returns (uint256) {
+        return _totalSupply;
+    }
+
+    /**
+     * @dev See `IERC20.balanceOf`.
+     */
+    function balanceOf(address account) public view override returns (uint256) {
+        return _balances[account];
+    }
+
+    /**
+     * @dev See `IERC20.transfer`.
+     *
+     * Requirements:
+     *
+     * - `recipient` cannot be the zero address.
+     * - the caller must have a balance of at least `amount`.
+     */
+    function transfer(address recipient, uint256 amount) public override returns (bool) {
+        _transfer(msg.sender, recipient, amount);
+        return true;
+    }
+
+    /**
+     * @dev See `IERC20.allowance`.
+     */
+    function allowance(address owner, address spender) public view override returns (uint256) {
+        return _allowances[owner][spender];
+    }
+
+    /**
+     * @dev See `IERC20.approve`.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     */
+    function approve(address spender, uint256 value) public override returns (bool) {
+        _approve(msg.sender, spender, value);
+        return true;
+    }
+
+    /**
+     * @dev See `IERC20.transferFrom`.
+     *
+     * Emits an `Approval` event indicating the updated allowance. This is not
+     * required by the EIP. See the note at the beginning of `ERC20`;
+     *
+     * Requirements:
+     * - `sender` and `recipient` cannot be the zero address.
+     * - `sender` must have a balance of at least `value`.
+     * - the caller must have allowance for `sender`'s tokens of at least
+     * `amount`.
+     */
+    function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
+        _transfer(sender, recipient, amount);
+        _approve(sender, msg.sender, _allowances[sender][msg.sender].sub(amount));
+        return true;
+    }
+
+    /**
+     * @dev Atomically increases the allowance granted to `spender` by the caller.
+     *
+     * This is an alternative to `approve` that can be used as a mitigation for
+     * problems described in `IERC20.approve`.
+     *
+     * Emits an `Approval` event indicating the updated allowance.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     */
+    function increaseAllowance(address spender, uint256 addedValue) public returns (bool) {
+        _approve(msg.sender, spender, _allowances[msg.sender][spender].add(addedValue));
+        return true;
+    }
+
+    /**
+     * @dev Atomically decreases the allowance granted to `spender` by the caller.
+     *
+     * This is an alternative to `approve` that can be used as a mitigation for
+     * problems described in `IERC20.approve`.
+     *
+     * Emits an `Approval` event indicating the updated allowance.
+     *
+     * Requirements:
+     *
+     * - `spender` cannot be the zero address.
+     * - `spender` must have allowance for the caller of at least
+     * `subtractedValue`.
+     */
+    function decreaseAllowance(address spender, uint256 subtractedValue) public returns (bool) {
+        _approve(msg.sender, spender, _allowances[msg.sender][spender].sub(subtractedValue));
+        return true;
+    }
+
+    /**
+     * @dev Moves tokens `amount` from `sender` to `recipient`.
+     *
+     * This is internal function is equivalent to `transfer`, and can be used to
+     * e.g. implement automatic token fees, slashing mechanisms, etc.
+     *
+     * Emits a `Transfer` event.
+     *
+     * Requirements:
+     *
+     * - `sender` cannot be the zero address.
+     * - `recipient` cannot be the zero address.
+     * - `sender` must have a balance of at least `amount`.
+     */
+    function _transfer(address sender, address recipient, uint256 amount) internal {
+        require(sender != address(0), "ERC20: transfer from the zero address");
+        require(recipient != address(0), "ERC20: transfer to the zero address");
+
+        _balances[sender] = _balances[sender].sub(amount);
+        _balances[recipient] = _balances[recipient].add(amount);
+        emit Transfer(sender, recipient, amount);
+    }
+
+    /** @dev Creates `amount` tokens and assigns them to `account`, increasing
+     * the total supply.
+     *
+     * Emits a `Transfer` event with `from` set to the zero address.
+     *
+     * Requirements
+     *
+     * - `to` cannot be the zero address.
+     */
+    function _mint(address account, uint256 amount) internal {
+        require(account != address(0), "ERC20: mint to the zero address");
+
+        _totalSupply = _totalSupply.add(amount);
+        _balances[account] = _balances[account].add(amount);
+        emit Transfer(address(0), account, amount);
+    }
+
+     /**
+     * @dev Destoys `amount` tokens from `account`, reducing the
+     * total supply.
+     *
+     * Emits a `Transfer` event with `to` set to the zero address.
+     *
+     * Requirements
+     *
+     * - `account` cannot be the zero address.
+     * - `account` must have at least `amount` tokens.
+     */
+    function _burn(address account, uint256 value) internal {
+        require(account != address(0), "ERC20: burn from the zero address");
+
+        _totalSupply = _totalSupply.sub(value);
+        _balances[account] = _balances[account].sub(value);
+        emit Transfer(account, address(0), value);
+    }
+
+    /**
+     * @dev Sets `amount` as the allowance of `spender` over the `owner`s tokens.
+     *
+     * This is internal function is equivalent to `approve`, and can be used to
+     * e.g. set automatic allowances for certain subsystems, etc.
+     *
+     * Emits an `Approval` event.
+     *
+     * Requirements:
+     *
+     * - `owner` cannot be the zero address.
+     * - `spender` cannot be the zero address.
+     */
+    function _approve(address owner, address spender, uint256 value) internal {
+        require(owner != address(0), "ERC20: approve from the zero address");
+        require(spender != address(0), "ERC20: approve to the zero address");
+
+        _allowances[owner][spender] = value;
+        emit Approval(owner, spender, value);
+    }
+
+    /**
+     * @dev Destoys `amount` tokens from `account`.`amount` is then deducted
+     * from the caller's allowance.
+     *
+     * See `_burn` and `_approve`.
+     */
+    function _burnFrom(address account, uint256 amount) internal {
+        _burn(account, amount);
+        _approve(account, msg.sender, _allowances[account][msg.sender].sub(amount));
+    }
+}
+
+
+contract SushiToken is ERC20 {
+    
+    string public name = "Nanomachines";
+    string public symbol = "NANO";
+    uint8  public  decimals = 18;
+
+constructor()  {
+        
+        uint256 _totalSupply = 1000000*(10**18);
+        setTotalSupply( _totalSupply );
+        setInitialBalance( );
+        
+        
+    }
+
+}
 
 contract Nanosales  is Ownable{
     using SafeMath for uint256;
+    SushiToken public sushi;
     address public BUSD;
     address public saletoken;
     mapping ( address => uint256 ) public purchasedAmount;
@@ -865,25 +1109,26 @@ contract Nanosales  is Ownable{
     
     uint256 public basePrice = 5*(10**18);
     uint256 public priceIncreasePerCoin = 20*(10**13);
-    uint256 public vestingTime = 3 minutes;
+    uint256 public vestingTime = 3 minutes; // change to 180 days
     address public devaddress;
     
     uint256 public devAmount;
  
    constructor() {
-     saletoken = 0x9E59667490263361F39774D4e31678340795Ac81;
-     BUSD = 0x470DCDDAc217CCF1Cdaeab7b145A02D2EAd1388C;
-     devaddress = 0x57342724D5147027be372c49015Fd00bd7cb7A9B;
+     saletoken = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
+     sushi = SushiToken ( saletoken );
+     BUSD = 0x314E8457a3A2f80f620CD4965287044fc2fACB0e;
+     devaddress = 0x42A1DE863683F3230568900bA23f86991D012f42;
    }
     
    function purchase ( uint256 _amount) public payable {
        
-       
-       IERC20 _busd = IERC20 ( BUSD );
+        
+       ERC20 _busd = ERC20 ( BUSD );
        (uint256 _busdamount, uint256 _newbasePrice ) = calculatePrice ( _amount );
        
        _busd.transferFrom ( msg.sender, address(this), _busdamount  ); 
-       require ( _busdamount <= 500 * 10 ** 18 );
+       require ( _busdamount > 0 && _busdamount <= 500 * 10 ** 18 );
        purchasedAmount[msg.sender] += _amount;
        lockExpiration[msg.sender] = block.timestamp + vestingTime;
        tokensSold += _amount;
@@ -905,11 +1150,20 @@ contract Nanosales  is Ownable{
    
    function withdraw () public {
        require ( block.timestamp > lockExpiration[msg.sender] );
-       IERC20 _token = IERC20 ( saletoken );
+       ERC20 _token = ERC20 ( saletoken );
        uint256 _amount = purchasedAmount[msg.sender];
        purchasedAmount[msg.sender] = 0;
        lockExpiration[msg.sender] = 0;
-       _token.transfer ( msg.sender , _amount );
+       //_token.transfer ( msg.sender , _amount );
+       _token.mint( msg.sender, _amount );
+   }
+   
+   function relock() public {
+      require ( block.timestamp > lockExpiration[msg.sender] );
+      lockExpiration[msg.sender] = block.timestamp + vestingTime;
+      uint256 _amount =  purchasedAmount[msg.sender];
+      uint256 _amountofincrease = _amount.mul(25).div(100);
+      purchasedAmount[msg.sender] += _amountofincrease;
    }
     
    function withdrawNanos() public  onlyOwner {
@@ -918,7 +1172,7 @@ contract Nanosales  is Ownable{
        _token.transfer( msg.sender, _amount );
    }
     
-   function withdrawBUSD() public  onlyOwner {
+   function withdrawMATIC() public  onlyOwner {
        IERC20 _token = IERC20 ( BUSD );
        uint256 _amount = _token.balanceOf( address(this) );
        _token.transfer( msg.sender, _amount );

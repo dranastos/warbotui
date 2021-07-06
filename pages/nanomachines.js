@@ -15,15 +15,13 @@ import PublicLayout from '../layouts/PublicLayout'
 import NanoMachineStakingForm from '../forms/NanoMachineStakingForm'
 
 import NanoMachinesMicroLPStakingForm from '../forms/NanoMachinesMicroLPStakingForm'
-//import UserManufacturingCenters from '../forms/UserManufacturingCenters'
-//import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
-//import UserDepositsClosed from '../forms/UserDepositsClosed'
-//import UserDepositsExpiredUnsettled from '../forms/UserDepositsExpiredUnsettled'
+import NanoMachinesMicroLPStakingForm2 from '../forms/NanoMachinesMicroLPStakingForm2'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 //import useWelfare from '../hooks/useWelfare'
 //import useWicCardMinter from '../hooks/useWicCardMinter'
 import NanoMachinesNanoLPStakingForm from '../forms/NanoMachinesNanoLPStakingForm'
+
 import useNanomachines from '../hooks/useNanomachines'
 import useMasterchef from '../hooks/useMasterchef'
 
@@ -120,7 +118,7 @@ export default function Dashboard() {
                   <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
                     
                     <Col xs={8}>
-					 <NanoMachinesNanoLPStakingForm /> 
+					 <NanoMachinesMicroLPStakingForm2 />  
 					   <Space style={{ marginTop: 20 }}></Space>
 					  
                     </Col>

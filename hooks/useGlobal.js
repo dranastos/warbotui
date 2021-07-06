@@ -112,10 +112,10 @@ const actions = {
 }
 
 const initialState = {
-  chain: 137, // 56 - Mainnet | 97 - Testnet
-  //bsc chain: 97, // 56 - Mainnet | 97 - Testnet
-  security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  // BNB security: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
+  //matic chain: 137, // 56 - Mainnet | 97 - Testnet
+  chain: 97, // 56 - Mainnet | 97 - Testnet
+  //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
+  security: '0x9CDb8481E1E93f915DC57274E0c872FEEad78ECe',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -127,37 +127,37 @@ const initialState = {
   wicbonus: '0x390895B239a6e1FaBd22FecBaBC71F39948f39cC',
   hasWicBonus: true,
   
-  nanosales: '0xcd62fAf0AE83EbfE726AD6BbA966c9084c3AD866',
-  //bnb nanosales: '0x0e92A7fE6b298671ED6b6cA7Df0962eE757c9A3F',
+  //matic nanosales: '0xcd62fAf0AE83EbfE726AD6BbA966c9084c3AD866',
+  nanosales: '0xCeD872C93DB5FB05AeB8d4F8972AbF685c5cA382',
   hasNanosales: true, 
   
-  busd : '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+  busd : '0x314E8457a3A2f80f620CD4965287044fc2fACB0e',
   hasBusd: true, 
   
-  masterchef: '0xe7576D71f162dfCC64c7128d46Ac41Ee8116d424',
-  //bnb masterchef: '0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb',
+  //matic masterchef: '0xe7576D71f162dfCC64c7128d46Ac41Ee8116d424',
+  masterchef: '0x2ad02356F07AbBb327cAF71f65A53270B8C10891',
   hasMasterchef: true,
   
-  micromachines: '0x9c053B671de651fA1d4C7eDE10a09789218068c1',
-  //bnb micromachines: '0xc50Dcd6612eEE0A69822C2a0ABa2572ee65bD853',
+  //matic micromachines: '0x9c053B671de651fA1d4C7eDE10a09789218068c1',
+  micromachines: '0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD',
   hasMicromachines: true,
   
-  nanomachines: '0xc10006027DCFdABdce5BA9c589b7900241681510',
-  //bnb nanomachines: '0x9E59667490263361F39774D4e31678340795Ac81',
+  //matic nanomachines: '0xc10006027DCFdABdce5BA9c589b7900241681510',
+  nanomachines: '0x4C0AeEB37210b97956309BB4585c5433Cc015F6c',
   hasNanomachines: true,
   
   nanostaking:   '0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68',
   hasNanostaking: true,
   
-  nanobnblp:   '0x3BeD127C91E82A8FfE331C1Fd9d25d7e0d5B8E7e',
-  // bnb nanobnblp:   '0xad7806487D47613ce9Ce9e78633058381Abd784C',
+  //matic nanobnblp:   '0x3BeD127C91E82A8FfE331C1Fd9d25d7e0d5B8E7e',
+  nanobnblp:   '0xDb896a0D3E853789056245C3168d463F9C5b633D',
   hasNanobnblp: true,
   
-  microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
-  //bnb microbnblp:   '0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB',
+  //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
+  microbnblp:   '0xb4ec5205c12c6539fd6763354c7439811CF51C15',
   hasMicrobnblp: true,
-  warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  // BNB warbotmanufacturer: '0x4e368038DeE69A290eD4433661F159Ee34eB5c69',
+  //matic warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
+  warbotmanufacturer: '0x9CDb8481E1E93f915DC57274E0c872FEEad78ECe',
   warbotmanufacturerInfo: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0
