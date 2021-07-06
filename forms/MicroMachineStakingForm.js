@@ -21,6 +21,8 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
   const [data, setData] = useState({ months: 0, amount: 0, timelock: 0 })
   const [loading, setLoading] = useState(false)
   const [counter, setCounter] = useState(0)
+  const [sufficientlyApproved, setSufficientlyApproved] = useState(0)
+  const [insufficientlyApproved, setInsufficientlyApproved] = useState(0)
 
   useEffect(() => {
     if (connected && state.hasWarbotmanufacturer) {
@@ -44,7 +46,9 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
   const getAllowance = async() => {
     const balance = await micromachines.allowance(wallet.account, state.warbotmanufacturer).call()
     setAllowance(web3.utils.fromWei(balance, 'nano'))
-    setCounter(counter + 1)
+    setSufficientlyApproved("primary") 
+	setInsufficientlyApproved("danger") 
+	setCounter(counter + 1)
   }
 
   const getTimeDeposit = async() => {
@@ -103,7 +107,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
       const value = web3.utils.toWei(data.amount.toString(), 'nano').toString()
 
       console.log('STAKE MICROMACHINES ',  value, parseInt(data.months))
-      console.log ( 'WARBOT DEPOSIT ' + state.warbotmanufacturer )
+
       const tx = await warbotmanufacturer
         .stakeMicroMachines(value, parseInt(data.months))
         .send({ from: wallet.account, to: state.warbotmanufacturer })
@@ -136,6 +140,10 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
   const handleAmount = (e) => {
     setData({ ...data, amount: parseInt(e.target.value) })
   }
+  
+  const notEnough = (e) => {
+    
+  }
 
   return (
     <Spin spinning={loading}>
@@ -157,8 +165,8 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
             </Space>
           </Form.Item>
           <Space>
-            <Button size="large" onClick={approve}>Approve</Button>
-            <Button size="large" type="primary" onClick={handleDeposit}>Stake MicroMachines</Button>
+            <Button size="large" type="primary" onClick={approve}>Approve</Button>
+            <Button size="large" type={allowance>= data.amount? sufficientlyApproved:insufficientlyApproved} onClick={allowance>= data.amount? handleDeposit:notEnough }>Stake MicroMachines</Button>
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
            
