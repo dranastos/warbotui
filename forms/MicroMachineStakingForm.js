@@ -166,7 +166,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
           </Form.Item>
           <Space>
             <Button size="large" type="primary" onClick={approve}>Approve</Button>
-            <Button size="large" type={allowance>= data.amount? sufficientlyApproved:insufficientlyApproved} onClick={allowance>= data.amount? handleDeposit:notEnough }>Stake MicroMachines</Button>
+            <Button size="large" type={allowance>= data.amount && data.amount <= 50 ? sufficientlyApproved:insufficientlyApproved} onClick={allowance>= data.amount? handleDeposit:notEnough }>Stake MicroMachines</Button>
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
            
