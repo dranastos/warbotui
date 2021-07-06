@@ -89,7 +89,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
 
     } catch (e) {
       notification.error({
-        message: 'Deposit Failed',
+        message: 'Approval Failed',
         description: e.toString()
       })
     }
