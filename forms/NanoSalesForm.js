@@ -153,7 +153,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
            
-            <Text level={5} strong> {data.amount} Nanomachines will cost you {purchaseamount} DAI. You will be vested for 90 days.</Text>
+            <Text level={5} strong> {data.amount} Nanomachines will cost you {purchaseamount} BUSD. You will be vested for 90 days.</Text>
           </Card>
         </Form>
 		
