@@ -115,7 +115,7 @@ const initialState = {
   //matic chain: 137, // 56 - Mainnet | 97 - Testnet
   chain: 97, // 56 - Mainnet | 97 - Testnet
   //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  security: '0x9CDb8481E1E93f915DC57274E0c872FEEad78ECe',
+  security: '0xcDe3D8BD83491bB9EaA830cf7461023f20b3a3Fa',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -128,7 +128,7 @@ const initialState = {
   hasWicBonus: true,
   
   //matic nanosales: '0xcd62fAf0AE83EbfE726AD6BbA966c9084c3AD866',
-  nanosales: '0xCeD872C93DB5FB05AeB8d4F8972AbF685c5cA382',
+  nanosales: '0x28241184DC0FCBDa2a0A414C48Ee7Ab2AA76cA3F',
   hasNanosales: true, 
   
   busd : '0x314E8457a3A2f80f620CD4965287044fc2fACB0e',
@@ -157,7 +157,7 @@ const initialState = {
   microbnblp:   '0xb4ec5205c12c6539fd6763354c7439811CF51C15',
   hasMicrobnblp: true,
   //matic warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  warbotmanufacturer: '0x9CDb8481E1E93f915DC57274E0c872FEEad78ECe',
+  warbotmanufacturer: '0xcDe3D8BD83491bB9EaA830cf7461023f20b3a3Fa',
   warbotmanufacturerInfo: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0
