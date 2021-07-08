@@ -74,18 +74,9 @@ const WarbotInventory = ({ onComplete, address }) => {
     
 	
 	if (vaults[id].Level == 0) return null;
-	
-	
-	
-	
 	var warbotid = "Warbot Indentification Number:" + vaults[id].WarbotNumber
 	var warbotlevel = "Warbot Level: " + vaults[id].Level
-	
-	
-	
-	
-		
-    return (
+	return (
       <div key={`vault-${id}`}>
         <Collapse>
           <Collapse.Panel header={`${warbotid} -${warbotlevel}`}>
