@@ -21,8 +21,6 @@ const WarbotInventory = ({ onComplete, address }) => {
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
   const [hasVaults, setHasVaults] = useState(false)
-  const [warbot1, setWarbot1] = useState(false)
-
 
   useEffect(() => {
     if (connected && state.hasWarbotmanufacturer) {
@@ -68,23 +66,14 @@ const WarbotInventory = ({ onComplete, address }) => {
     setHasVaults(true)
     setLoading(false)
   }
-  
-   const updateWarbotMain = async(e) => {
-   try{
-    setWarbot1 ( 15 )
-   } catch (e) {}
-  }
+
   
  
 
   const renderDeposit = (id, key) => {
     
-	try{
-	if (vaults[id].Level == 0) return null;
-	}catch (e) {
-        return null;
-		}
 	
+	if (vaults[id].Level == 0) return null;
 	var warbotid = "Warbot Indentification Number:" + vaults[id].WarbotNumber
 	var warbotlevel = "Warbot Level: " + vaults[id].Level
 	return (
@@ -93,12 +82,7 @@ const WarbotInventory = ({ onComplete, address }) => {
           <Collapse.Panel header={`${warbotid} -${warbotlevel}`}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
-               <Space>
-					<Button size="large" type="primary" >Upgrade</Button>
-					<Button size="large" style={{ background: "red", borderColor: "yellow" }} >Send For Parts</Button>
-					<Button size="large" style={{ background: "yellow", borderColor: "yellow" }} >Send To Warbot Dealership</Button>
-					<Button size="large" type="danger" >Send To The Warzone</Button>
-				</Space>  
+                
                   
               </Col>
               <Col span={12}>
