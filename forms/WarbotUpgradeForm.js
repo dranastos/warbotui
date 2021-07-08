@@ -242,13 +242,13 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 		   <Text level={5} strong> { warbot1level == 0? "Warbot doesnt exist" :  warbot1message  } </Text>		 
           <Form.Item name="warbot1" label="Warbot 1 ( Warbot being Upgraded - Stats transferred )" rules={[{ required: true, message: 'Enter Warbot 1 Identification' }]}>
             
-			<Input type="number" placeholder="e.g 10000" value={data.warbot1} onChange={warbot1Call} />
+			<Input type="number" placeholder="WARBOT BEING UPGRADED" value={data.warbot1} onChange={warbot1Call} />
           </Form.Item>
           
 		  
 		  <Text level={5} strong> { warbot2level == 0? "Warbot doesnt exist" :  warbot2message  } </Text>		 
 		  <Form.Item name="warbot2" label="Warbot 2 ( Warbot used for parts - Stats lost)" rules={[{ required: true, message: 'Enter Warbot 2 Identification' }]}>
-            <Input type="number" placeholder="e.g 10000" value={data.warbot2} onChange={warbot2Call} />
+            <Input type="number" placeholder="WARBOT USED FOR PARTS" value={data.warbot2} onChange={warbot2Call} />
           </Form.Item>
 		  <Text level={5} strong> Nanomachines {nanorequirement} required for upgrade </Text>
        
