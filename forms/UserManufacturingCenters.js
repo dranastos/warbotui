@@ -64,7 +64,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
   
   const manufacture = async(id) => {
     
-	const tx = await security.manufacture(id).send({ from: wallet.account, to: state.warbotmanufacturer, gasLimit:20000000 })
+	const tx = await security.manufacture(id).send({ from: wallet.account, to: state.warbotmanufacturer , gasPrice: web3.utils.toWei("5", 'gwei')})
     if (tx.status) {
       notification.success({
         message: vaults[id].MonthlyProductionRate + ' Warbot(s) Succesfully Manufactured',
