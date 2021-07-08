@@ -192,7 +192,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
             if (tx.status) {
                 setData({ amount: 0, months: 0 });
                 notification.success({
-                    message: "Deposit Successful",
+                    message: "Withdrawl of Nano Capital Successful",
                     description: tx.transactionHash,
                 });
 
@@ -200,7 +200,7 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
             }
         } catch (e) {
             notification.error({
-                message: "Withdrawal Failed",
+                message: "Withdrawal of Nano Capital Failed",
                 description: e.toString(),
             });
         }
@@ -216,22 +216,22 @@ const NanoMachineStakingForm = ({ onComplete, address }) => {
 
             console.log("Withdraw NANOMACHINES", value, parseInt(data.months));
 
-            const tx = await nanostaking
-                .deposit(value)
-                .send({ from: wallet.account, to: state.nanostaking });
+            const tx = await masterchef
+                .withdraw(2,0)
+                .send({ from: wallet.account, to: state.masterchef });
 
             if (tx.status) {
                 setData({ amount: 0, months: 0 });
                 notification.success({
-                    message: "Deposit Successful",
+                    message: "Nano Rewards Withdrawal Successful",
                     description: tx.transactionHash,
                 });
 
-                actions.addVaultCount();
+               
             }
         } catch (e) {
             notification.error({
-                message: "Deposit Failed",
+                message: "Nano Rewards Withdrawal Failed",
                 description: e.toString(),
             });
         }
