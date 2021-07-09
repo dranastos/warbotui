@@ -185,13 +185,13 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
       console.log('Withdraw NANOMACHINES',  value, parseInt(data.months))
 
       const tx = await masterchef
-        .deposit(value )
+        .withdraw(0,0)
         .send({ from: wallet.account, to: state.nanostaking })
 
       if (tx.status) {
         setData({ amount: 0, months: 0 })
         notification.success({
-          message: 'Deposit Successful',
+          message: 'Nanomachine Withdrawal From Nano Pool Successful',
           description: tx.transactionHash
         })
 
@@ -200,7 +200,7 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
 
     } catch (e) {
       notification.error({
-        message: 'Deposit Failed',
+        message: 'Nanomachine Withdrawal From Nano Pool Failed',
         description: e.toString()
       })
     }

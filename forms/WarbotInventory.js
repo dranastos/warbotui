@@ -72,9 +72,11 @@ const WarbotInventory = ({ onComplete, address }) => {
 
   const renderDeposit = (id, key) => {
     
-	
+	try{
 	if (vaults[id].Level == 0) return null;
-	
+	}catch (e) {
+           return null;
+        }
 	
 	
 	
