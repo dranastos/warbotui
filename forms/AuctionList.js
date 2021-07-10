@@ -6,7 +6,7 @@ import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 import useWarbots from '../hooks/useWarbots'
-import useNanoNFT from '../hooks/useNanoNFTS'
+import useNanoNFT from '../hooks/useNanonfts'
 import useNanomachines from '../hooks/useNanomachines'
 
 import moment from 'moment'
