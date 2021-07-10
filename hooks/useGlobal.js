@@ -106,6 +106,23 @@ const actions = {
       store.setState({ warbotmanufacturer: '', hasWarbotmanufacturer: false })
     }
   },
+  setWarbotstats: (store, warbotstats) => {
+    console.log("SET WARBOTSTATS")
+    if (warbotstats && warbotstats.startsWith('0x') && busd.length == 42) {
+      store.setState({ warbotstats, hasWarbotstats: true })
+    } else {
+      store.setState({ warbotstats: '', hasWarbotstats: false })
+    }
+  },
+  setNanonft: (store, busd) => {
+    console.log("SET NANONFT")
+    if (nanonft && nanonft.startsWith('0x') && busd.length == 42) {
+      store.setState({ nanonft, hasNanonft: true })
+    } else {
+      store.setState({ nanonft: '', hasNanonft: false })
+    }
+  },
+  
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
   addVaultCount: (store) => store.setState({ vaultCount: store.state.vaultCount + 1 })
@@ -115,7 +132,7 @@ const initialState = {
   //matic chain: 137, // 56 - Mainnet | 97 - Testnet
   chain: 97, // 56 - Mainnet | 97 - Testnet
   //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  security: '0xcDe3D8BD83491bB9EaA830cf7461023f20b3a3Fa',
+  security: '0xa99D7622bB560725346007Da01284Cf3D31a479D',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -153,11 +170,17 @@ const initialState = {
   nanobnblp:   '0xDb896a0D3E853789056245C3168d463F9C5b633D',
   hasNanobnblp: true,
   
+  nanonft:   '0x1E1F1AA47273Ea0116a83336d35785A659edFFC2',
+  hasNanonft: true,
+  
+  warbotstats:   '0x692BE025C932E0E2faB2E946973d99F5ca7eC8db',
+  hasWarbotstats: true,
+  
   //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
   microbnblp:   '0xb4ec5205c12c6539fd6763354c7439811CF51C15',
   hasMicrobnblp: true,
   //matic warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  warbotmanufacturer: '0xcDe3D8BD83491bB9EaA830cf7461023f20b3a3Fa',
+  warbotmanufacturer: '0xa99D7622bB560725346007Da01284Cf3D31a479D',
   warbotmanufacturerInfo: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0

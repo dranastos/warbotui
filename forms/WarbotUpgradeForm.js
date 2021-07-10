@@ -5,6 +5,7 @@ import { useWallet } from 'use-wallet'
 import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
+import useWarbotStats from '../hooks/useWarbotStats'
 
 import useNanomachines from '../hooks/useNanomachines'
 
@@ -14,6 +15,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   //const [welfare] = useWelfare(state.welfare)
   const [nanomachines] = useNanomachines(state.nanomachines)
+  const [warbotstats] = useWarbotStats(state.warbotstats)
   const [balance, setBalance] = useState(0)
   const [allowance, setAllowance] = useState(0)
   const [timeValue, setTimeValue] = useState(0)
@@ -53,8 +55,8 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
   }
 
   const getAllowance = async() => {
-    const balance = await nanomachines.allowance(wallet.account, state.warbotmanufacturer).call()
-	const isApprovedForAll = await warbotmanufacturer.isApprovedForAll(wallet.account, state.warbotmanufacturer).call()
+    const balance = await nanomachines.allowance(wallet.account, state.warbotstats).call()
+	const isApprovedForAll = await warbotmanufacturer.isApprovedForAll(wallet.account, state.warbotstats).call()
     setAllowance(web3.utils.fromWei(balance))
     setSufficientlyApproved("primary") 
 	setInsufficientlyApproved("danger") 
@@ -83,7 +85,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 
         console.log("APPROVAL AMOUNT", value)
 
-        const tx = await nanomachines.approve(state.warbotmanufacturer, value).send({
+        const tx = await nanomachines.approve(state.warbotstats, value).send({
           from: wallet.account,
           to: state.warbotmanufacturer
         })
@@ -112,7 +114,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 
         console.log("WARBOT TRANSFER APPROVAL")
 
-        const tx = await warbotmanufacturer.setApprovalForAll(state.warbotmanufacturer, "true").send({
+        const tx = await warbotmanufacturer.setApprovalForAll(state.warbotstats, "true").send({
           from: wallet.account,
           to: state.warbotmanufacturer
         })
@@ -149,9 +151,9 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 
       console.log('STAKE MICROMACHINES ',  value, warbot1, warbot2 )
 
-      const tx = await warbotmanufacturer
+      const tx = await warbotstats
         .upgradeWarbot( warbot1, warbot2 )
-        .send({ from: wallet.account, to: state.warbotmanufacturer })
+        .send({ from: wallet.account, to: state.warbotstats })
       const targetlevel =  parseInt(warbot1level) + 1
 	  
       if (tx.status) {
@@ -187,7 +189,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 	if ( e.target.value != undefined )   
 	  
 	try{
-		const warbot1level = await warbotmanufacturer.WarbotLevel( e.target.value ).call()
+		const warbot1level = await warbotstats.WarbotLevel( e.target.value ).call()
 		const nanorequired = (parseInt( warbot1level ) + 1) * (parseInt( warbot1level ) + 1)
 		
 		setNanorequirement( nanorequired )
@@ -208,7 +210,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 	if ( e.target.value != undefined )
 		try{
 			
-			const warbot2level = await warbotmanufacturer.WarbotLevel( e.target.value ).call()
+			const warbot2level = await warbotstats.WarbotLevel( e.target.value ).call()
 			
 			setWarbot2( parseInt(e.target.value) )
 			setWarbot2level( warbot2level )
@@ -230,7 +232,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="Warbot Reassemby">
+      <Card title="Warbot Reassembly">
 	  <Card title="Warbot Hull Upgrading facility">
         <Form
           size="large"

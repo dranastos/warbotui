@@ -6,6 +6,8 @@ import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 import useWarbots from '../hooks/useWarbots'
+import useNanoNFT from '../hooks/useNanoNFTS'
+
 import moment from 'moment'
 
 
@@ -16,6 +18,7 @@ const WarbotInventory = ({ onComplete, address }) => {
   const [getVault, sendVaultTx] = useWarbots()
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasSecurity', 'vaultCount'])
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
+  const [ nanonft ] = useNanoNFT(state.nanonft) 
   const [deposits, setDeposits] = useState([])
   const [vaults, setVaults] = useState({})
   const [total, setTotal] = useState(0)
@@ -55,7 +58,7 @@ const WarbotInventory = ({ onComplete, address }) => {
 
       vaults[warbot] = {
         
-        address,
+       
         ...data
       }
 
@@ -67,7 +70,21 @@ const WarbotInventory = ({ onComplete, address }) => {
     setLoading(false)
   }
 
-  
+  const deployNanoNFTS = async(id) => {
+    
+	setLoading(true)
+    console.log("DEPLOY NANO NFTS" +id)
+	const cardsperwarbot = await nanonft.cardsperwarbot().call()
+	const tx = await nanonft.deployNFTNanoset(id).send({ from: wallet.account, to: state.nanonft })
+    if (tx.status) {
+      notification.success({
+        message: cardsperwarbot  + ' Nano NFT Cards Deployed for Auction',
+        description: tx.transactionHash
+      })
+    }
+    setLoading(false)
+  }
+ 
  
 
   const renderDeposit = (id, key) => {
@@ -93,12 +110,14 @@ const WarbotInventory = ({ onComplete, address }) => {
           <Collapse.Panel header={`${warbotid} -${warbotlevel}`}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
-                
+               <Button type="primary" onClick={() => deployNanoNFTS(id)}  style={{ background: "black", borderColor: "yellow" }}>Deploy NanoNFTS</Button>
+			   <Button type="primary">Upgrade</Button> 
+			   <Button type="danger">Send For Parts</Button> 
+			   <Button type="primary" style={{ background: "green", borderColor: "yellow" }}>Send To Dealership</Button> 
+			   <Button type="danger">Send To Warzone</Button> 
                   
               </Col>
-              <Col span={12}>
-                <Statistic title="WarBot Identification Number " value={id} />
-              </Col>
+             
 
               {
                 Object.keys(vaults[id]).map((name, key) => (

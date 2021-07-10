@@ -38,6 +38,7 @@ interface ERC20 {
     function transfer(address recipient, uint256 amount) external returns (bool);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
     function approve(address spender, uint256 amount) external returns (bool);
+    function decimals() external returns (uint256);
 }
 // File: node_modules\@openzeppelin\contracts\token\ERC721\IERC721.sol
 
@@ -1412,11 +1413,14 @@ abstract contract Ownable is Context {
 pragma solidity ^0.8.0;
 
 
+interface WarBotStatsContract {
+    
+     function initializeWarbot ( uint256 _warbot, address _creator ) external;
+}
 
 
 
-
-contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
+contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
     using SafeMath for uint256;
     uint256 private _tokenIds;
     
@@ -1438,9 +1442,9 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     address public EmergencyAddress;
     
     uint256 public manufacturingPeriod;
-    uint256 public warBotsMaxLevel;
     
-    address public WarBotStatsContract;
+    
+    address public WarBotStats;
     address public burnAddress;
     
     address public nanomachines;
@@ -1458,6 +1462,8 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
      
     mapping ( address => uint256[] ) public usersWarbots;  
     mapping ( uint256=> uint256 ) public warbotLevelCount;
+    
+    uint256 public deposits;
      
     struct ManufacturingPlant {
        
@@ -1474,28 +1480,35 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     } 
     
    constructor() ERC721("MicroMachineWarBots", "MMWarBot") {
-        
-        MicroMachineAddress = 0xc50Dcd6612eEE0A69822C2a0ABa2572ee65bD853;
+        nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
+        MicroMachineAddress = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
         mintingEnabled = !mintingEnabled;
+        burningEnabled = !burningEnabled;
         EmergencyAddress = msg.sender;
         manufacturingPeriod = 2 minutes;
         burnAddress = 0x000000000000000000000000000000000000dEaD;
      
     }
     
+    
+    
     function setManufacturingPeriod( uint256 _minutes ) public OnlyEmergency {
         manufacturingPeriod = _minutes * 1 minutes;  //43,200 = 30 days
         
     }
+    
+    function setWarBotsStats( address _address ) public OnlyEmergency {
+        WarBotStats = _address;
+        
+    }
+    
     
     function setNanomachines( address _address ) public OnlyEmergency {
         nanomachines = _address;
         
     }
     
-    function setWarBotsStatsContract ( address _address ) public {
-        WarBotStatsContract = _address;
-    }
+    
     
     function onERC721Received( address _operator, address _from, uint256 _tokenId, bytes memory _data) public view returns(bytes4){
         _operator; _from; _tokenId; _data; 
@@ -1508,6 +1521,18 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         
     }
     
+    
+    function setTokenURIWarbotStats ( uint256 newTokenId, string memory __tokenURI) public onlyWarbotStats {
+        _setTokenURI( newTokenId, __tokenURI);
+    }
+    
+    function catchReflect() public onlyOwner {
+         ERC20 _token = ERC20(MicroMachineAddress);
+        _token.transfer( msg.sender, balanceOf(address(this)).sub(deposits)  );
+    }
+    
+    
+    
     function manufacture( uint256 _plant ) public payable {
         
         require ( ManufacturingPlants[ _plant]._owner == msg.sender );
@@ -1517,6 +1542,8 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         require ( ManufacturingPlants[ _plant]._periodsmanufactured < ManufacturingPlants[ _plant]._timeunitslocked );
         ManufacturingPlants[_plant]._lastmanufacture = block.timestamp;
         ManufacturingPlants[ _plant]._periodsmanufactured++;
+        WarBotStatsContract _warbotstats = WarBotStatsContract ( WarBotStats );
+        
         
         uint256 quantity = manufactureUnits ( ManufacturingPlants[_plant]._timeunitslocked, ManufacturingPlants[_plant]._micromachinesstaked );
         for ( uint i = 0; i < quantity; i++ ) {
@@ -1526,12 +1553,21 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
             _setTokenURI(newTokenId, _tokenURI);
             WarbotLevel[newTokenId] = 1;
             warbotLevelCount[1]++;
+            _warbotstats.initializeWarbot( newTokenId, msg.sender );
             usersWarbots[msg.sender].push(newTokenId);
         }
         ManufacturingPlants[_plant]._warbotsmanufactured += quantity;
         
         
         emit WarBotsManufactured(msg.sender, quantity);
+    }
+    function incrementTokenId() public onlyWarbotStats {
+        _tokenIds++;
+    }
+    
+    
+    function getLastWarbotManufactured() public view returns(uint256) {
+        return _tokenIds;
     }
     
     function getUsersWarbots ( address  _user ) public view returns(uint256[] memory){
@@ -1552,9 +1588,10 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         require ( manufactureUnits( _timeperiod, _units ) <= 50, "No more than 50 units of Manufacturing Capacity" );
         
         require ( _timeperiod > 0 && _timeperiod <=12 , "Between 1 and 12 periods only");
+        
+        deposits += _units;
         ERC20 _token = ERC20(MicroMachineAddress);
         _token.transferFrom( msg.sender, address(this) , _units );
-        
         ManufacturingPlantCount++;
         ManufacturingPlants[ManufacturingPlantCount]._owner = msg.sender;
         ManufacturingPlants[ManufacturingPlantCount]._timeofexpiration =  block.timestamp + ( manufacturingPeriod * _timeperiod);
@@ -1573,7 +1610,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     }
     
     
-    function unstakeMicroMachines ( uint256 _plant ) public {
+    function unstakeMicroMachines ( uint256 _plant ) public  {
         
         require ( ManufacturingPlants[ _plant]._owner == msg.sender );
         require ( ManufacturingPlants[ _plant]._status == true );
@@ -1589,7 +1626,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         globalwarbotmanufacturingplants--;
          ERC20 _token = ERC20(MicroMachineAddress);
         _token.transfer( msg.sender, ManufacturingPlants[_plant]._micromachinesstaked );
-       
+         deposits -= ManufacturingPlants[_plant]._micromachinesstaked;
     } 
     
     
@@ -1628,42 +1665,24 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         mintingEnabled = !mintingEnabled;
     }
 
-    function burn(uint256 tokenId) public virtual {
+    function burn(uint256 tokenId) public onlyWarbotStats {
         require(burningEnabled, "burning is not yet enabled");
         require(_isApprovedOrOwner(_msgSender(), tokenId), "caller is not owner nor approved");
         _burn(tokenId);
     }
     
-    function levelValue ( uint256 _level ) public pure returns (uint256 ){
-        return  (  (_level + 1) * _level )/2;
+    function mint(address to, uint256 tokenId) public onlyWarbotStats {
+        require(mintingEnabled, "minting is not yet enabled");
+        _mint( to , tokenId);
+        usersWarbots[to].push(tokenId);
+        
     }
     
-    function upgradeWarbot ( uint256 _warbot1, uint256 _warbot2  ) public {
-        require ( WarbotLevel [ _warbot1 ] == WarbotLevel [ _warbot2 ]  );
-        uint256 _level = WarbotLevel [ _warbot1 ] + 1;
-        
-        _burn(_warbot1);
-        _burn(_warbot2);
-        
-        WarbotLevel[_warbot1] = 0;
-        WarbotLevel[_warbot2] = 0;
-        
-        
-        warbotLevelCount[_level.sub(1)]--;
-        warbotLevelCount[_level.sub(1)]--;
-        
-        
-        warbotLevelCount[_level]++;
-        
-        
-        _tokenIds++;
-        uint256 newTokenId = _tokenIds;
-        _safeMint( msg.sender , newTokenId);
-        _setTokenURI(newTokenId, _tokenURI);
-        WarbotLevel[newTokenId] = _level;
-        
-    }
-
+    function transfer(address from, address to, uint256 tokenId) public {
+       _transfer(from, to, tokenId);
+    }    
+    
+    
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
         override(ERC721, ERC721Enumerable)
@@ -1697,7 +1716,10 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         return "";
     }
     
-    
+    modifier onlyWarbotStats() {
+        require( msg.sender == WarBotStats, "WarbotStats Only");
+        _;
+    }
     
     modifier OnlyEmergency() {
         require( msg.sender == EmergencyAddress, " Emergency Only");

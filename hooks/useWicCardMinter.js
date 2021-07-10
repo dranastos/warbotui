@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import Contract from 'web3-eth-contract'
-import WicCardMinter from '../build/contracts/WicCardMinter.json'
+import nanonft from '../build/contracts/NanoNFT.json'
 import useWeb3 from './useWeb3'
 
 const useWicCardMinter = (address) => {

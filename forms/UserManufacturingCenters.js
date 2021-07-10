@@ -49,7 +49,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
 
       vaults[dep] = {
         
-        address,
+        
         ...data
       }
 

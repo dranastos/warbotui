@@ -9,12 +9,16 @@ import moment from 'moment'
 import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
+import useWarbotStats from '../hooks/useWarbotStats'
 
 const useWarbots = () => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
-  const [state, actions] = useGlobal(['security', 'hasSecurity', 'vaultCount'])
+  const [state, actions] = useGlobal(['warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotstats' , 'hasWarbotstats' ])
+  const [ warbotstats, wbconnected ] = useWarbotStats(state.warbotstats)
+  
   const { warbotmanufacturer,  connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
+  
  
   useEffect(() => {
     Contract.setProvider(global.window && window.ethereum)
@@ -37,7 +41,7 @@ const useWarbots = () => {
   const getVault = async(warbot) => {
     
 	
-	const level = await warbotmanufacturer.WarbotLevel(warbot).call()
+	const level = await warbotstats.WarbotLevel(warbot).call()
 	
 	
    
