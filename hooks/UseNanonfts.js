@@ -25,4 +25,4 @@ const useNanonfts = (address) => {
 
 
 
-export default useNanoNfts
+export default useNanonfts
