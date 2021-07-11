@@ -6,7 +6,7 @@ import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 import useWarbots from '../hooks/useWarbots'
-import useNanoNFT from '../hooks/useNanoNFTS'
+import useNanonfts from '../hooks/useNanonfts'
 
 import moment from 'moment'
 
@@ -18,7 +18,7 @@ const WarbotInventory = ({ onComplete, address }) => {
   const [getVault, sendVaultTx] = useWarbots()
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasSecurity', 'vaultCount'])
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
-  const [ nanonft ] = useNanoNFT(state.nanonft) 
+  const [ nanonft ] = useNanonfts(state.nanonft) 
   const [deposits, setDeposits] = useState([])
   const [vaults, setVaults] = useState({})
   const [total, setTotal] = useState(0)
