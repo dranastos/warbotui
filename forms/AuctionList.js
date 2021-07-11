@@ -21,7 +21,9 @@ const AuctionList = ({ onComplete, address }) => {
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasSecurity', 'hasNanonft'])
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   const [ nanonft ] = useNanonfts(state.nanonft) 
+   
   const [ nanomachines ] = useNanomachines(state.nanomachines) 
+   
   const [deposits, setDeposits] = useState([])
   const [vaults, setVaults] = useState({})
   const [total, setTotal] = useState(0)
@@ -72,7 +74,7 @@ const AuctionList = ({ onComplete, address }) => {
 
     } catch (e) {
       notification.error({
-        message: 'Deposit Failed',
+        message: 'Approval Failed',
         description: e.toString()
       })
     }
@@ -190,8 +192,10 @@ const AuctionList = ({ onComplete, address }) => {
   
    const getInfo = async() => {
     setLoading(true)
+	console.dir ( nanonft ) 
+	
 	var userBalance = await nanonft.balanceOf(wallet.account).call()
-	console.log( "USER BALLANCE " + userBalance , wallet.account )
+	console.log( "USER BALANCE " + userBalance , wallet.account )
 	setUserbalance( userBalance )
 	setLoading(false)
    }
@@ -213,20 +217,86 @@ const AuctionList = ({ onComplete, address }) => {
   
     const declareWinner = async(tokenid) => {
     setLoading(true)
-	const tx = await nanonft.DeclareWinner( tokenid ).send({ from: wallet.account, to: state.nanonft })
+	
+	try {
+
+     
+        const tx = await nanonft.DeclareWinner( tokenid ).send({ from: wallet.account, to: state.nanonft })
+		if (tx.status) {
+          notification.success({
+            message: 'Winnder Declared',
+            description: tx.transactionHash
+          })
+
+          
+        }
+      
+
+    } catch (e) {
+      notification.error({
+        message: 'Declaration Failed',
+       
+      })
+    }
 	setLoading(false)
   }
   
   const withdrawBid = async(tokenid) => {
     setLoading(true)
-	const tx = await nanonft.WithdrawBid( tokenid ).send({ from: wallet.account, to: state.nanonft })
+	
+	try {
+
+      if ( _value >= 0) {
+        const tx = await nanonft.WithdrawBid( tokenid ).send({ from: wallet.account, to: state.nanonft })
+		if (tx.status) {
+          notification.success({
+            message: 'Withdrawl Successful',
+            description: tx.transactionHash
+          })
+
+          
+        }
+      }
+
+    } catch (e) {
+      notification.error({
+        message: 'Withdraw Attempt Failed',
+       
+      })
+    }
+	
 	setLoading(false)
   }
 
  const auctionBid = async(tokenid, value) => {
     setLoading(true)
 	const _value = web3.utils.toWei(value.toString()).toString()
-	const tx = await nanonft.auctionBid( tokenid, _value ).send({ from: wallet.account, to: state.nanonft })
+	try {
+
+      if ( _value >= 0) {
+        const tx = await nanonft.auctionBid( tokenid, _value ).send({ from: wallet.account, to: state.nanonft })
+		if (tx.status) {
+          notification.success({
+            message: 'Bid Successful',
+            description: tx.transactionHash
+          })
+
+          
+        }
+      }
+
+    } catch (e) {
+      notification.error({
+        message: 'Bid Failed',
+       
+      })
+    }
+
+	
+	
+	
+	
+	
 	setLoading(false)
   }
 

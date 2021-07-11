@@ -40,7 +40,7 @@ const useWarbots = () => {
 
   const getVault = async(warbot) => {
     
-	
+	const owner = await warbotmanufacturer.ownerOf(warbot).call()
 	const level = await warbotstats.WarbotLevel(warbot).call()
 	
 	
@@ -48,7 +48,8 @@ const useWarbots = () => {
      
    
     return {
-      "WarbotNumber" : warbot,
+      "Owner" : owner,
+	  "WarbotNumber" : warbot,
       "Level" :  level ,
 	  "Hull Hitpoints" : parseInt( level ) * 10 ,
       "Speed" :  parseInt(level)*2 ,

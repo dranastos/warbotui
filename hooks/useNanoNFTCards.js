@@ -10,7 +10,7 @@ import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useWarbotStats from '../hooks/useWarbotStats'
-import useNanonfts from '../hooks/useNFT'
+import useNanoNFTS from '../hooks/useNFT'
 
 
 const useWarbots = () => {
@@ -18,7 +18,7 @@ const useWarbots = () => {
   const [contract, setContract] = useState({})
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotstats' , 'hasWarbotstats' ])
   const [ warbotstats, wbconnected ] = useWarbotStats(state.warbotstats)
-  const [ nanonft ] = useNanonfts(state.nanonft)
+  const [ nanonft ] = useNanoNFTS(state.nanonft)
   
   const { warbotmanufacturer,  connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   
@@ -46,18 +46,21 @@ const useWarbots = () => {
 	
 	const carddata = await nanonft.NFTNanocards(card).call()
 	console.dir( carddata )
-	
-	
+	if ( carddata.cardtype == 1 ) var cardtype = "ATTACK"
+	if ( carddata.cardtype == 2 ) var cardtype = "DEFENSE"
+	if ( carddata.cardtype == 3 ) var cardtype = "SPEED"
    
      
    
     return {
-      "WarbotNumber" : card,
-      "Cardtype" :  carddata.cardtype ,
+      
+	  "CardNumber" : card,
+      "Cardtype" :  cardtype ,
 	  "Duration" : carddata.duration ,
 	  "Bonus" : carddata.bonus ,
 	  "Miniumum Level" : carddata.minimumlevel ,
 	  "Range" : carddata.range ,
+	  "Bindable" : carddata.bindable ,
 	  "Rarity" : carddata.rarity ,
       
       

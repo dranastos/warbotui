@@ -1469,13 +1469,17 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
         uint256 warbotbornof;
         bool activated;
         uint8 cardtype;
+        bool bindable;
         uint256 bonus;
         uint256 duration;
         uint256 minimumlevel;
         uint8 range;
         string rarity;
     }
-    
+    // CARD TYPE   
+    // 1 = ATTACK
+    // 2 = DEFENSE
+    // 3 = SPEED
     struct bid {
         address _bidder;
         uint256 _amount;
@@ -1495,8 +1499,6 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
         activationcost = 2 * 10 **18;
         auctionPeriod = 1 minutes;
         oracle = 0x7cE0E55703F12D03Eb53B918aD6B9EB80d188afB;
-        
-     
         burnAddress = 0x000000000000000000000000000000000000dEaD;
         cardsperwarbot = 5;
         
@@ -1504,12 +1506,21 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
      
     }
     
+    function getNanoNFTCardStats ( uint256 _nftcard ) public view returns ( uint256, uint256, uint256, uint256, bool ){
+        
+    return (  NFTNanocards[_nftcard ].cardtype, 
+              NFTNanocards[_nftcard ].bonus, 
+              NFTNanocards[_nftcard ].duration,   
+              NFTNanocards[_nftcard ].minimumlevel,
+              NFTNanocards[_nftcard ].bindable );
+    }
+    
     function requestActivation ( uint256 _nftcard ) public view returns ( bool ){
         if ( NFTNanocards[_nftcard].activated &&   NFTNanocards[_nftcard].cardtype == 0  ) return true;
         return false;
     }
     
-    function  oracleWriter ( uint256 _cardnumber, uint8 _cardtype, uint256 _bonus , uint256 _duration ,  uint256 _minimumlevel, uint8 _range, string memory _rarity ) public onlyOracle {
+    function  oracleWriter ( uint256 _cardnumber, uint8 _cardtype, uint256 _bonus , uint256 _duration ,  uint256 _minimumlevel, uint8 _range, string memory _rarity, bool _bindable ) public onlyOracle {
         
          NFTNanocards[_cardnumber].cardtype = _cardtype;
          NFTNanocards[_cardnumber].bonus = _bonus;
@@ -1517,6 +1528,7 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
          NFTNanocards[_cardnumber].minimumlevel = _minimumlevel;
          NFTNanocards[_cardnumber].range = _range;
          NFTNanocards[_cardnumber].rarity = _rarity;
+         NFTNanocards[_cardnumber].bindable = _bindable;
         
     }
     
@@ -1542,12 +1554,11 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
         
     }
     
-    function deployNFTNanoset( uint256 _warbot ) public payable {
+    function deployNFTNanoset( uint256 _warbot, address _creator ) public payable onlyWarbotStats {
         require ( NanoSetDeployed[_warbot] == false, "Nanoset already Deployed ");
         NanoSetDeployed[_warbot] = true;
         
-        WarBotStatsContract _warbotstats = WarBotStatsContract ( warbotstats );
-        address _creator = _warbotstats.creator( _warbot );
+        
         require ( _creator != address(0) , "Warbot doesnt exist");
         for ( uint i = 0; i < cardsperwarbot; i++ ) {
             _tokenIds++;

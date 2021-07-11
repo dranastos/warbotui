@@ -7,6 +7,8 @@ import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufactu
 import useGlobal from '../hooks/useGlobal'
 import useWarbots from '../hooks/useWarbots'
 import useNanonfts from '../hooks/useNFT'
+import useWarbotstats from '../hooks/useWarbotStats'
+import useNanomachines from '../hooks/useNanomachines'
 
 import moment from 'moment'
 
@@ -19,6 +21,8 @@ const WarbotInventory = ({ onComplete, address }) => {
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasSecurity', 'vaultCount'])
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   const [ nanonft ] = useNanonfts(state.nanonft) 
+  const [ nanomachines ] = useNanomachines(state.nanomachines) 
+  const [ warbotstats ] = useWarbotstats(state.warbotstats) 
   const [deposits, setDeposits] = useState([])
   const [vaults, setVaults] = useState({})
   const [total, setTotal] = useState(0)
@@ -63,37 +67,69 @@ const WarbotInventory = ({ onComplete, address }) => {
       }
 
     }
-	
+	console.dir ( vaults )
     setVaults(vaults)
     setTotal(totalDeps)
     setHasVaults(true)
     setLoading(false)
   }
 
-  const deployNanoNFTS = async(id) => {
+  const activateWarbot = async(id) => {
     
 	setLoading(true)
     console.log("DEPLOY NANO NFTS" +id)
-	const cardsperwarbot = await nanonft.cardsperwarbot().call()
-	const tx = await nanonft.deployNFTNanoset(id).send({ from: wallet.account, to: state.nanonft })
+	//const cardsperwarbot = await nanonft.cardsperwarbot().call()
+	const tx = await warbotstats.activateWarbot(id).send({ from: wallet.account, to: state.nanonft })
     if (tx.status) {
       notification.success({
-        message: cardsperwarbot  + ' Nano NFT Cards Deployed for Auction',
+        message:  ' Warbot Activated',
         description: tx.transactionHash
       })
     }
     setLoading(false)
   }
- 
+  const approve = async() => {
+    setLoading(true)
+    
+	var _value = "1000000000000000000000000"
+	console.log(_value)
+    try {
+
+      if ( _value >= 0) {
+        const value = web3.utils.toWei(  _value , 'nano').toString()
+
+        console.log("APPROVAL AMOUNT", wallet)
+
+        const tx = await nanomachines.approve(state.warbotstats, "999999999999999999999999999999").send({
+          from: wallet.account,
+          to: state.welfare
+        })
+
+        if (tx.status) {
+          notification.success({
+            message: 'Approve Successful',
+            description: tx.transactionHash
+          })
+
+          await getAllowance()
+        }
+      }
+
+    } catch (e) {
+      notification.error({
+        message: 'Approval Failed',
+        description: e.toString()
+      })
+    }
+
+    setLoading(false)
+
+
+  }
  
 
   const renderDeposit = (id, key) => {
     
-	try{
-	if (vaults[id].Level == 0) return null;
-	}catch (e) {
-           return null;
-        }
 	
 	
 	
@@ -110,7 +146,8 @@ const WarbotInventory = ({ onComplete, address }) => {
           <Collapse.Panel header={`${warbotid} -${warbotlevel}`}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
-               <Button type="primary" onClick={() => deployNanoNFTS(id)}  style={{ background: "black", borderColor: "yellow" }}>Deploy NanoNFTS</Button>
+               <Button type="primary" onClick={() => approve()}  style={{ background: "black", borderColor: "yellow" }}>Approve Activation Cost</Button>
+			   <Button type="primary" onClick={() => activateWarbot(id)}  style={{ background: "black", borderColor: "yellow" }}>Activate Warbot</Button>
 			   <Button type="primary">Upgrade</Button> 
 			   <Button type="danger">Send For Parts</Button> 
 			   <Button type="primary" style={{ background: "green", borderColor: "yellow" }}>Send To Dealership</Button> 

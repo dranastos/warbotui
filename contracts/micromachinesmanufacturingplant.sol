@@ -1465,6 +1465,9 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     
     uint256 public deposits;
      
+    bool public migrationActive;
+    
+     
     struct ManufacturingPlant {
        
        address _owner;
@@ -1479,7 +1482,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
        bool    _status;   
     } 
     
-   constructor() ERC721("MicroMachineWarBots", "MMWarBot") {
+    constructor() ERC721("MicroMachineWarBots", "MMWarBot") {
         nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
         MicroMachineAddress = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
         mintingEnabled = !mintingEnabled;
@@ -1542,7 +1545,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         require ( ManufacturingPlants[ _plant]._periodsmanufactured < ManufacturingPlants[ _plant]._timeunitslocked );
         ManufacturingPlants[_plant]._lastmanufacture = block.timestamp;
         ManufacturingPlants[ _plant]._periodsmanufactured++;
-        WarBotStatsContract _warbotstats = WarBotStatsContract ( WarBotStats );
+       // WarBotStatsContract _warbotstats = WarBotStatsContract ( WarBotStats );
         
         
         uint256 quantity = manufactureUnits ( ManufacturingPlants[_plant]._timeunitslocked, ManufacturingPlants[_plant]._micromachinesstaked );
@@ -1553,7 +1556,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
             _setTokenURI(newTokenId, _tokenURI);
             WarbotLevel[newTokenId] = 1;
             warbotLevelCount[1]++;
-            _warbotstats.initializeWarbot( newTokenId, msg.sender );
+            //_warbotstats.initializeWarbot( newTokenId, msg.sender );
             usersWarbots[msg.sender].push(newTokenId);
         }
         ManufacturingPlants[_plant]._warbotsmanufactured += quantity;

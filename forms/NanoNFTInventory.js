@@ -97,8 +97,8 @@ const NanoNFTInventory = ({ onComplete, address }) => {
 	
 	
 	
-	var warbotid = "NanoNFT Card Number: " + vaults[id].WarbotNumber
-	var warbotlevel = "Card Rarity Level: Common "
+	var cardid = "NanoNFT Card Number: " + vaults[id].CardNumber
+	var rarity = "Card Rarity Level:  " + vaults[id].Rarity;
 	
 	
 	
@@ -107,7 +107,7 @@ const NanoNFTInventory = ({ onComplete, address }) => {
     return (
       <div key={`vault-${id}`}>
         <Collapse>
-          <Collapse.Panel header={`${warbotid} -${warbotlevel}`}>
+          <Collapse.Panel header={`${cardid} -${rarity}`}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
                <Button type="primary" onClick={() => activateNanoNFT(id)}  style={{ background: "black", borderColor: "yellow" }}>Activate NFT</Button>
@@ -121,7 +121,7 @@ const NanoNFTInventory = ({ onComplete, address }) => {
                 Object.keys(vaults[id]).map((name, key) => (
                   <Col
                     key={`${id}-${name}-${key}`}
-                    span={vaults.[id]['WarbotNumber'].toString().startsWith('0x') ? 24 : 8}>
+                    >
                     <Statistic
                       title={name.toUpperCase()}
                       value={vaults.[id][name]   }
