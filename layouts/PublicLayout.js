@@ -181,7 +181,7 @@ export default function PublicLayout({ children }) {
           
          
 		  <Menu.Item key="4" onClick={() => Router.push('/nanomachines')}>Nanomachines</Menu.Item>
-		  <Menu.Item key="4" onClick={() => Router.push('/warbots')}>Warbots</Menu.Item>
+		 
 		 
 		  <Menu.Item key="4" onClick={() => Router.push('/combatzone')}>Combat Zone</Menu.Item>
           <Menu.Item key="4" onClick={() => Router.push('/nanosale')}>Nano Sale</Menu.Item>
