@@ -10,7 +10,7 @@ import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useWarbotStats from '../hooks/useWarbotStats'
-import useNanoNFTS from '../hooks/useNanonfts'
+import useNanonfts from '../hooks/useNanonfts'
 
 
 const useWarbots = () => {
@@ -18,7 +18,7 @@ const useWarbots = () => {
   const [contract, setContract] = useState({})
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotstats' , 'hasWarbotstats' ])
   const [ warbotstats, wbconnected ] = useWarbotStats(state.warbotstats)
-  const [ nanonft ] = useNanoNFTS(state.nanonft)
+  const [ nanonft ] = useNanonfts(state.nanonft)
   
   const { warbotmanufacturer,  connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   

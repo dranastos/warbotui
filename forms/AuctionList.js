@@ -6,7 +6,7 @@ import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 import useWarbots from '../hooks/useWarbots'
-import useNanoNFT from '../hooks/useNanonfts'
+import useNanonfts from '../hooks/useNanonfts'
 import useNanomachines from '../hooks/useNanomachines'
 
 import moment from 'moment'
@@ -20,7 +20,7 @@ const AuctionList = ({ onComplete, address }) => {
   const [getVault, sendVaultTx] = useWarbots()
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasSecurity', 'hasNanonft'])
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
-  const [ nanonft ] = useNanoNFT(state.nanonft) 
+  const [ nanonft ] = useNanonfts(state.nanonft) 
   const [ nanomachines ] = useNanomachines(state.nanomachines) 
   const [deposits, setDeposits] = useState([])
   const [vaults, setVaults] = useState({})
