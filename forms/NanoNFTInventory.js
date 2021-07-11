@@ -18,7 +18,7 @@ const NanoNFTInventory = ({ onComplete, address }) => {
   const [getVault, sendVaultTx] = useNanoNFTCards()
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasSecurity', 'vaultCount'])
   const { warbotmanufacturer, web3, connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
-  const [ nanonft ] = useNanoNFT(state.nanonft) 
+  const [ nanonft ] = useNanonfts(state.nanonft) 
   const [deposits, setDeposits] = useState([])
   const [vaults, setVaults] = useState({})
   const [total, setTotal] = useState(0)
