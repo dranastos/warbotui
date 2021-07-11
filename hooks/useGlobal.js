@@ -170,7 +170,7 @@ const initialState = {
   nanobnblp:   '0xDb896a0D3E853789056245C3168d463F9C5b633D',
   hasNanobnblp: true,
   
-  nanonft:   '0x1E1F1AA47273Ea0116a83336d35785A659edFFC2',
+  nanonft:   '0x400165535856509d66f854A977bF374432Abb66E',
   hasNanonft: true,
   
   warbotstats:   '0x692BE025C932E0E2faB2E946973d99F5ca7eC8db',

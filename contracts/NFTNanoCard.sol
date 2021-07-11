@@ -1473,7 +1473,7 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
         uint256 duration;
         uint256 minimumlevel;
         uint8 range;
-        uint8 rarity;
+        string rarity;
     }
     
     struct bid {
@@ -1509,7 +1509,7 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
         return false;
     }
     
-    function  oracleWriter ( uint256 _cardnumber, uint8 _cardtype, uint256 _bonus , uint256 _duration ,  uint256 _minimumlevel, uint8 _range, uint8 _rarity ) public onlyOracle {
+    function  oracleWriter ( uint256 _cardnumber, uint8 _cardtype, uint256 _bonus , uint256 _duration ,  uint256 _minimumlevel, uint8 _range, string memory _rarity ) public onlyOracle {
         
          NFTNanocards[_cardnumber].cardtype = _cardtype;
          NFTNanocards[_cardnumber].bonus = _bonus;
@@ -1660,6 +1660,7 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
         ( _winning , _highestbid, _bidnumber ) = highestBidder ( _tokenId );
         
         bids[_tokenId][_bidnumber]._withdrawn = true;
+         bids[_tokenId][_bidnumber]._amount = 0;
         winner[_tokenId] = _winning;
         _transfer(address(this),  _winning, _tokenId );
         userNFTS[ _winning ].push( _tokenId );
@@ -1697,8 +1698,7 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
    function biddersBids ( address _address, uint256 _tokenId ) public view returns (  uint256, uint256, bool  ){
        uint256 _bidamount;
        uint256 _bidnumber;
-       
-        for ( uint i = 1; i <= bidCount[_tokenId]; i++ ) {
+       for ( uint i = 1; i <= bidCount[_tokenId]; i++ ) {
              if ( bids[_tokenId][i]._bidder == _address ) {
                  _bidamount = bids[_tokenId][i]._amount;
                  _bidnumber = i;
@@ -1714,6 +1714,7 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
                 ERC20 _token = ERC20 (nanomachines );
                 uint256 _amount = ((bids[_tokenId][i]._amount).mul(9)).div(10);
                 bids[_tokenId][i]._withdrawn = true;
+                bids[_tokenId][i]._amount = 0;
                 _token.transfer( msg.sender ,  _amount );
                 
              }
