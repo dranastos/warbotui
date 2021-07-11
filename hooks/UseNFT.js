@@ -3,7 +3,7 @@ import Contract from 'web3-eth-contract'
 import nanonft from '../build/contracts/NanoNFT.json'
 import useWeb3 from './useWeb3'
 
-const useNanonfts = (address) => {
+const useNFT = (address) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
   const [connected, setConnected] = useState(false)
@@ -25,4 +25,4 @@ const useNanonfts = (address) => {
 
 
 
-export default useNanonfts
+export default useNFT

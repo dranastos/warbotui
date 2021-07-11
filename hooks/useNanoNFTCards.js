@@ -10,7 +10,7 @@ import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useWarbotStats from '../hooks/useWarbotStats'
-import useNanonfts from '../hooks/useNanonfts'
+import useNanonfts from '../hooks/useNFT'
 
 
 const useWarbots = () => {
