@@ -12,7 +12,7 @@ import PublicLayout from '../layouts/PublicLayout'
 
 import useGlobal from '../hooks/useGlobal'
 
-import useNanoNFT from '../hooks/useNanoNFTS'
+import useNanonfts from '../hooks/useNanonfts'
 
 
 const { Title, Text } = Typography
@@ -34,7 +34,7 @@ export default function BonusVault() {
   const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
   
-  const [ nanonft, w3 , connected ] = useNanoNFT(state.nanonft) 
+  const [ nanonft, w3 , connected ] = useNanonfts(state.nanonft) 
   const [auctions, setAuctions] = useState([])
   const [nfts, setNFTS] = useState([])
   const [nftcount, setNFTCount] = useState(0)
