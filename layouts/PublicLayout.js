@@ -165,6 +165,28 @@ export default function PublicLayout({ children }) {
               onChange={e => actions.setBonus(e.target.value)}
             />
           </Form.Item>
+		  <Form.Item name="warbotstats" label="Warbot Stats">
+            <Text copyable>0x9E94f7cF3fBa377dD3B2c6358aE62cCfE40Ed350</Text>
+            <Input
+              name="command"
+              placeholder="Warbot Stats Address"
+              allowClear
+              value={state.warbotstats}
+              size="large"
+              onChange={e => actions.setBonus(e.target.value)}
+            />
+			</Form.Item>
+			<Form.Item name="nftcards" label="NFT Nano Cards">
+            <Text copyable>0x2d9343900f2a4640054585dd70FB1e350c931B00</Text>
+            <Input
+              name="command"
+              placeholder="Warbot Stats Address"
+              allowClear
+              value={state.nanonft}
+              size="large"
+              onChange={e => actions.setBonus(e.target.value)}
+            />
+          </Form.Item>
 
           <div>
             <Alert description="Send tokens to this contract" type="info" showIcon />

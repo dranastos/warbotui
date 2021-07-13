@@ -46,27 +46,26 @@ const WarbotInventory = ({ onComplete, address }) => {
 	
 	const userwarbots = await warbotmanufacturer.getUsersWarbots(wallet.account).call()
 	const totalDeps = userwarbots.length
-	console.dir(userwarbots)
-	
-    
-    
-	
 	setDeposits(userwarbots)
 
     let vaults = {}
     for (let warbot of userwarbots) {
 	   //const rawdata = await warbotmanufacturer.ManufacturingPlants(dep).call()
 	   //const rawdata = await warbotmanufacturer.WarbotLevel(dep).call()
-       const data = await getVault( warbot )
-
-
-      vaults[warbot] = {
-        
        
-        ...data
-      }
+	 try{ 
+		const owner = await warbotmanufacturer.ownerOf(warbot).call()  
+	    const data = await getVault( warbot )
+		
+		vaults[warbot] = { ...data}
+     }catch (e) {
+      
+    }    
+	}  
+       
+      
 
-    }
+    
 	console.dir ( vaults )
     setVaults(vaults)
     setTotal(totalDeps)
@@ -132,10 +131,12 @@ const WarbotInventory = ({ onComplete, address }) => {
     
 	
 	
-	
-	var warbotid = "Warbot Indentification Number:" + vaults[id].WarbotNumber
-	var warbotlevel = "Warbot Level: " + vaults[id].Level
-	
+	try{
+		var warbotid = "Warbot Indentification Number:" + vaults[id].WarbotNumber
+		var warbotlevel = "Warbot Level: " + vaults[id].Level
+	}catch (e) {
+     return 
+    }
 	
 	
 	

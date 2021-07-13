@@ -39,24 +39,32 @@ const useWarbots = () => {
   }
 
   const getVault = async(warbot) => {
-    
-	const owner = await warbotmanufacturer.ownerOf(warbot).call()
-	const level = await warbotstats.WarbotLevel(warbot).call()
-	
-	
-   
      
-   
-    return {
-      "Owner" : owner,
+	
+	try{ 
+		const owner = await warbotmanufacturer.ownerOf(warbot).call()
+		const level = await warbotstats.WarbotLevel(warbot).call()
+		const warbotprofile = await warbotstats.WarBotProfiles(warbot).call()
+	 
+		 return {
+      
 	  "WarbotNumber" : warbot,
       "Level" :  level ,
 	  "Hull Hitpoints" : parseInt( level ) * 10 ,
       "Speed" :  parseInt(level)*2 ,
-	  "Base Damage" :  parseInt(level) + 1 ,
+	  "Base Damage" :  parseInt(level) ,
+	  "Slots" : warbotprofile['slots']
       
       
     }
+	}catch (e) {
+      
+    }
+	
+   
+     
+   
+   
   }
 
   return [getVault, sendVaultTx]
