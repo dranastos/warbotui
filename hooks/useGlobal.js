@@ -92,7 +92,7 @@ const actions = {
   },
   setNanosales: (store, busd) => {
     console.log("SET NANOSALES")
-    if (nanosales && nanosales.startsWith('0x') && busd.length == 42) {
+    if (nanosales && nanosales.startsWith('0x') && nanosales.length == 42) {
       store.setState({ nanosales, hasNanosales: true })
     } else {
       store.setState({ nanosales: '', hasNanosales: false })
@@ -100,7 +100,7 @@ const actions = {
   },
    setWarbotmanufacturer: (store, warbotmanufacturer) => {
     console.log("SET Warbotmanufacturer")
-    if (warbotmanufacturer && warbotmanufacturer.startsWith('0x') && busd.length == 42) {
+    if (warbotmanufacturer && warbotmanufacturer.startsWith('0x') && warbotmanufacturer.length == 42) {
       store.setState({ warbotmanufacturer, hasWarbotmanufacturer: true })
     } else {
       store.setState({ warbotmanufacturer: '', hasWarbotmanufacturer: false })
@@ -108,7 +108,7 @@ const actions = {
   },
   setWarbotstats: (store, warbotstats) => {
     console.log("SET WARBOTSTATS")
-    if (warbotstats && warbotstats.startsWith('0x') && busd.length == 42) {
+    if (warbotstats && warbotstats.startsWith('0x') && warbotstats.length == 42) {
       store.setState({ warbotstats, hasWarbotstats: true })
     } else {
       store.setState({ warbotstats: '', hasWarbotstats: false })
@@ -116,10 +116,18 @@ const actions = {
   },
   setNanonft: (store, busd) => {
     console.log("SET NANONFT")
-    if (nanonft && nanonft.startsWith('0x') && busd.length == 42) {
+    if (nanonft && nanonft.startsWith('0x') && nanonft.length == 42) {
       store.setState({ nanonft, hasNanonft: true })
     } else {
       store.setState({ nanonft: '', hasNanonft: false })
+    }
+  },
+  setWarbotstatsdata: (store, warbotstatsdata) => {
+    console.log("SET WARBOTSTATS")
+    if (warbotstatsdata && warbotstatsdata.startsWith('0x') && warbotstatsdata.length == 42) {
+      store.setState({ warbotstatsdata, hasWarbotstatsdata: true })
+    } else {
+      store.setState({ warbotstatsdata: '', hasWarbotstatsdata: false })
     }
   },
   
@@ -170,11 +178,14 @@ const initialState = {
   nanobnblp:   '0xDb896a0D3E853789056245C3168d463F9C5b633D',
   hasNanobnblp: true,
   
-  nanonft:   '0x2d9343900f2a4640054585dd70FB1e350c931B00',
+  nanonft:   '0x7eC07349eC92aA8a403A95DA4682403c307Ee3E5',
   hasNanonft: true,
   
-  warbotstats:   '0x9E94f7cF3fBa377dD3B2c6358aE62cCfE40Ed350',
+  warbotstats:   '0xC665dFa4CEe8D947f181ccE176264b143A063933',
   hasWarbotstats: true,
+  
+  warbotstatsdata:   '0x0C97878C47B060D736bC987130cfA2b1E961b72E',
+  hasWarbotstatsdata: true,
   
   //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
   microbnblp:   '0xb4ec5205c12c6539fd6763354c7439811CF51C15',

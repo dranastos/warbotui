@@ -6,7 +6,7 @@ import useWeb3 from '../hooks/useWeb3'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useGlobal from '../hooks/useGlobal'
 import useWarbotStats from '../hooks/useWarbotStats'
-
+import useWarbotStatsData from '../hooks/useWarbotStatsData'
 import useNanomachines from '../hooks/useNanomachines'
 
 const WarbotUpgradeForm = ({ onComplete, address }) => {
@@ -21,6 +21,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
   const [timeValue, setTimeValue] = useState(0)
   const [canDeposit, setCanDeposit] = useState(false)
   const [data, setData] = useState({ amount:0 , warbot1:0, warbot2:0 })
+  const [ warbotstatsdata, wbdconnected ] = useWarbotStatsData(state.warbotstatsdata)
   
   const [loading, setLoading] = useState(false)
   const [warbot1, setWarbot1] = useState(0)
@@ -61,7 +62,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
     setSufficientlyApproved("primary") 
 	setInsufficientlyApproved("danger") 
 	setIsapprovedforall(isApprovedForAll)
-
+    console.log("NANO APPROVAL FOR WARBOTSTAT IS " + balance )
   }
 
   const getTimeDeposit = async() => {
@@ -112,7 +113,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
       if ( !isapprovedforall) {
         
 
-        console.log("WARBOT TRANSFER APPROVAL")
+        console.log("WARBOT NFTS TRANSFER APPROVAL")
 
         const tx = await warbotmanufacturer.setApprovalForAll(state.warbotstats, "true").send({
           from: wallet.account,
@@ -121,7 +122,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 
         if (tx.status) {
           notification.success({
-            message: 'Approve Successful',
+            message: 'NFT Approval Successful',
             description: tx.transactionHash
           })
 
@@ -149,7 +150,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 
       const value = web3.utils.toWei(nanorequirement.toString()).toString()
 
-      console.log('STAKE MICROMACHINES ',  value, warbot1, warbot2 )
+      console.log('UPGRADE WARBOTS ',  value, warbot1, warbot2 )
 
       const tx = await warbotstats
         .upgradeWarbot( warbot1, warbot2 )
@@ -189,7 +190,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 	if ( e.target.value != undefined )   
 	  
 	try{
-		const warbot1level = await warbotstats.WarbotLevel( e.target.value ).call()
+		const warbot1level = await warbotstatsdata.WarbotLevel( e.target.value ).call()
 		const nanorequired = (parseInt( warbot1level ) + 1) * (parseInt( warbot1level ) + 1)
 		
 		setNanorequirement( nanorequired )
@@ -210,7 +211,7 @@ const WarbotUpgradeForm = ({ onComplete, address }) => {
 	if ( e.target.value != undefined )
 		try{
 			
-			const warbot2level = await warbotstats.WarbotLevel( e.target.value ).call()
+			const warbot2level = await warbotstatsdata.WarbotLevel( e.target.value ).call()
 			
 			setWarbot2( parseInt(e.target.value) )
 			setWarbot2level( warbot2level )

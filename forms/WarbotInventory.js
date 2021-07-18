@@ -9,6 +9,7 @@ import useWarbots from '../hooks/useWarbots'
 import useNanonfts from '../hooks/useNFT'
 import useWarbotstats from '../hooks/useWarbotStats'
 import useNanomachines from '../hooks/useNanomachines'
+import useWarbotStatsData from '../hooks/useWarbotStatsData'
 
 import moment from 'moment'
 
@@ -28,6 +29,7 @@ const WarbotInventory = ({ onComplete, address }) => {
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
   const [hasVaults, setHasVaults] = useState(false)
+  const [ warbotstatsdata, wbdconnected ] = useWarbotStatsData(state.warbotstatsdata)
 
   useEffect(() => {
     if (connected && state.hasWarbotmanufacturer) {
@@ -50,16 +52,15 @@ const WarbotInventory = ({ onComplete, address }) => {
 
     let vaults = {}
     for (let warbot of userwarbots) {
-	   //const rawdata = await warbotmanufacturer.ManufacturingPlants(dep).call()
-	   //const rawdata = await warbotmanufacturer.WarbotLevel(dep).call()
-       
+	  
 	 try{ 
 		const owner = await warbotmanufacturer.ownerOf(warbot).call()  
-	    const data = await getVault( warbot )
+		if ( owner != wallet.account ) continue
+		const data = await getVault( warbot, wallet.account )
 		
 		vaults[warbot] = { ...data}
      }catch (e) {
-      
+      console.log(warbot , e)
     }    
 	}  
        
@@ -76,9 +77,9 @@ const WarbotInventory = ({ onComplete, address }) => {
   const activateWarbot = async(id) => {
     
 	setLoading(true)
-    console.log("DEPLOY NANO NFTS" +id)
+    console.log("Activate Warbot # " + id)
 	//const cardsperwarbot = await nanonft.cardsperwarbot().call()
-	const tx = await warbotstats.activateWarbot(id).send({ from: wallet.account, to: state.nanonft })
+	const tx = await warbotstats.activateWarbot(id).send({ from: wallet.account, to: state.warbotstats })
     if (tx.status) {
       notification.success({
         message:  ' Warbot Activated',
@@ -87,21 +88,41 @@ const WarbotInventory = ({ onComplete, address }) => {
     }
     setLoading(false)
   }
+  
+  const rerollLevelStats = async(id) => {
+    
+	console.log( "REROLL STATS" )
+	
+	setLoading(true)
+    console.log("Activate Warbot # " + id)
+	//const cardsperwarbot = await nanonft.cardsperwarbot().call()
+	const tx = await warbotstats.requestRerollOfStats(id).send({ from: wallet.account, to: state.warbotstats })
+    if (tx.status) {
+      notification.success({
+        message:  'Reroll of Level Stats Requested',
+        description: tx.transactionHash
+      })
+    }
+    setLoading(false)
+  }
+  
+  
   const approve = async() => {
     setLoading(true)
+	 
     
-	var _value = "1000000000000000000000000"
-	console.log(_value)
+	var _value = "10000"
+	console.log("APPROVAL AMOUNT", _value)
     try {
 
       if ( _value >= 0) {
-        const value = web3.utils.toWei(  _value , 'nano').toString()
+        const value = web3.utils.toWei(  _value ).toString()
 
         console.log("APPROVAL AMOUNT", wallet)
 
-        const tx = await nanomachines.approve(state.warbotstats, "999999999999999999999999999999").send({
+        const tx = await nanomachines.approve(state.warbotstats, value).send({
           from: wallet.account,
-          to: state.welfare
+          to: state.nanomachines
         })
 
         if (tx.status) {
@@ -115,10 +136,7 @@ const WarbotInventory = ({ onComplete, address }) => {
       }
 
     } catch (e) {
-      notification.error({
-        message: 'Approval Failed',
-        description: e.toString()
-      })
+      
     }
 
     setLoading(false)
@@ -129,26 +147,22 @@ const WarbotInventory = ({ onComplete, address }) => {
 
   const renderDeposit = (id, key) => {
     
-	
-	
-	try{
-		var warbotid = "Warbot Indentification Number:" + vaults[id].WarbotNumber
-		var warbotlevel = "Warbot Level: " + vaults[id].Level
-	}catch (e) {
-     return 
-    }
-	
+	if ( vaults[id] === undefined ) return
+	var warbotid = "Warbot Identification Number: " + vaults[id].WarbotNumber
+	var warbotlevel = "Warbot Level: " + vaults[id].Level
+	var type = vaults[id].WarbotType
 	
 	
 		
     return (
       <div key={`vault-${id}`}>
         <Collapse>
-          <Collapse.Panel header={`${warbotid} -${warbotlevel}`}>
+          <Collapse.Panel header={`${warbotid} -${warbotlevel} -${type}`}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
                <Button type="primary" onClick={() => approve()}  style={{ background: "black", borderColor: "yellow" }}>Approve Activation Cost</Button>
 			   <Button type="primary" onClick={() => activateWarbot(id)}  style={{ background: "black", borderColor: "yellow" }}>Activate Warbot</Button>
+			   <Button type="primary" onClick={() => rerollLevelStats(id)}  style={{ background: "black", borderColor: "yellow" }}>Reroll Level Stats</Button>
 			   <Button type="primary">Upgrade</Button> 
 			   <Button type="danger">Send For Parts</Button> 
 			   <Button type="primary" style={{ background: "green", borderColor: "yellow" }}>Send To Dealership</Button> 

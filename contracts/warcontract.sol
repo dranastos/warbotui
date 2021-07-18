@@ -1,3 +1,4 @@
+
 pragma solidity ^0.8.0;
 
 
@@ -665,35 +666,26 @@ interface NanoNFT {
     function transferFrom(address from, address to, uint256 tokenId) external;
     function burn(uint256 tokenId) external;
     function ownerOf(uint256 tokenId) external returns(address);
-    function  getNanoNFTCardStats ( uint256 _nftcard ) external returns( uint8, uint8, uint256, uint256, bool);
+    function  getNanoNFTCardStats ( uint256 _nftcard ) external returns( uint256, uint256, uint256, uint256, bool);
     function deployNFTNanoset( uint256 _warbot, address _creator ) external;
 }
 
 
-interface WarbotStatsData {
-    
-    function WarbotLevel ( uint256 _warbot ) external returns( uint256 );
-    function incrementReroll ( uint256 _warbot ) external returns (uint256);
-    function getCurrentRerollCount( uint256 _warbot ) external returns(uint256);
-    function RequestRoll ( uint256 _warbot ) external returns ( bool );
-    function requestRerollOfStats ( uint256 _warbot ) external ;
-    function setSlots( uint256 _warbot, uint8 _slots )external;
-    function incrementWarbotLevel( uint256 _warbot ) external;
-    function setCreator( uint256 _warbot, address _creator )external;
-    function getCreator( uint256 _warbot )external returns(address);
-    function zeroWarbotLevel( uint256 _warbot ) external ;
-    function bindCardtoWarbot( uint256 _warbot, uint8 _cardtype, uint8 _bonus ) external;
-    function incrementWarbotRerollCount ( uint256 _warbot ) external;
-    function getRerollCount ( uint256 _warbot ) external returns(uint256);
-
+interface WarbotStats {
+    function WarbotLevel(uint256 tokenId) external returns(uint256);
     
 }
 
 
+interface WarbotStatsData {
+    function WarbotLevel( uint256 _warbot ) external returns(uint256 );
+    function setWarbotHandoff( uint256 _warbot ) external ;
+    function getCurrentHitPoint( uint256 _warbot ) external;
+}
 
-contract WarbotStats is Ownable {
-    
-    
+
+
+contract WarContract is Ownable {
     
     using SafeMath for uint256;
     bytes4 ERC721_RECEIVED = 0x150b7a02;
@@ -701,169 +693,276 @@ contract WarbotStats is Ownable {
     address public micromachines;
     address public nanomachines;
     address public nanonft;
-    address public micromachinemanufacturingplant;
-    uint256 public activationcost;
-    uint256 public rerollcost;
-    address public oracle;
+    address public warbotstats;
     address public warbotstatsdata;
+    address public micromachinemanufacturingplant;
+ 
+    address public oracle;
     
-    WarbotStatsData __warbotData;
-    WarbotManufacturer __warbotmanufacturer;
-    IERC20 __nanomachines;
-    NanoNFT __nanonft;
-   
+    WarbotManufacturer  __warbotmanufacturer;
+    WarbotStats __warbotstats;
+    WarbotStatsData public __warbotstatsdata;
+    
+    mapping ( uint256 => mapping ( address => mapping ( uint256 => uint256[] ) )) public NFTCards;
+    mapping ( uint256 => mapping ( address => mapping ( uint8 => uint8 ) ))     public NFTCardCount;
+    mapping ( uint256 => mapping ( address => mapping ( uint8 => mapping ( uint8 => uint8 ) ) ))     public Rounds;
+    mapping ( uint256 => bool) public warbotInWarZone;
+    
+    //status of war 1 = joining battle, 2 = round begins awaiting oracle to roll initiative, 3 = warbot order sequence plays out, 4 = battle over
+    mapping ( uint256 => uint8 ) public warStatus;
+    mapping ( uint256 => uint256[]) public warbotIDs;
     
     
-    mapping ( uint256 => string  ) public  levelURI;
+    mapping ( uint256 => mapping ( address =>uint8 )) warBotWarCount;
+      
+
+    ///////
+    uint256 public warCount = 0;
+    uint8 public maxWarTeams=2;
+    uint8 public maxBotsPerTeam=2;
     
-    event bindCardEvent ( uint256 indexed _warbot, uint256 indexed  _nftcard, string _message);
-   
+    
+    mapping ( uint256 => mapping( uint8 => address) ) public Wars; 
+    mapping ( uint256 => uint8 ) public WarTeamCount; 
+    mapping ( uint256 => mapping ( address => uint8 )) public TeamBotCount;
+    mapping ( uint256 => uint256[] ) public BotsInWar;
+    mapping ( uint256 => address ) public warbotOwner;
+    mapping ( uint256 => uint256[] ) public warbotAt;
+    
+    //battle mechanics
+    mapping ( uint256 => uint256[]) public warbotOrder;      // oracle rolls initiative and sets order of battle 
+    mapping ( uint256 => uint256) public warbotOrderPointer;   
+    mapping ( uint256 => uint256 ) public warbotCommand;   
+    mapping ( uint256 => uint256 ) public warbotTarget;
+    mapping ( uint256 => int8[] ) public warbotMovement;
+    mapping ( uint256 => uint256 ) public warbotCardPlay;
    
     constructor() {
         micromachines = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
         nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
         micromachinemanufacturingplant = 0xe7e92e4Ccc08f381984de6CF35E050CE7729B9C6;
-        warbotstatsdata = 0xD1fDb9A3A8e975fd90388Cdb4c5F62C88542B501;
-        nanonft = 0x7eC07349eC92aA8a403A95DA4682403c307Ee3E5;
-        levelURI[1] = '{"attributes": [],"name": "MMWarbot","description": "Micromachine WarBot NFT LEVEL 1","image": "https://gateway.pinata.cloud/ipfs/ipfs://QmQp2Pfj3gRKsCCtMpFWzwJmfRyAys8SDY7srFBmfZ2W4g"}';
-        activationcost = 2 * 10 **18;
-        rerollcost =  1 * 10 **18;
+        warbotstats = 0xEE298dEFcbA669C19b6c39538b46Ce88af5AAa8e;
+        warbotstatsdata = 0x8A8c2A40547eCFE1D3894EE3D7c1b4807B26e9CD;
         burnAddress = 0x000000000000000000000000000000000000dEaD;
         oracle = 0x7cE0E55703F12D03Eb53B918aD6B9EB80d188afB;
         
-        __warbotmanufacturer = WarbotManufacturer ( micromachinemanufacturingplant );
-        __warbotData = WarbotStatsData ( warbotstatsdata );
-        __nanonft = NanoNFT ( nanonft );
-        __nanomachines = IERC20 ( nanomachines );
-    }
-    
-    function WarbotLevel ( uint256 _warbot ) public  returns ( uint256 ){
-       return  __warbotData.WarbotLevel( _warbot );
-    }
-    
-    function rerollLevelStats ( uint256 _warbot ) public {
-        require (  __warbotData.WarbotLevel ( _warbot )  > 0,  "Warbot not activated");
+        
+        __warbotmanufacturer = WarbotManufacturer(micromachinemanufacturingplant);
+        __warbotstats = WarbotStats ( warbotstats);
+        __warbotstatsdata = WarbotStatsData ( warbotstatsdata);
        
-        require ( msg.sender == __warbotmanufacturer.ownerOf( _warbot ) );
-         __warbotData.incrementReroll(_warbot);
-        IERC20 _nano = IERC20 ( nanomachines );
-        _nano.transferFrom ( msg.sender, address(this ),  levelRequirement( __warbotData.getCurrentRerollCount(_warbot) ));
-         __warbotData.requestRerollOfStats( _warbot ); 
+    } 
+  
+    function newBattle ( uint256 _warbot ) public {
+      
+        __warbotmanufacturer.transferFrom ( msg.sender, address(this), _warbot );
+         require ( __warbotstatsdata.WarbotLevel (_warbot) > 0, "Warbot Not Activated");
+        warCount++;
+        warStatus[warCount] = 1;
+        WarTeamCount[warCount]++;
+        Wars[warCount][WarTeamCount[warCount]] = msg.sender;
+       
+        warbotInWarZone[_warbot]=true;
+        __warbotstatsdata.setWarbotHandoff( _warbot );
+       
+        
+        BotsInWar[warCount].push(_warbot);
+        TeamBotCount[warCount][msg.sender]++;
+        warbotOwner[_warbot] = msg.sender;
+        warbotAt[_warbot] = [warCount, BotsInWar[warCount].length -1  ];
+    }
+    
+    
+    
+     uint8  []  public _temp;
+     
+     function checkIfTeamsAreEven( uint256 _war ) public  returns(bool)  {
+        if ( WarTeamCount[_war ] <2 ) return false;
+        
+        uint8 [] memory __temp;
+        _temp = __temp;
+         
+        for ( uint8 x = 1; x< WarTeamCount[_war ]+1; x++ ){
+           _temp.push(countWarbotsOnTeam (_war, Wars[_war][x]));
+        }
+        
+        for ( uint i = 1; i < _temp.length; i++) {
+              if (_temp[i] != _temp[0]) {
+                return false;
+              }
+        }
+        
+        
+        return true;
+     }
+     
+    
+     function recordTeam ( uint256 _war ) internal returns (uint8) {
+          if(checkIfTeamIsPartOfWar( msg.sender , _war ) > 0) return checkIfTeamIsPartOfWar( msg.sender , _war );
+          WarTeamCount[_war]++;
+          Wars[_war][WarTeamCount[_war]] = msg.sender ;  
+          require (  WarTeamCount[_war]  <= maxWarTeams, "Maximum War Teams Limit Already Hit" );
+          return WarTeamCount[_war];
+    }
+   
+   
+    function checkIfTeamIsPartOfWar( address _address, uint256 _war ) public view returns(uint8)  {
+        uint8 x;
+        for ( x = 1; x< WarTeamCount[_war ]+1; x++ ){
+            if ( Wars[_war][x] == _address ) return x;
+        }
+        return 0;
+     }
+    
+     function countWarbotsOnTeam ( uint256 _war , address _address ) public view returns(uint8){
+        uint8 _count;
+        uint8 x;
+        for ( x = 0; x< BotsInWar[_war].length ; x++ ){
+            if ( _address == warbotOwner[BotsInWar[_war][x]] ) _count++;
+        }
+        return _count;
+         
+     }
+     
+    
+     function joinBattle ( uint256 _warbot, uint256 _war ) public {
+        require ( warStatus[_war] == 1, "Arena Not Available for New Warbots" );
+        require ( __warbotstatsdata.WarbotLevel (_warbot) > 0);
+       
+        require ( countWarbotsOnTeam( _war, msg.sender) < maxBotsPerTeam , "Max Warbots for this team Already hit" );
+        TeamBotCount[_war][msg.sender]++;
+        uint8 _team = recordTeam ( _war );
+        __warbotmanufacturer.transferFrom ( msg.sender, address(this), _warbot );
+        Wars[warCount][_team] = msg.sender;
+        warbotInWarZone[_warbot]=true;
+        __warbotstatsdata.setWarbotHandoff( _warbot );
+        BotsInWar[warCount].push(_warbot);
+        warbotOwner[_warbot] = msg.sender;
+        warbotAt[_warbot] = [_war, BotsInWar[_war].length -1  ];
+                 
+     }
+    
+      
+    function returnWarbot ( uint256 _warbot ) public  {
+     
+        require ( warbotOwner[_warbot] == msg.sender, "Not Warbot Owner" );
+        warbotOwner[_warbot]  = address(0);
+        
+        WarbotManufacturer _micromachinemanufacturingplant = WarbotManufacturer(micromachinemanufacturingplant);
+        _micromachinemanufacturingplant.transferFrom ( address(this), msg.sender,  _warbot );
+        warbotInWarZone[_warbot]=false;
+        removeWarbotFromWar ( _warbot );
+        warbotAt[_warbot] = [0,0];
+       
+          
+    }
+   
+   
+   
+    function removeWarbotFromWar ( uint256 _warbot )public  {
+         (uint256 _war, uint256 _position)  = whereIsWarbot( _warbot );
+       if ( _war == 0 ) revert("Warbot Not Found ");
+     
+         delete BotsInWar[ _war][ _position   ];
+         TeamBotCount[ _war][msg.sender]--;
+          warbotOwner[_warbot] = address(0);   
+    } 
+    
+  
+     
+ 
+    function getBotsInWar( uint256 _war ) public view returns ( uint256[] memory ){
+            return BotsInWar[_war];
+    }
+    
+    function whereIsWarbot( uint256 _warbot ) public view returns(uint256, uint256) {
+        return ( warbotAt[_warbot][0], warbotAt[_warbot][1]);
+        
+    }
+    
+    function changeWarStatus ( uint256 _war, uint8 _status ) public {
+         warStatus[_war] = _status;
+    }
+
+    function startWar ( uint256 _war ) public {
+       require ( WarTeamCount[_war] >1, "Not Enough Contestants" );
+       require (  checkIfTeamsAreEven( _war ), "Uneven teams ");
+       warStatus[_war] = 2;
+       
+    }
+    
+    // attack + target  1 +  bot position
+    // move   2 + target position
+    // usecard 3 + card position number
+    
+    
+    function goTurn ( uint256 _war , uint8 _option, uint256 _target, int8 _x, int8 _y, uint256 _cardnumber ) public {
+        require ( _option >0 && _option < 4 );
+        require ( warbotOwner[getCurrentTurn (  _war )] == msg.sender, "Not Warbot's Owner" );
+        warbotCommand[_war] = _option;
+        if ( _option == 1 ) warbotTarget[_war] = _target;
+        if ( _option == 2 ) warbotMovement[_war] = [_x,_y];
+        if ( _option == 1 ) warbotCardPlay[_war] = _cardnumber;
+        advancePointer( _war );
+        
+    }
+    
+  
+    function advancePointer( uint256  _war ) internal {
+        
+         warbotOrderPointer[_war]++;
+        if( warbotOrderPointer[_war] >= warbotOrder[_war].length )  { 
+            warbotOrderPointer[_war] = 0;
+            warStatus[_war] = 2 ;}
+    }
+    
+    function getCurrentTurn ( uint256 _war ) public view returns(uint256){
+        
+        uint256 _pointer =  warbotOrderPointer[_war];
+        uint256 _warbot = warbotOrder[_war][_pointer];
+        return _warbot;
         
     }
     
     
     
-    function bindCard ( uint256 _warbot, uint256 _nftcard ) public {
-        require ( __warbotData.WarbotLevel ( _warbot )  > 0,  "Warbot not activated");
-        require ( msg.sender == __warbotmanufacturer.ownerOf( _warbot ) );
-         NanoNFT _nanonft = NanoNFT ( nanonft );
-        _nanonft.transferFrom ( msg.sender, address(this) , _nftcard );
-        ( uint8 _cardtype , uint8 _bonus , , uint256 _minimumlevel , bool _bindable) = _nanonft.getNanoNFTCardStats( _nftcard );
-        require ( _bindable == true, "Card is not bindable." );
-        require ( __warbotData.WarbotLevel(_warbot ) >= _minimumlevel, "Warbot Level Requirement not Met." );
-         __warbotData.bindCardtoWarbot(  _warbot,  _cardtype, _bonus );
-        _nanonft.burn(_nftcard);
-        emit bindCardEvent ( _warbot , _nftcard, "WARBOT UPGRADED WITH BINDABLE CARD" );
+    function setMaxBotsPerTeam( uint8 _maxsize ) public onlyOwner {
+        maxBotsPerTeam = _maxsize;
     }
     
-    
-    
-    function setLevelURI ( uint256 _level, string calldata _levelURI ) public onlyOwner {
-        levelURI[_level] = _levelURI;
+    function setWarbotStatsData( address _address ) public onlyOwner {
+        warbotstatsdata = _address;
+        __warbotstatsdata = WarbotStatsData ( _address );
     }
     
-    function setActivationCost ( uint256 _activationcost ) public onlyOwner {
-        activationcost = _activationcost;
-    }
-    
-    function setRerollCost ( uint256 _rerollcost ) public onlyOwner {
-        rerollcost = _rerollcost;
-    }
     
     function setMicromachines( address _address ) public onlyOwner {
         micromachines = _address;
     }
     
-    function setWarbotStatsData( address _address ) public onlyOwner {
-        warbotstatsdata = _address;
-        __warbotData = WarbotStatsData ( _address );
-    }
-    
     function setNanomachines( address _address ) public onlyOwner {
         nanomachines = _address;
-        __nanomachines = IERC20 ( nanomachines );
     }
     
-     function setNanoNFT( address _address ) public onlyOwner {
+    function setNanoNFT( address _address ) public onlyOwner {
         nanonft = _address;
-        __nanonft = NanoNFT ( nanonft );
+    }
+    
+    function setWarbotstats( address _address ) public onlyOwner {
+        warbotstats = _address;
+       
     }
     
     function setMicromachinesManufacturingplant( address _address ) public onlyOwner {
         micromachinemanufacturingplant = _address;
-        __warbotmanufacturer = WarbotManufacturer ( micromachinemanufacturingplant );
     }
     
-    function levelRequirement ( uint256 _level ) public  returns (uint256 ){
+    function levelRequirement ( uint256 _level ) public   returns (uint256 ){
         IERC20 _nano = IERC20 ( nanomachines );
         return  (  _level * _level ) * 10 ** _nano.decimals();
     }
     
-
-    function activateWarbot ( uint256 _warbot ) public {
-        
-        require ( msg.sender == __warbotmanufacturer.ownerOf( _warbot ), "Only the Owner Can Activate" );
-        require ( __warbotData.WarbotLevel ( _warbot ) == 0,  "Warbot already activated");
-        __warbotData.setSlots( _warbot, 2 );
-        __warbotData.requestRerollOfStats(_warbot) ;
-        __warbotData.incrementWarbotLevel( _warbot );
-        __warbotData.setCreator( _warbot, msg.sender);
-         chargeNanos ( activationcost );
-        __nanonft.deployNFTNanoset(  _warbot, __warbotData.getCreator(_warbot) );
-    }
-    
-    function requestRerollOfStats ( uint256 _warbot ) public {
-        
-        require ( msg.sender == __warbotmanufacturer.ownerOf( _warbot ), "Only the Owner Can Reroll" );
-        
-       
-        __warbotData.requestRerollOfStats(_warbot) ;
-        uint256 _count =__warbotData.getCurrentRerollCount( _warbot );
-        chargeNanos ( rerollcost * _count * _count  );
-        
-    }
-
-
-    function chargeNanos ( uint256 _activationcost ) public {
-           __nanomachines.transferFrom ( msg.sender , address(this), _activationcost );
-           __nanomachines.transfer ( burnAddress, _activationcost );
-        
-    }
-
-
-
-
-    function upgradeWarbot ( uint256 _warbot1, uint256 _warbot2  ) public {
-        require ( __warbotData.WarbotLevel ( _warbot1 ) == __warbotData.WarbotLevel ( _warbot2 )  );
-        require ( __warbotData.WarbotLevel ( _warbot1 ) > 0,  "Warbot not activated");
-        uint256 _level = __warbotData.WarbotLevel ( _warbot1 );
-        uint256 _levelto = __warbotData.WarbotLevel ( _warbot1 ) + 1;
-        
-        chargeNanos ( levelRequirement(_level ));       
-        __warbotmanufacturer.transferFrom ( msg.sender, address(this) , _warbot2 );
-        __warbotmanufacturer.burn(_warbot2);
-        __warbotData.incrementWarbotLevel(_warbot1);
-        __warbotData.zeroWarbotLevel(  _warbot2 );
-      
-         __warbotmanufacturer.setTokenURIWarbotStats(_warbot1, levelURI[_levelto]);
-        
-      
-    }
-    
-    
-    
-    
+   
     function onERC721Received( address _operator, address _from, uint256 _tokenId, bytes memory _data) public view returns(bytes4){
         _operator; _from; _tokenId; _data; 
         return ERC721_RECEIVED;

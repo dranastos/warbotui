@@ -10,13 +10,14 @@ import useSecurity from '../hooks/useSecurity'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
 import useWarbotStats from '../hooks/useWarbotStats'
+import useWarbotStatsData from '../hooks/useWarbotStatsData'
 
 const useWarbots = () => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
   const [state, actions] = useGlobal(['warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotstats' , 'hasWarbotstats' ])
   const [ warbotstats, wbconnected ] = useWarbotStats(state.warbotstats)
-  
+  const [ warbotstatsdata, wbdconnected ] = useWarbotStatsData(state.warbotstatsdata)
   const { warbotmanufacturer,  connected } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   
  
@@ -38,38 +39,52 @@ const useWarbots = () => {
     }
   }
 
-  const getVault = async(warbot) => {
-     
-	
-	try{ 
-		const owner = await warbotmanufacturer.ownerOf(warbot).call()
-		const level = await warbotstats.WarbotLevel(warbot).call()
-		const warbotprofile = await warbotstats.WarBotProfiles(warbot).call()
+  const getVault = async(warbot, wallet) => {
+    
 	 
-		 return {
-      
-	  "WarbotNumber" : warbot,
-      "Level" :  level ,
-	  "Hull Hitpoints" : parseInt( level ) * 10 ,
-      "Speed" :  parseInt(level)*2 ,
-	  "Base Damage" :  parseInt(level) ,
-	  "Slots" : warbotprofile['slots']
-      
-      
-    }
-	}catch (e) {
-      
-    }
+	 
+	const level = await warbotstatsdata.getWarBotLevel(warbot).call()
 	
-   
+	const owner = await warbotmanufacturer.ownerOf(warbot).call() 
+	const warbottype = await warbotstatsdata.WarbotType(warbot).call() 
+	const warbotprofile = await warbotstatsdata.WarBotProfiles(warbot).call() 
+	var type = getType ( warbottype )
+	  
+	    
+	return {
      
-   
-   
+	  
+	  "WarbotNumber" : warbot,
+      "WarbotType" : type,
+	  "Level" :  level ,
+	  "Hull Hitpoints" :  warbotprofile.hitpoints  ,
+      "Speed" :   warbotprofile.speed  ,
+	  "Attack" :   warbotprofile.attack,
+      "Defense" :   warbotprofile.defense,
+      "Reroll Count": warbotprofile.rerollCount	  
+	 
+     }
+	
   }
 
   return [getVault, sendVaultTx]
 }
 
+function getType ( x ) {
+   
+	switch(x){
+		case "1":
+			console.log( "Tractor")
+			return "Tractor"
+		case "2":
+			console.log( "Walker")
+			return "Walker"
+		case "3":
+			console.log( "Aerial Drone")
+			return "Aerial Drone"
+			
+	}
+}
 function toFixed(x) {
   if (Math.abs(x) < 1.0) {
     var e = parseInt(x.toString().split('e-')[1]);
