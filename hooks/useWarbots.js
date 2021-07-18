@@ -74,6 +74,9 @@ const useWarbots = () => {
 function getType ( x ) {
    
 	switch(x){
+		case "0":
+			console.log( "Warbot Type Uninitiated")
+			return "Warbot Type Uninitiated"
 		case "1":
 			console.log( "Tractor")
 			return "Tractor"
