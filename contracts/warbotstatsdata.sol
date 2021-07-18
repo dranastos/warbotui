@@ -490,7 +490,7 @@ contract Ownable is Context {
 contract WarBotStatsData is Ownable{
  
     
-    
+    using SafeMath for uint256;
     mapping ( uint256 => uint256 ) public WarbotXP;
     mapping ( uint256 => uint256 ) public WarbotLevel;
     // 0 tractor
@@ -557,6 +557,12 @@ contract WarBotStatsData is Ownable{
         uint8[]   _nftslots;
         uint8     _movement;
     }
+    
+    
+    constructor () {
+        oracle = 0x7cE0E55703F12D03Eb53B918aD6B9EB80d188afB;
+    }
+    
     
     function setWarBotGlobalXYZ ( uint256 _warbot, uint256[] memory _xyz ) public {
         
@@ -654,7 +660,7 @@ contract WarBotStatsData is Ownable{
         WarbotType[ _warbot ] = _type;
     }
     
-    function rollStats ( uint256 _warbot, uint256 _hitpoints, uint256 _attack, uint256 _defense, uint256 _speed, uint8 _type ) public onlyOracle {
+    function rollStats ( uint256 _warbot, uint256 _hitpoints, uint256 _attack, uint256 _defense, uint256 _speed, uint8 _type, uint8 _movement ) public onlyOracle {
         
         WarBotProfiles[ _warbot ].hitpoints = WarBotProfiles[ _warbot ].basehitpoints + _hitpoints;
         WarBotProfiles[ _warbot ].attack = WarBotProfiles[ _warbot ].baseattack + _attack;
@@ -662,6 +668,7 @@ contract WarBotStatsData is Ownable{
         WarBotProfiles[ _warbot ].speed = WarBotProfiles[ _warbot ].basespeed + _speed;
         RequestReroll[_warbot]=false;
         if (_type > 0 ) setWarbotType ( _warbot, _type );
+        if (_movement > 0 ) WarBotProfiles[ _warbot ].movement += _movement;
         emit levelStatsRolled ( _warbot );
     }
     
@@ -686,7 +693,9 @@ contract WarBotStatsData is Ownable{
     function zeroWarbotLevel( uint256 _warbot ) public {
         uint256 _level = WarbotLevel[_warbot];
         WarbotLevel[_warbot] = 0;
-        warbotLevelCount[WarbotLevel[_level]]--;
+        warbotLevelCount[_level].sub(1);
+        
+        
     }
     
     function incrementWarbotLevel( uint256 _warbot ) public {
@@ -699,6 +708,7 @@ contract WarBotStatsData is Ownable{
         WarBotProfiles[_warbot].baseattack = WarBotProfiles[ _warbot ].attack;
         WarBotProfiles[_warbot].basedefense = WarBotProfiles[ _warbot ].defense;
         WarBotProfiles[_warbot].basespeed = WarBotProfiles[ _warbot ].speed;
+        WarBotProfiles[ _warbot ].rerollCount = 0;
         emit warbotUpgraded ( _warbot, WarbotLevel[_warbot] );
         
     }

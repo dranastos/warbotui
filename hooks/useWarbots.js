@@ -61,7 +61,8 @@ const useWarbots = () => {
       "Speed" :   warbotprofile.speed  ,
 	  "Attack" :   warbotprofile.attack,
       "Defense" :   warbotprofile.defense,
-      "Reroll Count": warbotprofile.rerollCount	  
+      "Reroll Count": warbotprofile.rerollCount,
+      "Movement": 	  warbotprofile.movement
 	 
      }
 	
