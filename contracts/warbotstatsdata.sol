@@ -504,6 +504,7 @@ contract WarBotStatsData is Ownable{
     mapping ( uint256 => WarBotProfile ) public WarBotProfiles;
     mapping ( uint256 =>  WarBotCurrentStat ) public  WarBotCurrentStats;
     mapping ( uint256 => address ) public WarbotHandOff;
+    mapping ( uint256 => uint256 ) public lastWarAt;
     
     address public oracle;
     address[] public EngineContracts;
@@ -547,6 +548,7 @@ contract WarBotStatsData is Ownable{
     
     struct WarBotCurrentStat {
         
+        bool _levelinit;
         uint256   _warbothitpoints;
         uint256   _warbotattack;
         uint256   _warbotdefense;
@@ -628,8 +630,29 @@ contract WarBotStatsData is Ownable{
          WarBotCurrentStats[_warbot]._specialeffect = _specialeffect;
          WarBotCurrentStats[_warbot]._specialduration = _specialduration;
          WarBotCurrentStats[_warbot]._nftslots = _nftslots;
-         
     }
+    
+    function repairWarbot( uint256 _warbot, uint256 _warbothitpoints,  uint256 _warbotattack, uint256 _warbotdefense, 
+                                   uint256 _warbotspeed, uint8 _movement  ) public {
+        
+         if ( WarBotCurrentStats[_warbot]._warbothitpoints + _warbothitpoints > WarBotProfiles[_warbot].hitpoints ) _warbothitpoints = WarBotProfiles[_warbot].hitpoints;
+         if ( WarBotCurrentStats[_warbot]._warbotattack + _warbotdefense > WarBotProfiles[_warbot].defense ) _warbothitpoints = WarBotProfiles[_warbot].defense;
+         if ( WarBotCurrentStats[_warbot]._warbotdefense + _warbotattack > WarBotProfiles[_warbot].attack ) _warbothitpoints = WarBotProfiles[_warbot].attack;
+         if ( WarBotCurrentStats[_warbot]._warbotspeed + _warbotspeed > WarBotProfiles[_warbot].speed ) _warbothitpoints = WarBotProfiles[_warbot].speed;
+         if ( _movement > WarBotProfiles[_warbot].movement) _warbothitpoints = WarBotProfiles[_warbot].movement;
+         
+         WarBotCurrentStats[_warbot]._warbothitpoints   += _warbothitpoints;  
+         WarBotCurrentStats[_warbot]._warbotattack += _warbotattack;
+         WarBotCurrentStats[_warbot]._warbotdefense += _warbotdefense;
+         WarBotCurrentStats[_warbot]._warbotspeed += _warbotspeed;
+         WarBotCurrentStats[_warbot]._movement += _movement;
+        
+    }
+    
+    
+    
+    
+    
     
     function getWarbotProfile ( uint256 _warbot ) public view returns( WarBotProfile memory ){
         return WarBotProfiles[_warbot];
@@ -669,8 +692,19 @@ contract WarBotStatsData is Ownable{
         RequestReroll[_warbot]=false;
         if (_type > 0 ) setWarbotType ( _warbot, _type );
         if (_movement > 0 ) WarBotProfiles[ _warbot ].movement += _movement;
+        if ( WarBotCurrentStats[ _warbot ]._levelinit == false ) {
+            
+            
+             WarBotCurrentStats[_warbot]._warbothitpoints   =  WarBotProfiles[ _warbot ].basehitpoints + _hitpoints;
+             WarBotCurrentStats[_warbot]._warbotattack = WarBotProfiles[ _warbot ].baseattack + _attack;
+             WarBotCurrentStats[_warbot]._warbotdefense = WarBotProfiles[ _warbot ].basedefense + _defense;
+             WarBotCurrentStats[_warbot]._warbotspeed = WarBotProfiles[ _warbot ].basespeed + _speed;
+             WarBotCurrentStats[ _warbot ]._levelinit = true;
+        }
+        
         emit levelStatsRolled ( _warbot );
     }
+    
     
     function requestRerollOfStats ( uint256 _warbot ) public onlyEngine {
         
@@ -709,6 +743,7 @@ contract WarBotStatsData is Ownable{
         WarBotProfiles[_warbot].basedefense = WarBotProfiles[ _warbot ].defense;
         WarBotProfiles[_warbot].basespeed = WarBotProfiles[ _warbot ].speed;
         WarBotProfiles[ _warbot ].rerollCount = 0;
+        WarBotCurrentStats[ _warbot ]._levelinit = false;
         emit warbotUpgraded ( _warbot, WarbotLevel[_warbot] );
         
     }

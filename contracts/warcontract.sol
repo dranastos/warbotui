@@ -741,8 +741,8 @@ contract WarContract is Ownable {
         micromachines = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
         nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
         micromachinemanufacturingplant = 0xe7e92e4Ccc08f381984de6CF35E050CE7729B9C6;
-        warbotstats = 0xEE298dEFcbA669C19b6c39538b46Ce88af5AAa8e;
-        warbotstatsdata = 0x8A8c2A40547eCFE1D3894EE3D7c1b4807B26e9CD;
+        warbotstats = 0xC665dFa4CEe8D947f181ccE176264b143A063933;
+        warbotstatsdata = 0x7FbF69de56dE05f3217e8FC350aBa8C973b7ff5f;
         burnAddress = 0x000000000000000000000000000000000000dEaD;
         oracle = 0x7cE0E55703F12D03Eb53B918aD6B9EB80d188afB;
         
@@ -924,6 +924,11 @@ contract WarContract is Ownable {
         
     }
     
+    
+    function setWarbotOrder ( uint256 _war, uint256 [] memory _order ) public {
+        
+        warbotOrder[_war] = _order;
+    }
     
     
     function setMaxBotsPerTeam( uint8 _maxsize ) public onlyOwner {

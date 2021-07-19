@@ -184,7 +184,7 @@ const initialState = {
   warbotstats:   '0xC665dFa4CEe8D947f181ccE176264b143A063933',
   hasWarbotstats: true,
   
-  warbotstatsdata:   '0x805bD73eaD9201290A97DeE8e27860018247AF83',
+  warbotstatsdata:   '0x7FbF69de56dE05f3217e8FC350aBa8C973b7ff5f',
   hasWarbotstatsdata: true,
   
   //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
