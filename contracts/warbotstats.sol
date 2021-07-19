@@ -723,7 +723,7 @@ contract WarbotStats is Ownable {
         micromachines = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
         nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
         micromachinemanufacturingplant = 0xe7e92e4Ccc08f381984de6CF35E050CE7729B9C6;
-        warbotstatsdata = 0xD1fDb9A3A8e975fd90388Cdb4c5F62C88542B501;
+        warbotstatsdata = 0x0C97878C47B060D736bC987130cfA2b1E961b72E;
         nanonft = 0x7eC07349eC92aA8a403A95DA4682403c307Ee3E5;
         levelURI[1] = '{"attributes": [],"name": "MMWarbot","description": "Micromachine WarBot NFT LEVEL 1","image": "https://gateway.pinata.cloud/ipfs/ipfs://QmQp2Pfj3gRKsCCtMpFWzwJmfRyAys8SDY7srFBmfZ2W4g"}';
         activationcost = 2 * 10 **18;
@@ -826,9 +826,10 @@ contract WarbotStats is Ownable {
     function requestRerollOfStats ( uint256 _warbot ) public {
         
         require ( msg.sender == __warbotmanufacturer.ownerOf( _warbot ), "Only the Owner Can Reroll" );
-        
-       
+        require ( __warbotData.WarbotLevel ( _warbot ) > 0,  "Warbot needs to be activated");
+       __warbotData.incrementWarbotRerollCount ( _warbot );
         __warbotData.requestRerollOfStats(_warbot) ;
+         
         uint256 _count =__warbotData.getCurrentRerollCount( _warbot );
         chargeNanos ( rerollcost * _count * _count  );
         
@@ -850,13 +851,13 @@ contract WarbotStats is Ownable {
         uint256 _level = __warbotData.WarbotLevel ( _warbot1 );
         uint256 _levelto = __warbotData.WarbotLevel ( _warbot1 ) + 1;
         
-        chargeNanos ( levelRequirement(_level ));       
-        __warbotmanufacturer.transferFrom ( msg.sender, address(this) , _warbot2 );
-        __warbotmanufacturer.burn(_warbot2);
-        __warbotData.incrementWarbotLevel(_warbot1);
-        __warbotData.zeroWarbotLevel(  _warbot2 );
+       chargeNanos ( levelRequirement(_level ));       
+       __warbotmanufacturer.transferFrom ( msg.sender, address(this) , _warbot2 );
+       __warbotmanufacturer.burn(_warbot2);
+       __warbotData.incrementWarbotLevel(_warbot1);
+       __warbotData.zeroWarbotLevel(  _warbot2 );
       
-         __warbotmanufacturer.setTokenURIWarbotStats(_warbot1, levelURI[_levelto]);
+        __warbotmanufacturer.setTokenURIWarbotStats(_warbot1, levelURI[_levelto]);
         
       
     }
