@@ -769,7 +769,7 @@ contract WarBotStatsData is Ownable{
     }
     
     function damageWarbot ( uint256 _warbot, uint256 _damage )  public {
-        WarBotCurrentStats[_warbot]._warbothitpoints -= _damage; 
+        unchecked{ WarBotCurrentStats[_warbot]._warbothitpoints -= _damage; }
         if ( WarBotCurrentStats[_warbot]._warbothitpoints >   WarBotProfiles[_warbot].hitpoints )  
                                                             WarBotCurrentStats[_warbot]._warbothitpoints = 0;
         emit WarbotDamaged ( _warbot, _damage );
@@ -785,7 +785,7 @@ contract WarBotStatsData is Ownable{
     
     
     function damageWarbotDefense ( uint256 _warbot, uint256 _damage )  public {
-        WarBotCurrentStats[_warbot]._warbotdefense -= _damage; 
+       unchecked{ WarBotCurrentStats[_warbot]._warbotdefense -= _damage; }
         if ( WarBotCurrentStats[_warbot]._warbotdefense >   WarBotProfiles[_warbot].defense )  
                                                             WarBotCurrentStats[_warbot]._warbotdefense = 0;
         emit  WarbotDefenseDamaged (  _warbot, _damage );
@@ -801,7 +801,7 @@ contract WarBotStatsData is Ownable{
     }
     
     function damageWarbotAttack ( uint256 _warbot, uint256 _damage )  public {
-        WarBotCurrentStats[_warbot]._warbotattack -= _damage; 
+        unchecked{WarBotCurrentStats[_warbot]._warbotattack -= _damage; }
         if ( WarBotCurrentStats[_warbot]._warbotattack >   WarBotProfiles[_warbot].attack )  
                                                             WarBotCurrentStats[_warbot]._warbotattack = 0;
         emit WarbotAttackDamaged ( _warbot, _damage );
@@ -816,7 +816,7 @@ contract WarBotStatsData is Ownable{
     }
     
     function damageWarbotSpeed ( uint256 _warbot, uint256 _damage )  public {
-        WarBotCurrentStats[_warbot]._warbotspeed -= _damage; 
+        unchecked{WarBotCurrentStats[_warbot]._warbotspeed -= _damage; }
         if ( WarBotCurrentStats[_warbot]._warbotspeed >   WarBotProfiles[_warbot].speed )  
                                                             WarBotCurrentStats[_warbot]._warbotspeed = 0;
          emit WarbotSpeedDamaged (  _warbot, _damage );
@@ -829,6 +829,22 @@ contract WarBotStatsData is Ownable{
         emit WarbotSpeedRepaired (  _warbot, _repair );                                                    
         
     }
+    
+     function damageWarbotMovement ( uint256 _warbot, uint8 _damage )  public {
+        unchecked{WarBotCurrentStats[_warbot]._movement -= _damage; }
+        if ( WarBotCurrentStats[_warbot]._movement >   WarBotProfiles[_warbot].movement )  
+                                                            WarBotCurrentStats[_warbot]._movement = 0;
+         emit WarbotSpeedDamaged (  _warbot, _damage );
+    }
+    
+    function repairWarbotMovement ( uint256 _warbot, uint8 _repair )  public {
+        WarBotCurrentStats[_warbot]._movement += _repair; 
+        if ( WarBotCurrentStats[_warbot]._movement >   WarBotProfiles[_warbot].movement )  
+                                                            WarBotCurrentStats[_warbot]._movement = WarBotProfiles[_warbot].movement;
+        emit WarbotSpeedRepaired (  _warbot, _repair );                                                    
+        
+    }
+    
     
     
     function bindCardtoWarbot( uint256 _warbot, uint8 _cardtype, uint8 _bonus ) public {

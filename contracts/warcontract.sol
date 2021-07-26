@@ -680,7 +680,12 @@ interface WarbotStats {
 interface WarbotStatsData {
     function WarbotLevel( uint256 _warbot ) external returns(uint256 );
     function setWarbotHandoff( uint256 _warbot ) external ;
-    function getCurrentHitPoint( uint256 _warbot ) external;
+    function getCurrentHitPoint( uint256 _warbot ) external returns(uint256);
+    function damageWarbot (uint256 _warbot, uint256 _damage) external;
+    function damageWarbotAttack (uint256 _warbot, uint256 _damage) external;
+    function damageWarbotDefense (uint256 _warbot, uint256 _damage) external;
+    function damageWarbotSpeed (uint256 _warbot, uint256 _damage) external;
+    function damageWarbotMovement (uint256 _warbot, uint256 _damage) external;
 }
 
 
@@ -705,44 +710,63 @@ contract WarContract is Ownable {
     
     mapping ( uint256 => mapping ( address => mapping ( uint256 => uint256[] ) )) public NFTCards;
     mapping ( uint256 => mapping ( address => mapping ( uint8 => uint8 ) ))     public NFTCardCount;
-    mapping ( uint256 => mapping ( address => mapping ( uint8 => mapping ( uint8 => uint8 ) ) ))     public Rounds;
-    mapping ( uint256 => bool) public warbotInWarZone;
+   
+   
     
     //status of war 1 = joining battle, 2 = round begins awaiting oracle to roll initiative, 3 = warbot order sequence plays out, 4 = battle over
     mapping ( uint256 => uint8 ) public warStatus;
-    mapping ( uint256 => uint256[]) public warbotIDs;
+   
     
     
-    mapping ( uint256 => mapping ( address =>uint8 )) warBotWarCount;
-      
-
     ///////
     uint256 public warCount = 0;
     uint8 public maxWarTeams=2;
     uint8 public maxBotsPerTeam=2;
     
-    
+    mapping ( uint256 => bool) public warbotInWarZone;
     mapping ( uint256 => mapping( uint8 => address) ) public Wars; 
     mapping ( uint256 => uint8 ) public WarTeamCount; 
     mapping ( uint256 => mapping ( address => uint8 )) public TeamBotCount;
     mapping ( uint256 => uint256[] ) public BotsInWar;
+    mapping ( uint256 => uint256[] ) public BotsInWarStanding;
+    
     mapping ( uint256 => address ) public warbotOwner;
     mapping ( uint256 => uint256[] ) public warbotAt;
+    mapping ( uint256 => address[] ) WarTeams;
+    
+    mapping ( uint256 => uint256 ) public newBattleSlot;
+    mapping ( uint256 => uint256 ) public activeBattleSlot;
+    mapping ( uint256 => uint256 ) public closedBattleSlot;
+    
+    uint256[] public newBattles;
+    uint256[] public activeBattles;
+    uint256[] public closedBattles;
     
     //battle mechanics
+    mapping ( uint256 => uint256 ) public WarRound;
     mapping ( uint256 => uint256[]) public warbotOrder;      // oracle rolls initiative and sets order of battle 
     mapping ( uint256 => uint256) public warbotOrderPointer;   
     mapping ( uint256 => uint256 ) public warbotCommand;   
     mapping ( uint256 => uint256 ) public warbotTarget;
     mapping ( uint256 => int8[] ) public warbotMovement;
     mapping ( uint256 => uint256 ) public warbotCardPlay;
+    mapping ( uint256 => mapping ( address => uint8 )) public WarbotDeathCount;
+    
+    
+    event WarBotOrderSet ( uint256 indexed _war, uint256 [] _order );
+    event PointerAdvaced ( uint256 indexed _war, uint256 _warbotOrderPointer ); 
+    event  newBattleInitiated ( uint256 indexed warCount , address indexed _warinitiator, uint256 indexed _warbot);
+    event WarStarted ( uint256 indexed _war , address[] _warteams );
+    event MaxBotsPerTeamSet (  uint256 _maxsize );
+    event goTurnEvent ( uint256 _war , uint8 _option, uint256 _target, int8 _x, int8 _y, uint256 _cardnumber );
+    
    
     constructor() {
         micromachines = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
         nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
-        micromachinemanufacturingplant = 0xe7e92e4Ccc08f381984de6CF35E050CE7729B9C6;
+        micromachinemanufacturingplant = 0xa66360f9f48aFBAf42BA278AD8a1e4de30dafD94;
         warbotstats = 0xC665dFa4CEe8D947f181ccE176264b143A063933;
-        warbotstatsdata = 0x7FbF69de56dE05f3217e8FC350aBa8C973b7ff5f;
+        warbotstatsdata = 0x40fE42588870269d2592229c02d57baa84548E9D;
         burnAddress = 0x000000000000000000000000000000000000dEaD;
         oracle = 0x7cE0E55703F12D03Eb53B918aD6B9EB80d188afB;
         
@@ -757,6 +781,8 @@ contract WarContract is Ownable {
       
         __warbotmanufacturer.transferFrom ( msg.sender, address(this), _warbot );
          require ( __warbotstatsdata.WarbotLevel (_warbot) > 0, "Warbot Not Activated");
+         require ( __warbotstatsdata.getCurrentHitPoint (_warbot) > 0, "Warbot is Dead");
+        
         warCount++;
         warStatus[warCount] = 1;
         WarTeamCount[warCount]++;
@@ -764,17 +790,23 @@ contract WarContract is Ownable {
        
         warbotInWarZone[_warbot]=true;
         __warbotstatsdata.setWarbotHandoff( _warbot );
-       
+        
+        newBattles.push(warCount);
+        newBattleSlot[warCount]=newBattles.length-1;
         
         BotsInWar[warCount].push(_warbot);
         TeamBotCount[warCount][msg.sender]++;
+        WarTeams[warCount].push ( msg.sender);
         warbotOwner[_warbot] = msg.sender;
         warbotAt[_warbot] = [warCount, BotsInWar[warCount].length -1  ];
+        
+        emit newBattleInitiated ( warCount , msg.sender, _warbot);
+        
     }
     
     
     
-     uint8  []  public _temp;
+     uint8  []   _temp;
      
      function checkIfTeamsAreEven( uint256 _war ) public  returns(bool)  {
         if ( WarTeamCount[_war ] <2 ) return false;
@@ -801,8 +833,15 @@ contract WarContract is Ownable {
           if(checkIfTeamIsPartOfWar( msg.sender , _war ) > 0) return checkIfTeamIsPartOfWar( msg.sender , _war );
           WarTeamCount[_war]++;
           Wars[_war][WarTeamCount[_war]] = msg.sender ;  
+          WarTeams[_war].push ( msg.sender);
           require (  WarTeamCount[_war]  <= maxWarTeams, "Maximum War Teams Limit Already Hit" );
           return WarTeamCount[_war];
+    }
+    
+    address[] _teamtemp;
+    
+    function getWarTeams ( uint256 _war ) public view returns ( address[] memory ){
+        return WarTeams[_war];
     }
    
    
@@ -828,8 +867,9 @@ contract WarContract is Ownable {
      function joinBattle ( uint256 _warbot, uint256 _war ) public {
         require ( warStatus[_war] == 1, "Arena Not Available for New Warbots" );
         require ( __warbotstatsdata.WarbotLevel (_warbot) > 0);
-       
+        require ( __warbotstatsdata.getCurrentHitPoint (_warbot) > 0, "Warbot is Dead");
         require ( countWarbotsOnTeam( _war, msg.sender) < maxBotsPerTeam , "Max Warbots for this team Already hit" );
+        
         TeamBotCount[_war][msg.sender]++;
         uint8 _team = recordTeam ( _war );
         __warbotmanufacturer.transferFrom ( msg.sender, address(this), _warbot );
@@ -846,17 +886,40 @@ contract WarContract is Ownable {
     function returnWarbot ( uint256 _warbot ) public  {
      
         require ( warbotOwner[_warbot] == msg.sender, "Not Warbot Owner" );
-        warbotOwner[_warbot]  = address(0);
-        
-        WarbotManufacturer _micromachinemanufacturingplant = WarbotManufacturer(micromachinemanufacturingplant);
-        _micromachinemanufacturingplant.transferFrom ( address(this), msg.sender,  _warbot );
-        warbotInWarZone[_warbot]=false;
-        removeWarbotFromWar ( _warbot );
-        warbotAt[_warbot] = [0,0];
+        //warbotOwner[_warbot]  = address(0);
+        processWarbotReturn (  _warbot, msg.sender );
        
-          
     }
+    
+    function processWarbotReturn ( uint256 _warbot, address _warbotowner ) public {
+         WarbotManufacturer _micromachinemanufacturingplant = WarbotManufacturer(micromachinemanufacturingplant);
+         _micromachinemanufacturingplant.transferFrom ( address(this), _warbotowner ,  _warbot );
+         
+         removeWarbotFromWar ( _warbot );
+        
+    }
+    
+    address[] public _tempOWNERS;
+    uint256[] public _tempBots;
+    
    
+    function returnAllWarbots ( uint256 _war ) public  {
+      
+        address _owner;
+        uint256 _botnumber;
+        
+        for ( uint256 x = 0; x < getBotsInWar(_war).length; x++ ){
+            
+            _owner = warbotOwner[ BotsInWar[_war][x] ];
+            _botnumber = BotsInWar[_war][x];
+            
+            _tempOWNERS.push(_owner);
+            _tempBots.push(_botnumber);
+            
+            
+             processWarbotReturn (  _botnumber, _owner );
+        }
+    }
    
    
     function removeWarbotFromWar ( uint256 _warbot )public  {
@@ -865,14 +928,33 @@ contract WarContract is Ownable {
      
          delete BotsInWar[ _war][ _position   ];
          TeamBotCount[ _war][msg.sender]--;
-          warbotOwner[_warbot] = address(0);   
+          warbotOwner[_warbot] = address(0); 
+          warbotAt[_warbot] = [0,0];
+          warbotInWarZone[_warbot]=false;
     } 
     
-  
-     
+   function getNewBattles() public view returns(uint256[] memory )    {
+     return newBattles;
+    }     
+ 
+    function getActiveBattles() public view returns(uint256[] memory )
+    {
+     return activeBattles;
+    } 
+    
+    
+    function getClosedBattles() public view returns(uint256[] memory )
+    {
+     return closedBattles;
+    }   
+ 
  
     function getBotsInWar( uint256 _war ) public view returns ( uint256[] memory ){
             return BotsInWar[_war];
+    }
+    
+     function getBotsInWarStanding( uint256 _war ) public view returns ( uint256[] memory ){
+            return BotsInWarStanding[_war];
     }
     
     function whereIsWarbot( uint256 _warbot ) public view returns(uint256, uint256) {
@@ -888,7 +970,19 @@ contract WarContract is Ownable {
        require ( WarTeamCount[_war] >1, "Not Enough Contestants" );
        require (  checkIfTeamsAreEven( _war ), "Uneven teams ");
        warStatus[_war] = 2;
+       WarRound[_war]++;
        
+       BotsInWarStanding[_war] = BotsInWar[_war];
+       
+       activeBattles.push(_war);
+       activeBattleSlot[_war]=activeBattles.length-1;
+       
+       delete newBattles[newBattleSlot[_war]];
+       newBattleSlot[_war]=0;
+ 
+
+
+       emit WarStarted ( _war, getWarTeams(_war)  );
     }
     
     // attack + target  1 +  bot position
@@ -899,21 +993,31 @@ contract WarContract is Ownable {
     function goTurn ( uint256 _war , uint8 _option, uint256 _target, int8 _x, int8 _y, uint256 _cardnumber ) public {
         require ( _option >0 && _option < 4 );
         require ( warbotOwner[getCurrentTurn (  _war )] == msg.sender, "Not Warbot's Owner" );
+        require ( warStatus[_war] == 3 , "Not Authorized");
+        require ( _target < getBotsInWarStanding(_war ).length, "Target Out of BotsInWar Array Bounds");
+        require (  BotsInWarStanding[ _war] [ _target] != BotsInWarStanding[ _war] [ warbotOrderPointer[_war] ], "Warbot Cannot Target Self");
+         require (  warbotOwner[BotsInWar[ _war] [ _target]] != warbotOwner[BotsInWarStanding[ _war] [ warbotOrderPointer[_war] ]], "Warbot Cannot Target Own Team");
+       
         warbotCommand[_war] = _option;
         if ( _option == 1 ) warbotTarget[_war] = _target;
         if ( _option == 2 ) warbotMovement[_war] = [_x,_y];
         if ( _option == 1 ) warbotCardPlay[_war] = _cardnumber;
-        advancePointer( _war );
+        warStatus[_war] = 4;
+        
+        emit goTurnEvent ( _war , _option, _target, _x,  _y,  _cardnumber );
         
     }
     
   
-    function advancePointer( uint256  _war ) internal {
-        
-         warbotOrderPointer[_war]++;
-        if( warbotOrderPointer[_war] >= warbotOrder[_war].length )  { 
+    function advancePointer( uint256  _war ) public {
+         
+        warStatus[_war] = 3;
+        warbotOrderPointer[_war]++;
+        if( warbotOrderPointer[_war] == warbotOrder[_war].length )  { 
+            WarRound[_war]++;
             warbotOrderPointer[_war] = 0;
             warStatus[_war] = 2 ;}
+        emit PointerAdvaced ( _war, warbotOrderPointer[_war] );    
     }
     
     function getCurrentTurn ( uint256 _war ) public view returns(uint256){
@@ -924,15 +1028,61 @@ contract WarContract is Ownable {
         
     }
     
+    function setWarStatus ( uint256 _war, uint8 _status ) public {
+        
+        warStatus[_war] = _status;
+    }
+    
+    function damageWarbot ( uint256 _war, uint256 _warbot , uint256 _damage, uint8 _type , uint256 _warbotlocation ) public {
+        require ( warStatus[_war] == 4, "Not proper war status" );
+        if( _type == 1 )  __warbotstatsdata.damageWarbot ( _warbot, _damage );
+        if( _type == 2 )  __warbotstatsdata.damageWarbotAttack ( _warbot, _damage );
+        if( _type == 3 )  __warbotstatsdata.damageWarbotDefense ( _warbot, _damage );
+        if( _type == 4 )  __warbotstatsdata.damageWarbotSpeed ( _warbot, _damage );
+        if( _type == 5 )  __warbotstatsdata.damageWarbotMovement ( _warbot, _damage );
+      
+        warbotTarget[_war] = 0;
+        warbotDeathCheck ( _war ,  _warbot, _warbotlocation );
+        if ( warStatus[_war] != 5 ) advancePointer(_war);
+        
+    }
+   
+    
+    function warbotDeathCheck ( uint256 _war , uint256 _warbot, uint256 _warbotlocation ) public {
+        if ( __warbotstatsdata.getCurrentHitPoint(_warbot) == 0  ){
+            WarbotDeathCount[_war][warbotOwner[_warbot]] ++;
+            delete BotsInWarStanding[_war][_warbotlocation];
+        } 
+        if (WarbotDeathCount[_war][warbotOwner[_warbot]] == TeamBotCount[_war][warbotOwner[_warbot]])  endWar ( _war, warbotOwner[_warbot] );
+    }
+    
+    function endWar ( uint256 _war, address _loser ) public{
+        
+        warStatus[_war] = 5;
+        
+       closedBattles.push(_war);
+       closedBattleSlot[_war]=closedBattles.length-1;
+       
+       delete activeBattles[activeBattleSlot[_war]];
+       activeBattleSlot[_war]=0;
+    }
     
     function setWarbotOrder ( uint256 _war, uint256 [] memory _order ) public {
-        
+        require (  warStatus[_war] == 2 , "Not the proper WarStatus" );
         warbotOrder[_war] = _order;
+        warStatus[_war] = 3;
+        warbotOrderPointer[_war] = 0;
+        emit WarBotOrderSet ( _war, _order );
+    }
+    
+    function getWarbotOrder ( uint256 _war ) public view returns ( uint256[] memory ){
+        return warbotOrder[_war];
     }
     
     
     function setMaxBotsPerTeam( uint8 _maxsize ) public onlyOwner {
         maxBotsPerTeam = _maxsize;
+        emit MaxBotsPerTeamSet (  _maxsize );
     }
     
     function setWarbotStatsData( address _address ) public onlyOwner {

@@ -109,7 +109,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
       console.log('STAKE MICROMACHINES ',  value, parseInt(data.months))
 
       const tx = await warbotmanufacturer
-        .stakeMicroMachines(value, parseInt(data.months))
+        .stakeMicroMachines(value, parseInt(data.months), 0)
         .send({ from: wallet.account, to: state.warbotmanufacturer })
 
       if (tx.status) {

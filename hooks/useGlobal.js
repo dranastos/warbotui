@@ -130,6 +130,14 @@ const actions = {
       store.setState({ warbotstatsdata: '', hasWarbotstatsdata: false })
     }
   },
+  setWarcontract: (store, warbotstatsdata) => {
+    console.log("SET WARBOTSTATS")
+    if (warcontract && warcontract.startsWith('0x') && warcontract.length == 42) {
+      store.setState({ warcontract, hasWarcontract: true })
+    } else {
+      store.setState({ warcontract: '', hasWarcontract: false })
+    }
+  },
   
   setTestnet: (store) => store.setState({ chain: 97 }),
   setMainnet: (store) => store.setState({ chain: 56 }),
@@ -140,7 +148,7 @@ const initialState = {
   //matic chain: 137, // 56 - Mainnet | 97 - Testnet
   chain: 97, // 56 - Mainnet | 97 - Testnet
   //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  security: '0xe7e92e4Ccc08f381984de6CF35E050CE7729B9C6',
+  security: '0xa66360f9f48aFBAf42BA278AD8a1e4de30dafD94',
   securityInfo: {},
   hasSecurity: true,
   vault: '',
@@ -178,20 +186,23 @@ const initialState = {
   nanobnblp:   '0xDb896a0D3E853789056245C3168d463F9C5b633D',
   hasNanobnblp: true,
   
-  nanonft:   '0x7eC07349eC92aA8a403A95DA4682403c307Ee3E5',
+  nanonft:   '0x78548d389D1d26FA9B4cA6891D02D9f64b882898',
   hasNanonft: true,
   
   warbotstats:   '0xC665dFa4CEe8D947f181ccE176264b143A063933',
   hasWarbotstats: true,
   
-  warbotstatsdata:   '0x7FbF69de56dE05f3217e8FC350aBa8C973b7ff5f',
+  warbotstatsdata:   '0x40fE42588870269d2592229c02d57baa84548E9D',
   hasWarbotstatsdata: true,
+  
+  warcontract:   '0xf0c1f5C1ca09BF843Ec7eb861627e51f48De1C90',
+  hasWarcontract: true,
   
   //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
   microbnblp:   '0xb4ec5205c12c6539fd6763354c7439811CF51C15',
   hasMicrobnblp: true,
   //matic warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-  warbotmanufacturer: '0xe7e92e4Ccc08f381984de6CF35E050CE7729B9C6',
+  warbotmanufacturer: '0xa66360f9f48aFBAf42BA278AD8a1e4de30dafD94',
   warbotmanufacturerInfo: {},
   hasWarbotmanufacturer: true,
   vaultCount: 0

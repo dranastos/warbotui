@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from 'use-wallet'
 import moment from 'moment'
 import Head from 'next/head'
+
 import {
   Layout, Menu, Breadcrumb, Typography, Space, Spin, Alert,
   Tabs, Statistic, Row, Col, Card, Slider, Form, Button, Input, Descriptions,
@@ -9,91 +10,120 @@ import {
 } from 'antd'
 
 import PublicLayout from '../layouts/PublicLayout'
-
+import WarbotWarForm from '../forms/WarbotWarForm'
+import AvailableBattles from '../forms/AvailableBattles'
+import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
 import useGlobal from '../hooks/useGlobal'
-import useBonus from '../hooks/useBonus'
+import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
+import useNanomachines from '../hooks/useNanomachines'
+
 
 const { Title, Text } = Typography
 const { Item } = Descriptions
 
-// COMMAND CENTER: 0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6
-// BONUS: 0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c
-// WELFARE ADDRESS: 0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab
-// SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
 
-export default function BonusVault() {
+
+export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain', 'bonus', 'hasBonus'])
-  const { bonus, web3, connected } = useBonus(state.bonus)
+  const [state, actions] = useGlobal(['chain',  'micromachines', 'warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotmanufacturerInfo' ])
+ 
+  const { warbotmanufacturer, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   const [show, setShow] = useState(false)
   const [data, setData] = useState({ })
-  const [counter, setCounter] = useState(0)
   const [loading, setLoading] = useState(false)
-
+  const [nanomachines] = useNanomachines(state.nanomachines)
+  const [warbotsupply, setWarbotsupply] = useState(0)
+  const [plants, setPlants] = useState(0)
+  const [warbotproduction, setWarbotproduction] = useState(0)
+  const [manufacturingperiod, setManufacturingPeriod] = useState(0)
+  const [sufficientlyApproved, setSufficientlyApproved] = useState(0)
+  
   useEffect(() => {
-    console.log("STATE", state)
-    if (connected && state.hasBonus) {
+    if (state.warbotmanufacturer && connected) {
       getInfo()
     }
-  }, [connected, state.hasBonus])
+  }, [state.hasWarbotmanufacturer,  connected])
 
   const getInfo = async() => {
     setLoading(true)
-    const welfareAddr = await bonus.welfarecontract().call()
-    const securityAddr = await bonus.socialsecuritycontract().call()
-    const centerAddr = await bonus.WelfareCommandCenterAddress().call()
-    setData({ centerAddr, securityAddr, welfareAddr })
+	
+	var WarBots = await warbotmanufacturer.totalSupply().call()
+	var plants = await warbotmanufacturer.ManufacturingPlantCount().call()
+    var warbotproduction = await warbotmanufacturer.globalwarbotproduction().call()
+    var manufacturingPeriod =await warbotmanufacturer.manufacturingPeriod().call()
+
+   
+	
+	const warbotInfo = await getFields( )
+	
+	setWarbotsupply( WarBots )
+	setPlants( plants )
+	setWarbotproduction( warbotproduction )
+	setManufacturingPeriod( manufacturingPeriod )
+    setData(warbotInfo)
+    actions.setSecurityInfo(warbotInfo)
     setLoading(false)
   }
 
-  const updateInfo = async(field, value) => {
-    setLoading(true)
-    if (value.startsWith('0x') && value.length == 42) {
-      const tx = await contract[field](value).send({ from: wallet.account, to: state.center })
-      if (tx.status) {
-        notification.success({
-          message: 'Update Successful',
-          description: tx.transactionHash,
-        })
-      }
-    } else {
-      notification.error({
-        message: 'Update Failed',
-        description: 'Address Incorrect'
-      })
-    }
-    setLoading(false)
-  }
-
-  const updateBonusVault = async() => {
-    const tx = await contract.updateBonusVaultAddress().send({ from: wallet.account, to: state.center })
-    if (tx.status) {
-      notification.success({
-        message: 'Update Successful',
-        description: tx.transactionHash,
-      })
-    }
-  }
-
-  const renderDashboard = useCallback(() => (
-    <Row gutter={[20, 20]} style={{ marginTop: 20 }}>
-      
-      <Col span={24}>
-        <Card>
-          <Statistic title="Head to Head Warbot Combat" value="UNDER CONSTRUCTION" />
-         </Card> 
-      </Col>
-      
-      
-    </Row>
-  ), [data])
+  const renderStats = useCallback(() => (
+    <Spin spinning={loading}>
+      <Card title="Warbot Battle Statistics" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
+        <Row gutter={[20, 20]}>
+           <Col span={8}>
+            <Statistic title="WarBots in Battle:" value={warbotsupply} />
+          </Col>
+		  <Col span={8}>
+            <Statistic title="Total Warbot Battles:" value={plants} />
+          </Col>
+		  <Col span={8}>
+          <Statistic title="Total Rounds of Combat" value={warbotproduction} />
+          </Col>
+		    <Col span={8}>
+            <Statistic title="Total Warbot Victories:" value={manufacturingperiod} />
+          </Col>
+        
+        </Row>
+      </Card>
+    </Spin>
+  ), [ loading])
 
   return (
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
-        <Title level={2}>Combat Zone</Title>
-        { state.hasBonus && renderDashboard() }
+        <Title level={2}>Warbot Combat Zone</Title>
+		
+         
+        {
+          (state.hasSecurity && wallet.status == 'connected') && (
+            <div>
+              <Space style={{ marginTop: 20 }}>
+               
+              </Space>
+              <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
+                <Tabs.TabPane tab="Warzone  Dashboard" key="dashboard">
+                  <Row gutter={20} style={{ marginTop: `10px`, marginBottom: `30px` }}>
+                    <Col xs={8}>
+                      <WarbotWarForm />
+                    </Col>
+                    <Col xs={16}>
+					  <AvailableBattles />
+					   <Space style={{ marginTop: 20 }}></Space>
+					  
+                    </Col>
+                  </Row>
+                </Tabs.TabPane>
+				<Tabs.TabPane tab="Battles Finalized" key="closedVaults">
+                   <UserManufacturingCentersClosed />
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="WarBot Combat Statistics" key="details">
+                  { renderStats() }
+                </Tabs.TabPane>
+				
+              </Tabs>
+            </div>
+          )
+        }
 
       </div>
     </PublicLayout>

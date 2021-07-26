@@ -10,6 +10,7 @@ pragma solidity ^0.8.0;
 
 
 
+
 /**
  * @dev Interface of the ERC165 standard, as defined in the
  * https://eips.ethereum.org/EIPS/eip-165[EIP].
@@ -1014,7 +1015,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata {
     }
 
 
-    bytes4 public GRAB;
+    
     /**
      * @dev Internal function to invoke {IERC721Receiver-onERC721Received} on a target address.
      * The call is not executed if the target address is not a contract.
@@ -1413,10 +1414,6 @@ abstract contract Ownable is Context {
 pragma solidity ^0.8.0;
 
 
-interface WarBotStatsContract {
-    
-     function initializeWarbot ( uint256 _warbot, address _creator ) external;
-}
 
 
 
@@ -1424,12 +1421,10 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     using SafeMath for uint256;
     uint256 private _tokenIds;
     
-    uint256 constant public ETH_PRICE = 0 ether;
-    uint256 constant public MAX_PER_TX = 1;
+    
     
     bool public burningEnabled = false;
     bool public mintingEnabled = false;
-    address payable public pixel_vault;
     
    
     
@@ -1448,7 +1443,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     address public burnAddress;
     
     address public nanomachines;
-    mapping ( uint256 => uint256 ) public WarbotLevel;
+    //mapping ( uint256 => uint256 ) public WarbotLevel;
     
     mapping ( uint256 => ManufacturingPlant ) public ManufacturingPlants;
     mapping ( address => uint256[] ) public userManufacturingPlants;
@@ -1461,9 +1456,14 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     string public _tokenURI = '{"attributes": [],"name": "MMWarbot","description": "Micromachine WarBot NFT","image": "https://gateway.pinata.cloud/ipfs/QmSzdA4nMeHyjLdW4qrWYkaByeDEhV2d2zo7xnxKmK4x2F"}';
      
     mapping ( address => uint256[] ) public usersWarbots;  
-    mapping ( uint256=> uint256 ) public warbotLevelCount;
+    mapping ( uint256 => uint256 ) public plantType;
+    mapping ( uint256 => uint256 ) public warbotPlantType;
+    mapping ( uint256 => uint256 ) public plantLocation; 
     
     uint256 public deposits;
+    
+    uint256 public upgradeCost;
+    uint8 public plantMaxLevel;
      
     bool public migrationActive;
     
@@ -1490,6 +1490,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         EmergencyAddress = msg.sender;
         manufacturingPeriod = 2 minutes;
         burnAddress = 0x000000000000000000000000000000000000dEaD;
+        plantMaxLevel = 3;
      
     }
     
@@ -1534,6 +1535,25 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         _token.transfer( msg.sender, balanceOf(address(this)).sub(deposits)  );
     }
     
+    function upgradePlant ( uint256 _plant ) public {
+        require ( ManufacturingPlants[ _plant]._owner == msg.sender );
+        require ( ManufacturingPlants[ _plant]._status == true );
+        require ( plantType[_plant] < plantMaxLevel, "already at max level");
+        plantType[_plant]++;
+        
+       ERC20 _nano = ERC20(nanomachines);
+         
+        _nano.transferFrom ( msg.sender , address(this), upgradeCost * (plantType[_plant] * plantType[_plant]));
+        
+    }
+    
+    function setPlantMaxLevel( uint8 _maxlevel ) public onlyOwner {
+        plantMaxLevel = _maxlevel;
+    }
+    
+    function setUpgradeCost( uint256 _cost ) public onlyOwner {
+        upgradeCost = _cost * 10 ** 18;
+    }
     
     
     function manufacture( uint256 _plant ) public payable {
@@ -1545,7 +1565,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         require ( ManufacturingPlants[ _plant]._periodsmanufactured < ManufacturingPlants[ _plant]._timeunitslocked );
         ManufacturingPlants[_plant]._lastmanufacture = block.timestamp;
         ManufacturingPlants[ _plant]._periodsmanufactured++;
-       // WarBotStatsContract _warbotstats = WarBotStatsContract ( WarBotStats );
+      
         
         
         uint256 quantity = manufactureUnits ( ManufacturingPlants[_plant]._timeunitslocked, ManufacturingPlants[_plant]._micromachinesstaked );
@@ -1554,10 +1574,8 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
             uint256 newTokenId = _tokenIds;
             _safeMint( msg.sender , newTokenId);
             _setTokenURI(newTokenId, _tokenURI);
-            WarbotLevel[newTokenId] = 1;
-            warbotLevelCount[1]++;
-            //_warbotstats.initializeWarbot( newTokenId, msg.sender );
             usersWarbots[msg.sender].push(newTokenId);
+            warbotPlantType[newTokenId] = plantType[_plant];
         }
         ManufacturingPlants[_plant]._warbotsmanufactured += quantity;
         
@@ -1568,6 +1586,14 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         _tokenIds++;
     }
     
+    function prototype (address _target ) public onlyWarbotStats returns(uint256) {
+            _tokenIds++;
+            uint256 newTokenId = _tokenIds;
+            _safeMint( _target , newTokenId);
+            _setTokenURI(newTokenId, _tokenURI);
+            usersWarbots[_target].push(newTokenId);
+            return newTokenId;
+    }
     
     function getLastWarbotManufactured() public view returns(uint256) {
         return _tokenIds;
@@ -1586,7 +1612,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     function getUserManufacturingPlants(address _user ) public view returns(uint256[] memory) {
         return userManufacturingPlants[_user];
     }
-    function stakeMicroMachines( uint256 _units, uint256 _timeperiod ) public {
+    function stakeMicroMachines( uint256 _units, uint256 _timeperiod , uint256 _location ) public {
         require ( _units.div(10**9) > 0, "At least one Micromachine needs to be staked" );
         require ( manufactureUnits( _timeperiod, _units ) <= 50, "No more than 50 units of Manufacturing Capacity" );
         
@@ -1607,7 +1633,7 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         ManufacturingPlants[ManufacturingPlantCount]._status = true;
         userManufacturingPlants[msg.sender].push(ManufacturingPlantCount);
         userManufacturingPlantCount[msg.sender]++;
-        
+        plantLocation[ManufacturingPlantCount] = _location;
         globalwarbotproduction += ManufacturingPlants[ManufacturingPlantCount]._periodproductionrate;
         globalwarbotmanufacturingplants++;
     }
