@@ -9,9 +9,11 @@ import {
   notification
 } from 'antd'
 
+import Fight from '../forms/Fight'
 import PublicLayout from '../layouts/PublicLayout'
 import WarbotWarForm from '../forms/WarbotWarForm'
 import AvailableBattles from '../forms/AvailableBattles'
+
 import UserManufacturingCentersClosed from '../forms/UserManufacturingCentersClosed'
 import useGlobal from '../hooks/useGlobal'
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant'
@@ -111,9 +113,13 @@ export default function Dashboard() {
 					   <Space style={{ marginTop: 20 }}></Space>
 					  
                     </Col>
+
                   </Row>
                 </Tabs.TabPane>
-				<Tabs.TabPane tab="Battles Finalized" key="closedVaults">
+				<Tabs.TabPane tab="Battle Zone" key="battleZone">
+                    <Fight />
+                </Tabs.TabPane>
+				<Tabs.TabPane tab="Battles Finalized" key="battleFinalized">
                    <UserManufacturingCentersClosed />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="WarBot Combat Statistics" key="details">

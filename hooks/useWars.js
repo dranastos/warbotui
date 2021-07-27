@@ -70,9 +70,46 @@ const useWars = () => {
      }
 	
   }
+  
+   const getWarFight = async(war, mainbot) => {
+    
+	 console.log ( "MAINBOT", mainbot )
+	 
+	const level = await warbotstatsdata.getWarBotLevel(mainbot).call()
+	
+	const owner = await warcontract.warbotOwner(mainbot).call() 
+	const botsinwar = await warcontract.getBotsInWar(war).call()
+	const warbotsturn = await warcontract.getCurrentTurn(war).call()
+	const warbottype = await warbotstatsdata.WarbotType(mainbot).call() 
+	const warbotprofile = await warbotstatsdata.WarBotProfiles(mainbot).call() 
+	var type = getType ( warbottype )
+	  
+	    
+	return {
+     
+	  
+	  "WarNumber" : war,
+      "Warbot" : mainbot,
+	  "Level" :  level ,
+	  "Hull Hitpoints" :  warbotprofile.hitpoints  ,
+      "Speed" :   warbotprofile.speed  ,
+	  "Attack" :   warbotprofile.attack,
+      "Defense" :   warbotprofile.defense,
+      "Movement": 	  warbotprofile.movement,
+	  "BotsInWar": botsinwar,
+	  "WarbotsTurn": warbotsturn
+	 
+     }
+	
+  }
 
-  return [getWars, sendVaultTx]
+
+
+
+  return [getWars,  getWarFight , sendVaultTx]
 }
+
+ 
 
 function getType ( x ) {
    

@@ -17,7 +17,7 @@ import moment from 'moment'
 
 
 
-const AvailableBattles = ({ onComplete, address }) => {
+const BattleZone = ({ onComplete, address }) => {
   
   const wallet = useWallet()
   const [getVault, sendVaultTx] = useWarbots()
@@ -44,14 +44,14 @@ const AvailableBattles = ({ onComplete, address }) => {
    
 
   const getDeposits = async() => {
-    
+    console.log ("fuck you")
 	setLoading(true)
     
     //const deps = await warbotmanufacturer.getUserManufacturingPlants(wallet.account).call()
 	//const totalDeps = await warbotmanufacturer.userManufacturingPlantCount(wallet.account).call()
 	const warCount = await warcontract.warCount().call()
 	console.log ( warCount )
-	const newBattles = await warcontract.getNewBattles().call()
+	const newBattles = await warcontract.getActiveBattles().call()
 	console.dir ( newBattles )
 	setDeposits(newBattles)
 
@@ -63,7 +63,7 @@ const AvailableBattles = ({ onComplete, address }) => {
 		
 		const mainbot = await warcontract.BotsInWar(battle, 0).call()  
 		
-		const data = await getWars( battle, mainbot )
+		const data = await getWarFight( battle, mainbot )
 		console.log( " test " + mainbot )
 		vaults[battle] = { ...data}
      }catch (e) {
@@ -81,10 +81,10 @@ const AvailableBattles = ({ onComplete, address }) => {
     setLoading(false)
   }
 
-  const joinWar = async(id) => {
+  const fireGuns = async(id) => {
     
 	setLoading(true)
-    console.log("Join Battle # " + id, warbot)
+    console.log("Fire Gun # " + id, warbot)
 	//const cardsperwarbot = await nanonft.cardsperwarbot().call()
 	try {
 		const tx = await warcontract.joinBattle( warbot ,id).send({ from: wallet.account, to: state.warcontract })
@@ -101,10 +101,30 @@ const AvailableBattles = ({ onComplete, address }) => {
     setLoading(false)
   }
   
-   const startWar = async(id) => {
+   const move = async(id) => {
     
 	setLoading(true)
-    console.log("Join Battle # " + id, warbot)
+    console.log("Move # " + id, warbot)
+	//const cardsperwarbot = await nanonft.cardsperwarbot().call()
+	try {
+		const tx = await warcontract.startWar( id).send({ from: wallet.account, to: state.warcontract })
+		if (tx.status) {
+		  notification.success({
+			message:  ' Battle Started ',
+			description: tx.transactionHash
+		  })
+		}
+	} catch (e) {
+      console.log(e)
+    }
+	
+    setLoading(false)
+  }
+  
+  const  nanoNFT = async(id) => {
+    
+	setLoading(true)
+    console.log("NanoNFT # " + id, warbot)
 	//const cardsperwarbot = await nanonft.cardsperwarbot().call()
 	try {
 		const tx = await warcontract.startWar( id).send({ from: wallet.account, to: state.warcontract })
@@ -203,6 +223,7 @@ const AvailableBattles = ({ onComplete, address }) => {
 	if ( vaults[id] === undefined ) return
 	var warbotid = "War Number: " + vaults[id].WarNumber
 	var warbotlevel = "Warbot Level: " + vaults[id].Level
+	var botsinwar = "Warbots in War " + vaults[id].BotsInWar
 	var type = vaults[id].WarbotType
 	
 	
@@ -210,13 +231,13 @@ const AvailableBattles = ({ onComplete, address }) => {
     return (
       <div key={`vault-${id}`}>
         <Collapse>
-          <Collapse.Panel header={`${warbotid} -${warbotlevel} -${type}`}>
+          <Collapse.Panel header={`${botsinwar} -${warbotlevel} -${type}`}>
             <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
               <Col span={24}>
-               <Button type="primary" onClick={() => approve()}  style={{ background: "black", borderColor: "yellow" }}>Approve Joining</Button>
-			   <Button type="primary" onClick={() => joinWar(id)}  style={{ background: "black", borderColor: "yellow" }}>Join Battle</Button>
-			   <Button type="primary" onClick={() => startWar(id)}  style={{ background: "black", borderColor: "yellow" }}>Start Battle</Button>
-			   		  <Form.Item name="warnumber" label="Warbot Number" rules={[{ required: true, message: 'Enter Warbot Number' }]}>
+               <Button type="primary" onClick={() => fireGuns()}  style={{ background: "black", borderColor: "yellow" }}>Fire Guns</Button>
+			   <Button type="primary" onClick={() => move(id)}  style={{ background: "yellow", borderColor: "yellow" }}>Move</Button>
+			   <Button type="primary" onClick={() => nanoNFT(id)}  style={{ background: "red", borderColor: "yellow" }}>Use NanoNFT</Button>
+			   		  <Form.Item name="warnumber" label="Warbot Number" rules={[{ required: true, message: 'Enter NFT Card Number' }]}>
                       <Input type="number" placeholder="e.g 10000" value={warbot} onChange={warbotCall} />
                       </Form.Item>
 			   <Button type="primary" onClick={() => rerollLevelStats(id)}  style={{ background: "black", borderColor: "yellow" }}>Purchase Fuel</Button>
@@ -249,7 +270,7 @@ const AvailableBattles = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="Available Battles" extra={<Button onClick={getDeposits}>Refresh</Button>}>
+      <Card title="Battle Zone" extra={<Button onClick={getDeposits}>Refresh</Button>}>
         <Row style={{ marginBottom: 20 }}>
           <Col span={12}>
           
@@ -264,4 +285,4 @@ const AvailableBattles = ({ onComplete, address }) => {
   )
 }
 
-export default AvailableBattles
+export default BattleZone
