@@ -191,6 +191,12 @@ export default function Dashboard() {
                                     }
                                 >
                                     <MicroMachineStakingForm />
+                                    <button
+                                        className="view_closed"
+                                        onClick={() => toggleTab(2)}
+                                    >
+                                        View Closed Plants
+                                    </button>
                                     {/* <For_innovators_tab /> */}
                                 </div>
 
@@ -202,6 +208,12 @@ export default function Dashboard() {
                                     }
                                 >
                                     <Closed_plants_tab />
+                                    <button
+                                        className="view_closed"
+                                        onClick={() => toggleTab(1)}
+                                    >
+                                        View Active Plants
+                                    </button>
                                 </div>
                                 <div
                                     className={
