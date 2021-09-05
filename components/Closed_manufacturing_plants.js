@@ -78,8 +78,6 @@ function Closed_manufacturing_plants() {
                             </tr>
                         </table>
                     </div>
-
-                    <button className="view_closed">View Active Plants</button>
                 </div>
             </section>
         </>

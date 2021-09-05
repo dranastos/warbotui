@@ -21,6 +21,7 @@ import useGlobal from "../hooks/useGlobal";
 
 import useMicroMachines from "../hooks/useMicroMachines";
 import Manufacturing_plants from "../components/Manufacturing_plants";
+import UserManufacturingCenters from "./UserManufacturingCenters";
 
 const slider_style = {
     backgroundColor: " rgba(113, 238, 255, 0.7)",
@@ -36,6 +37,7 @@ const handle_style = {
     height: "30px",
     top: "0",
 };
+
 const MicroMachineStakingForm = ({ onComplete, address }) => {
     const wallet = useWallet();
     const [state, actions] = useGlobal([
@@ -82,8 +84,8 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
             .allowance(wallet.account, state.warbotmanufacturer)
             .call();
         setAllowance(web3.utils.fromWei(balance, "nano"));
-        setSufficientlyApproved("primary");
-        setInsufficientlyApproved("danger");
+        setSufficientlyApproved("stake_btn2");
+        setInsufficientlyApproved("stake_btn");
         setCounter(counter + 1);
     };
 
@@ -202,7 +204,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                                         </p>
                                     </div>
                                     <button className="mmac_btn">
-                                        361 MMAC
+                                        {balance} MMAC
                                     </button>
                                 </div>
                                 <hr />
@@ -275,13 +277,19 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                                         <span> (0.8 years)</span>
                                     </p> */}
                                     <button
-                                        className="stake_btn"
-                                        type={
+                                        className={
                                             allowance >= data.amount &&
                                             data.amount * data.months <= 50
                                                 ? sufficientlyApproved
                                                 : insufficientlyApproved
                                         }
+                                        // className="stake_btn"
+                                        // type={
+                                        //     allowance >= data.amount &&
+                                        //     data.amount * data.months <= 50
+                                        //         ? sufficientlyApproved
+                                        //         : insufficientlyApproved
+                                        // }
                                         onClick={
                                             allowance >= data.amount
                                                 ? handleDeposit
@@ -291,10 +299,20 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                                         Stake MMAC
                                     </button>
                                     <p className="stake_info">
-                                        Build <span>369 Warbots</span> a period
-                                        by locking your MicroMachines for 3
-                                        months for a total of
-                                        <span>1107 Warbots</span>.
+                                        Build{" "}
+                                        <span>
+                                            {data.amount * data.months} Warbots{" "}
+                                        </span>
+                                        a period by locking your MicroMachines
+                                        for {data.months} months for a total of
+                                        <span>
+                                            {" "}
+                                            {data.amount *
+                                                data.months *
+                                                data.months}{" "}
+                                            Warbots
+                                        </span>
+                                        .
                                     </p>
                                 </div>
                                 <hr />
@@ -311,7 +329,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                     </div>
                 </div>
             </section>
-            <Manufacturing_plants />
+            <UserManufacturingCenters />
             {/* <Card title="Micromachine Staking">
                 <Card title="Build WarBot Manufacturing Center">
                     <Form size="large" layout="vertical">

@@ -400,7 +400,8 @@ body {
 .mmac_btn {
     font-family: "Teko", sans-serif;
     width: 195px;
-    height: 58px;
+    height: auto;
+    padding: 13px 11px 11px 13px;
     background: rgba(113, 238, 255, 0.2);
     border: 1px solid #71eeff;
     box-sizing: border-box;
@@ -519,7 +520,8 @@ input:focus-visible {
     color: #778fba;
     -webkit-box-shadow: 0 10px 0 0 rgba(119, 143, 186, 10%);
     box-shadow: 0 10px 0 0 rgba(119, 143, 186, 10%);
-    margin-bottom: 48px;
+    margin-bottom: 40px;
+    margin-top: 20px;
 }
 .stake_btn:active {
     box-shadow: none;
