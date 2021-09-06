@@ -415,5 +415,5 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
         </Spin>
     );
 };
-
+// export const mmac_bal = { MMAC_balance };
 export default MicroMachineStakingForm;

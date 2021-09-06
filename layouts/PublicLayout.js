@@ -18,18 +18,68 @@ import {
 import { useWallet } from "use-wallet";
 import useGlobal from "../hooks/useGlobal";
 
+import useMicroMachines from "../hooks/useMicroMachines";
+import MicroMachineStakingForm from "../forms/MicroMachineStakingForm";
+
 import useMicroMachineManufacturingPlant from "../hooks/useMicroMachineManufacturingPlant";
 const { Header, Content, Footer } = Layout;
 const { Title, Text } = Typography;
 
 export default function PublicLayout({ children }) {
+    const wallet = useWallet();
     const [drawer, showDrawer] = useState(false);
     const [state, actions] = useGlobal([]);
     const { security, getFields, connected } =
         useMicroMachineManufacturingPlant(state.security);
     const [loading, setLoading] = useState(false);
-    const wallet = useWallet();
+    // balance
+    const [states, actionss] = useGlobal([
+        "warbotmanufacturer",
+        "hasWarbotmanufacturer",
+        "micromachines",
+        "hasMicromachines",
+        // "nanomachines",
+        // "hasNanomachines",
+        // "dicesiumBatteries",
+        // "hasDicesiumBatteries",
+    ]);
+    const { warbotmanufacturer, web3 } = useMicroMachineManufacturingPlant(
+        states.warbotmanufacturer
+    );
+    const [micromachines] = useMicroMachines(states.micromachines);
+    // const [Nanomachines] = useNanomachines(states.Nanomachines);
+    const [MMACbalance, setMMACBalance] = useState(0);
+    // const [nanobalance, setNanobalance] = useState(0);
+    // const [dicesium, setDicesium] = useState(0);
+    const [counter, setCounter] = useState(0);
 
+    useEffect(() => {
+        if (micromachines && states.hasMicromachines) {
+            getMMACbalance();
+        }
+    }, [micromachines, states.hasMicromachines]);
+
+    // useEffect(() => {
+    //     if (Nanomachines && states.hasNanomachines) {
+    //         getNanomachines();
+    //     }
+    // }, [Nanomachines, states.hasNanomachines]);
+
+    const getMMACbalance = async () => {
+        const MMACbalance = await micromachines
+            .balanceOf(wallet.account)
+            .call();
+        setMMACBalance(web3.utils.fromWei(MMACbalance, "nano"));
+        setCounter(counter + 1);
+    };
+    // const getNanomachines = async () => {
+    //     const nanobalance = await micromachines
+    //         .balanceOf(wallet.account)
+    //         .call();
+    //     setNanobalance(web3.utils.fromWei(nanobalance, "nano"));
+    //     setCounter(counter + 1);
+    // };
+    // balance
     useEffect(() => {
         if (wallet.status == "connected" && state.hasSecurity == false) {
             showDrawer(true);
@@ -407,7 +457,7 @@ export default function PublicLayout({ children }) {
                                                     src="/img/Manufacturing_center.png"
                                                     alt=""
                                                 />
-                                                3
+                                                {MMACbalance}
                                             </a>
                                         </li>
 

@@ -226,7 +226,8 @@ body {
     margin-right: 12px;
 }
 .nav-item:nth-child(1) {
-    width: 86px;
+    padding: 0 10px;
+    width: auto;
     height: 62px;
 }
 .nav-item:nth-child(2) {

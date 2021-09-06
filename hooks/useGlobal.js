@@ -211,6 +211,10 @@ const initialState = {
     micromachines: "0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD",
     hasMicromachines: true,
 
+    // Dicesium Batteries :'0x8373a372e8Fe67CF208e693F10C8a04B48367Db5',
+    dicesiumBatteries: "0x8373a372e8Fe67CF208e693F10C8a04B48367Db5",
+    hasDicesiumBatteries: true,
+
     //matic nanomachines: '0xc10006027DCFdABdce5BA9c589b7900241681510',
     nanomachines: "0x4C0AeEB37210b97956309BB4585c5433Cc015F6c",
     hasNanomachines: true,
