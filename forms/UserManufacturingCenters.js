@@ -129,68 +129,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
                     </button>
                 </td>
 
-                {/* <Collapse>
-                    <Collapse.Panel
-                        header={`${mmstaked} - ${vaults[id].timeAtExpiration} - ${production}`}
-                    >
-                        <Row style={{ marginTop: 10 }} gutter={[20, 20]}>
-                            <Col span={24}>
-                                <Space
-                                    size="small"
-                                    style={{ marginBottom: 10 }}
-                                >
-                                    <Button
-                                        type="primary"
-                                        onClick={() => manufacture(id)}
-                                    >
-                                        Manufacture WarBots
-                                    </Button>
-                                    <Button
-                                        type="danger"
-                                        onClick={() =>
-                                            sendVaultTx(
-                                                "unstakeMicroMachines",
-                                                state.warbotmanufacturer,
-                                                wallet.account,
-                                                id
-                                            )
-                                        }
-                                    >
-                                        Shutdown Plant
-                                    </Button>
-                                </Space>
-                            </Col>
-                            <Col span={12}>
-                                <Statistic
-                                    title="WarBot Manufacturing Plant "
-                                    value={id}
-                                />
-                            </Col>
-
-                            {Object.keys(vaults[id]).map((name, key) => (
-                                <Col
-                                    key={`${id}-${name}-${key}`}
-                                    span={
-                                        vaults[id]["MicroMachinesStaked"]
-                                            .toString()
-                                            .startsWith("0x")
-                                            ? 24
-                                            : 8
-                                    }
-                                >
-                                    <Statistic
-                                        title={name.toUpperCase()}
-                                        value={vaults[id][name]}
-                                        precision={
-                                            name == "POOL WEIGHT" ? 9 : 0
-                                        }
-                                        style={{ marginBottom: 20 }}
-                                    />
-                                </Col>
-                            ))}
-                        </Row>
-                    </Collapse.Panel>
-                </Collapse> */}
+                {}
             </tr>
         );
     };
@@ -221,19 +160,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
                                 <th>Warbots Manufactured</th>
                                 <th>Unclaimed Warbots</th>
                             </tr>
-                            {/* <tr>
-                                <td>25</td>
-                                <td> 15:00 2021-07-23</td>
-                                <td> 2 quarters</td>
-                                <td>89D 16h 39m 20s </td>
-                                <td>150</td>
-                                <td className="halka_edit">
-                                    <button className="tb_btn_1">50</button>
-                                    <button className="tb_btn_2">
-                                        Claim Warbots
-                                    </button>
-                                </td>
-                            </tr> */}
+                            {}
 
                             {hasVaults && deposits.map(renderDeposit)}
                         </table>

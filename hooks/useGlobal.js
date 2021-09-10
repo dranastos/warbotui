@@ -181,10 +181,10 @@ const actions = {
 };
 
 const initialState = {
-    //matic chain: 137, // 56 - Mainnet | 97 - Testnet
-    chain: 97, // 56 - Mainnet | 97 - Testnet
+    chain: 137, // 56 - Mainnet | 97 - Testnet
+    //chain: 97, // 56 - Mainnet | 97 - Testnet
     //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-    security: "0xa66360f9f48aFBAf42BA278AD8a1e4de30dafD94",
+    security: "0xF4225b776793B44391496636115CBF1483B5E153",
     securityInfo: {},
     hasSecurity: true,
     vault: "",
@@ -207,8 +207,8 @@ const initialState = {
     masterchef: "0x2ad02356F07AbBb327cAF71f65A53270B8C10891",
     hasMasterchef: true,
 
-    //matic micromachines: '0x9c053B671de651fA1d4C7eDE10a09789218068c1',
-    micromachines: "0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD",
+    micromachines: '0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A',
+    //micromachines: "0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD",
     hasMicromachines: true,
 
     // Dicesium Batteries :'0x8373a372e8Fe67CF208e693F10C8a04B48367Db5',
@@ -237,12 +237,15 @@ const initialState = {
 
     warcontract: "0xf0c1f5C1ca09BF843Ec7eb861627e51f48De1C90",
     hasWarcontract: true,
+	
+	welfare: "0xf0c1f5C1ca09BF843Ec7eb861627e51f48De1C90",
+    hasWelfare: true,
 
     //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
     microbnblp: "0xb4ec5205c12c6539fd6763354c7439811CF51C15",
     hasMicrobnblp: true,
     //matic warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-    warbotmanufacturer: "0xa66360f9f48aFBAf42BA278AD8a1e4de30dafD94",
+    warbotmanufacturer: "0xF4225b776793B44391496636115CBF1483B5E153",
     warbotmanufacturerInfo: {},
     hasWarbotmanufacturer: true,
     vaultCount: 0,

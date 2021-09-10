@@ -6,7 +6,7 @@
 
 
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.7;
 
 
 
@@ -1426,6 +1426,8 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     bool public burningEnabled = false;
     bool public mintingEnabled = false;
     
+    bool public summonEnabled = true;
+    
    
     
     event WarBotsManufactured(address to, uint256 quantity);
@@ -1442,6 +1444,8 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     address public WarBotStats;
     address public burnAddress;
     
+    address[] public EngineContracts;
+    
     address public nanomachines;
     //mapping ( uint256 => uint256 ) public WarbotLevel;
     
@@ -1453,24 +1457,46 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     uint256 public globalwarbotproduction;
     uint256 public globalwarbotmanufacturingplants;
     
-    string public _tokenURI = '{"attributes": [],"name": "MMWarbot","description": "Micromachine WarBot NFT","image": "https://gateway.pinata.cloud/ipfs/QmSzdA4nMeHyjLdW4qrWYkaByeDEhV2d2zo7xnxKmK4x2F"}';
+   
+    
+   // string public _tokenURI = '{"name": "MMWarbot","description": "Micromachine WarBot NFT","image": "https://cloudflare-ipfs.com/ipfs/QmUGZ9KtChpvGRqvS3P8N5RqFBASP3qZmqpG1FVVp1uDS6"}';
+    string public  contractURIstorefront = '{ "name": "Micromachine Warbots", "description": "Micromachine Warbots are mini killimg machines that are pitted against each other in battle.", "image": "https://riseofthewarbots.com", "external_link": "https://riseofthewarbots.com", "seller_fee_basis_points": 300, "fee_recipient": "0x42A1DE863683F3230568900bA23f86991D012f42"}'; 
+    
+    
+    string public _tokenURI = '{"attributes":[{"trait_type":"type","value":"Tractor"},{"trait_type":"level","value":3},{"trait_type":"Hitpoints","value":11},{"trait_type":"Attack","value":5},{"trait_type":"Defense","value":7},{"trait_type":"Speed","value":6},{"trait_type":"Movement","value":4},{"display_type":"boost_number","trait_type":"attack_bonus","value":8},{"display_type":"boost_number","trait_type":"Speed_Bonus","value":5},{"display_type":"number","trait_type":"generation","value":1}],"description":"Tractor Warbot. Origin: Nova Scotia Manufacturing Plant","external_url":"https://example.com/?token_id=3","image":"https://cloudflare-ipfs.com/ipfs/QmUGZ9KtChpvGRqvS3P8N5RqFBASP3qZmqpG1FVVp1uDS6","name":"Canadian Hellfire." ,"seller_fee_basis_points": 500, "fee_recipient": "0x42A1DE863683F3230568900bA23f86991D012f42" }'; 
+     
      
     mapping ( address => uint256[] ) public usersWarbots;  
-    mapping ( uint256 => uint256 ) public plantType;
-    mapping ( uint256 => uint256 ) public warbotPlantType;
-    mapping ( uint256 => uint256 ) public plantLocation; 
+    //mapping ( uint256 => uint256 ) public plantType;
+    mapping ( uint256 => uint256 ) public warbotPlantLevel;
+   
+    mapping ( uint256 => Location ) public warbotLocationOrigin;
+    mapping ( uint256 => uint256 ) public  warbotMadeIn;
+    mapping ( uint256 => uint256 ) public warbotArrayPosition;
+    mapping ( uint256 => uint256 ) public plantArrayPosition;
+    
     
     uint256 public deposits;
     
-    uint256 public upgradeCost;
-    uint8 public plantMaxLevel;
+    uint256 public royaltyPerc;
+    mapping ( uint256 => address payable ) public royaltySplitContract;
+    
+    uint256 public upgradeCost= 1 * 10 **18;
+    uint8 public plantMaxLevel = 1 ;
      
     bool public migrationActive;
+    address public migrationContract;
+    
+    bool public summonBurnEnabled;
+    
+    address payable public royaltyContract;
     
      
     struct ManufacturingPlant {
-       
        address _owner;
+       string  _name;
+       Location  _location;
+       uint256 _level;
        uint256 _micromachinesstaked;
        uint256 _timeofexpiration;
        uint256 _timeunitslocked;
@@ -1482,36 +1508,63 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
        bool    _status;   
     } 
     
+    struct Location {
+        int256 x;
+        int256 y;
+        int256 z;
+    }
+    
     constructor() ERC721("MicroMachineWarBots", "MMWarBot") {
-        nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
-        MicroMachineAddress = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
+       // nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
+        //MicroMachineAddress = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
+        //nanomachines =0x664B3F930fF131758FCeeE9Ed1f1d080a6DCFD76;// rinkeby
+        //MicroMachineAddress = 0x36E89d61DB6280c459992bDF7e200d786CBe64ed; //rinkeby
+       // MicroMachineAddress = 0xcc116e59Dd51DF5460E8B11Ff615E3E706a9202A;
+        MicroMachineAddress = 0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A; // matic
         mintingEnabled = !mintingEnabled;
         burningEnabled = !burningEnabled;
         EmergencyAddress = msg.sender;
-        manufacturingPeriod = 2 minutes;
-        burnAddress = 0x000000000000000000000000000000000000dEaD;
-        plantMaxLevel = 3;
+        manufacturingPeriod = 90 days;
+        burnAddress = 0x0000000000000000000000000000000000000001;
+        plantMaxLevel = 1;
+        EngineContracts.push ( msg.sender );
+        royaltyContract = payable(msg.sender);
      
     }
     
+    function emergencyWithdraw() public OnlyEmergency {
+        ERC20 _token = ERC20(MicroMachineAddress);
+        _token.transfer( msg.sender, _token.balanceOf (address(this)) );
+    }
     
-    
-    function setManufacturingPeriod( uint256 _minutes ) public OnlyEmergency {
+    function setManufacturingPeriod( uint256 _minutes ) public onlyEngine {
         manufacturingPeriod = _minutes * 1 minutes;  //43,200 = 30 days
         
     }
     
-    function setWarBotsStats( address _address ) public OnlyEmergency {
+    function setWarBotsStats( address _address ) public onlyEngine {
+        require ( _address != address(0) , "No Zero Address");
         WarBotStats = _address;
         
     }
     
+    function setWBMCLocation( uint256 _plant, Location memory _location ) public onlyEngine  {
+        ManufacturingPlants[_plant]._location = _location;
+    }
     
-    function setNanomachines( address _address ) public OnlyEmergency {
+    
+    function setNanomachines( address _address ) public onlyEngine {
+        require ( _address != address(0) , "No Zero Address");
         nanomachines = _address;
         
     }
     
+    
+    function setRoyaltyContract( uint256 _tokenId, address payable _address ) public onlyEngine {
+        require ( _address != address(0) , "No Zero Address");
+        royaltySplitContract[_tokenId] = _address;
+        
+    }
     
     
     function onERC721Received( address _operator, address _from, uint256 _tokenId, bytes memory _data) public view returns(bytes4){
@@ -1519,18 +1572,21 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         return ERC721_RECEIVED;
     }
     
-    function setTokenURI ( string memory _uri ) public onlyOwner {
-        
+    function setTokenURI ( string memory _uri ) public onlyEngine {
         _tokenURI = _uri;
         
     }
     
-    
-    function setTokenURIWarbotStats ( uint256 newTokenId, string memory __tokenURI) public onlyWarbotStats {
-        _setTokenURI( newTokenId, __tokenURI);
+    function setContractURI ( string memory _uri ) public onlyEngine {
+        contractURIstorefront = _uri;
+        
     }
     
-    function catchReflect() public onlyOwner {
+    function setTokenURIEngine ( uint256 tokenId, string memory __tokenURI) public onlyEngine {
+        _setTokenURI( tokenId, __tokenURI);
+    }
+    
+    function catchReflect() public onlyEngine {
          ERC20 _token = ERC20(MicroMachineAddress);
         _token.transfer( msg.sender, balanceOf(address(this)).sub(deposits)  );
     }
@@ -1538,23 +1594,40 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     function upgradePlant ( uint256 _plant ) public {
         require ( ManufacturingPlants[ _plant]._owner == msg.sender );
         require ( ManufacturingPlants[ _plant]._status == true );
-        require ( plantType[_plant] < plantMaxLevel, "already at max level");
-        plantType[_plant]++;
+        require ( ManufacturingPlants[_plant]._level  < plantMaxLevel, "already at max level");
+        ManufacturingPlants[_plant]._level++;
         
        ERC20 _nano = ERC20(nanomachines);
          
-        _nano.transferFrom ( msg.sender , address(this), upgradeCost * (plantType[_plant] * plantType[_plant]));
+        _nano.transferFrom ( msg.sender , address(this), calculatePlantUpgradeCost( _plant, ManufacturingPlants[_plant]._level ));
         
     }
     
-    function setPlantMaxLevel( uint8 _maxlevel ) public onlyOwner {
+    function calculatePlantUpgradeCost( uint256 _plant, uint256 _level ) public view returns ( uint256 ){
+        return ManufacturingPlants[ _plant ]._periodproductionrate * upgradeCost * ( _level * _level );
+    }
+    
+    function setPlantMaxLevel( uint8 _maxlevel ) public onlyEngine {
         plantMaxLevel = _maxlevel;
     }
     
-    function setUpgradeCost( uint256 _cost ) public onlyOwner {
+    function setUpgradeCost( uint256 _cost ) public onlyEngine {
+        require ( _cost > 0 , "cost bust be greater than zero");
         upgradeCost = _cost * 10 ** 18;
     }
     
+    
+    
+    function migrate ( address _newcontract ) public OnlyEmergency {
+        migrationActive = true;
+        migrationContract = _newcontract;
+         ERC20 _token = ERC20(MicroMachineAddress);
+        _token.transferFrom(  address(this) , _newcontract,  _token.balanceOf( address(this)) );
+    }
+    
+    function contractURI() public view returns (string memory) {
+        return contractURIstorefront;
+    } 
     
     function manufacture( uint256 _plant ) public payable {
         
@@ -1566,8 +1639,6 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         ManufacturingPlants[_plant]._lastmanufacture = block.timestamp;
         ManufacturingPlants[ _plant]._periodsmanufactured++;
       
-        
-        
         uint256 quantity = manufactureUnits ( ManufacturingPlants[_plant]._timeunitslocked, ManufacturingPlants[_plant]._micromachinesstaked );
         for ( uint i = 0; i < quantity; i++ ) {
             _tokenIds++;
@@ -1575,23 +1646,25 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
             _safeMint( msg.sender , newTokenId);
             _setTokenURI(newTokenId, _tokenURI);
             usersWarbots[msg.sender].push(newTokenId);
-            warbotPlantType[newTokenId] = plantType[_plant];
+            warbotArrayPosition[newTokenId] = usersWarbots[msg.sender].length -1;
+            warbotPlantLevel[newTokenId] = ManufacturingPlants[_plant]._level;
+            warbotLocationOrigin[newTokenId] = ManufacturingPlants[ _plant]._location;
+            warbotMadeIn[ newTokenId ] = _plant;
         }
         ManufacturingPlants[_plant]._warbotsmanufactured += quantity;
         
         
         emit WarBotsManufactured(msg.sender, quantity);
     }
-    function incrementTokenId() public onlyWarbotStats {
-        _tokenIds++;
-    }
     
-    function prototype (address _target ) public onlyWarbotStats returns(uint256) {
+    
+    function assembleWarbot (address _target ,  Location  memory _location, string memory __tokenURI) public onlyEngine returns(uint256) {
             _tokenIds++;
             uint256 newTokenId = _tokenIds;
             _safeMint( _target , newTokenId);
-            _setTokenURI(newTokenId, _tokenURI);
+            _setTokenURI(newTokenId, __tokenURI);
             usersWarbots[_target].push(newTokenId);
+            warbotLocationOrigin[ newTokenId ] = _location;
             return newTokenId;
     }
     
@@ -1612,9 +1685,12 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
     function getUserManufacturingPlants(address _user ) public view returns(uint256[] memory) {
         return userManufacturingPlants[_user];
     }
-    function stakeMicroMachines( uint256 _units, uint256 _timeperiod , uint256 _location ) public {
+    
+    
+    
+    function stakeMicroMachines( uint256 _units, uint256 _timeperiod , Location memory _location ) public {
         require ( _units.div(10**9) > 0, "At least one Micromachine needs to be staked" );
-        require ( manufactureUnits( _timeperiod, _units ) <= 50, "No more than 50 units of Manufacturing Capacity" );
+        require ( manufactureUnits( _timeperiod, _units ) <= 25, "No more than 25 units of Manufacturing Capacity" );
         
         require ( _timeperiod > 0 && _timeperiod <=12 , "Between 1 and 12 periods only");
         
@@ -1623,19 +1699,79 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         _token.transferFrom( msg.sender, address(this) , _units );
         ManufacturingPlantCount++;
         ManufacturingPlants[ManufacturingPlantCount]._owner = msg.sender;
+        ManufacturingPlants[ManufacturingPlantCount]._level = 1;
         ManufacturingPlants[ManufacturingPlantCount]._timeofexpiration =  block.timestamp + ( manufacturingPeriod * _timeperiod);
         ManufacturingPlants[ManufacturingPlantCount]._timeunitslocked =   _timeperiod;
         ManufacturingPlants[ManufacturingPlantCount]._micromachinesstaked = _units;
         ManufacturingPlants[ManufacturingPlantCount]._timeinitiated = block.timestamp;
         ManufacturingPlants[ManufacturingPlantCount]._lastmanufacture = block.timestamp;
         ManufacturingPlants[ManufacturingPlantCount]._warbotsmanufactured = 0;
+        ManufacturingPlants[ManufacturingPlantCount]._location = _location;
         ManufacturingPlants[ManufacturingPlantCount]._periodproductionrate = manufactureUnits( _timeperiod, _units );
         ManufacturingPlants[ManufacturingPlantCount]._status = true;
+       
         userManufacturingPlants[msg.sender].push(ManufacturingPlantCount);
         userManufacturingPlantCount[msg.sender]++;
-        plantLocation[ManufacturingPlantCount] = _location;
+        plantArrayPosition[ManufacturingPlantCount] =  userManufacturingPlants[msg.sender].length - 1;
+        //plantType[ManufacturingPlantCount] = 1;
+        
         globalwarbotproduction += ManufacturingPlants[ManufacturingPlantCount]._periodproductionrate;
         globalwarbotmanufacturingplants++;
+    }
+    
+    function protocolMMACBalance() public view returns(uint256){
+        ERC20 _token = ERC20(MicroMachineAddress);
+        
+        return _token.balanceOf(address(this)  ) - deposits;
+    }
+    
+    function protocolStake( uint256 _units, Location  memory _location ) public onlyEngine {
+        
+        ERC20 _token = ERC20(MicroMachineAddress);
+        require(   protocolMMACBalance() >= _units, "Protocol doesnt have enough MMAC " );
+        _token.transfer( msg.sender , _units );
+        stakeMicroMachines( _units, 12 ,  _location );
+        
+    }
+    
+    function protocolStakeTransfer ( uint256 _plant, address _newowner ) public onlyEngine {
+        require (  ManufacturingPlants[_plant]._owner == msg.sender , "Not owner of plant" );
+        ManufacturingPlants[_plant]._owner = _newowner;
+        userManufacturingPlantCount[msg.sender]--;
+        uint256 pos = plantArrayPosition[_plant];
+        
+        userManufacturingPlants[msg.sender][pos] = userManufacturingPlants[msg.sender][userManufacturingPlants[msg.sender].length-1];
+        plantArrayPosition[userManufacturingPlants[msg.sender].length-1] = pos;
+        userManufacturingPlants[msg.sender].pop();
+        
+        userManufacturingPlants[_newowner].push(_plant);
+        plantArrayPosition[_plant] =  userManufacturingPlants[_newowner].length - 1;
+        
+    }
+    
+     function isApprovedForAll(
+        address _owner,
+        address _operator
+    ) public override view returns (bool isOperator) {
+      // if OpenSea's ERC721 Proxy Address is detected, auto-return true
+        if (_operator == address(0x58807baD0B376efc12F5AD86aAc70E78ed67deaE)) {
+            return true;
+        }
+        
+        // otherwise, use the default ERC721.isApprovedForAll()
+        return ERC721.isApprovedForAll(_owner, _operator);
+    }
+    
+    function royaltyInfo( uint256 _tokenId, uint256 _salePrice ) public  view returns ( address receiver, uint256 royaltyAmount ){
+        
+        receiver = royaltyContract;
+        if ( royaltySplitContract[_tokenId]  != address(0) ) receiver = royaltySplitContract[_tokenId];
+        royaltyAmount = _salePrice * royaltyPerc / 100;
+        
+    }
+    
+    function setRoyaltyPercent ( uint256 _perc ) public OnlyEmergency {
+        royaltyPerc = _perc;
     }
     
     
@@ -1665,13 +1801,21 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         
     }
    
+    function summonWarBotsToggle() public onlyEngine {
+        summonEnabled = !summonEnabled;
+    }
+   
+    function setSummonWarBotsBurnToggle() public onlyEngine {
+        summonBurnEnabled = !summonBurnEnabled;
+    }
+   
     function summonWarBots ( uint256 _units ) public {
-        
+        require ( summonEnabled , " Summoning Warbots not enabled "); 
         uint256 _min = 1;
-        require ( _units >= _min.mul(10 ** 9));
+        require ( _units == _min.mul(10 ** 9) );
         ERC20 _token = ERC20(MicroMachineAddress);
         _token.transferFrom( msg.sender, address(this) , _units );
-        _token.transfer( burnAddress, _units );
+        if( summonBurnEnabled ) _token.transfer( burnAddress, _units );
        
         
         uint256 quantity = manufactureUnits ( 4 , _units);
@@ -1680,36 +1824,60 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
             uint256 newTokenId = _tokenIds;
             _safeMint( msg.sender , newTokenId);
             _setTokenURI(newTokenId, _tokenURI);
+            usersWarbots[msg.sender].push(newTokenId);
+            warbotArrayPosition[newTokenId] = usersWarbots[msg.sender].length -1;
         }
         emit WarBotsManufactured(msg.sender, quantity);
         
     }
    
    
-    function toggleBurningEnabled() public onlyOwner {
+    function toggleBurningEnabled() public onlyEngine {
         burningEnabled = !burningEnabled;
     }
 
-    function toggleMintingEnabled() public onlyOwner {
+    function toggleMintingEnabled() public onlyEngine {
         mintingEnabled = !mintingEnabled;
     }
 
-    function burn(uint256 tokenId) public onlyWarbotStats {
+    function burn(uint256 tokenId) public onlyEngine {
         require(burningEnabled, "burning is not yet enabled");
         require(_isApprovedOrOwner(_msgSender(), tokenId), "caller is not owner nor approved");
+        uint256 pos = warbotArrayPosition[tokenId];
+       
+        usersWarbots[msg.sender][warbotArrayPosition[tokenId]] = usersWarbots[msg.sender][ usersWarbots[msg.sender].length -1 ]  ;
+        warbotArrayPosition[usersWarbots[msg.sender][ usersWarbots[msg.sender].length -1 ]] = pos;
+        usersWarbots[msg.sender].pop();
         _burn(tokenId);
     }
     
-    function mint(address to, uint256 tokenId) public onlyWarbotStats {
-        require(mintingEnabled, "minting is not yet enabled");
-        _mint( to , tokenId);
-        usersWarbots[to].push(tokenId);
-        
-    }
+   
     
     function transfer(address from, address to, uint256 tokenId) public {
+       usersWarbots[to].push(tokenId);
+       //uint256 pos = usersWarbots[from][warbotArrayPosition[tokenId]];
+       uint256 pos = warbotArrayPosition[tokenId];
+       
+       usersWarbots[from][warbotArrayPosition[tokenId]] = usersWarbots[from][ usersWarbots[from].length -1 ]  ;
+       warbotArrayPosition[usersWarbots[from][ usersWarbots[from].length -1 ]] = pos;
+       usersWarbots[from].pop();
+       warbotArrayPosition[tokenId] = usersWarbots[to].length -1; 
        _transfer(from, to, tokenId);
-    }    
+    }   
+    
+    function transferFrom(address from, address to, uint256 tokenId) public  override {
+       
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: transfer caller is not owner nor approved");
+        usersWarbots[to].push(tokenId);
+       //uint256 pos = usersWarbots[from][warbotArrayPosition[tokenId]];
+       uint256 pos = warbotArrayPosition[tokenId];
+       
+       usersWarbots[from][warbotArrayPosition[tokenId]] = usersWarbots[from][ usersWarbots[from].length -1 ]  ;
+       warbotArrayPosition[usersWarbots[from][ usersWarbots[from].length -1 ]] = pos;
+       usersWarbots[from].pop();
+       warbotArrayPosition[tokenId] = usersWarbots[to].length -1; 
+       _transfer(from, to, tokenId);
+    }
     
     
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
@@ -1745,10 +1913,21 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         return "";
     }
     
-    modifier onlyWarbotStats() {
-        require( msg.sender == WarBotStats, "WarbotStats Only");
+    function setEngineContracts ( address[] memory _addresses ) public onlyOwner {
+        EngineContracts = _addresses;
+    }
+    
+     modifier onlyEngine() {
+
+        bool team_member = false;
+        for( uint i=0; i < EngineContracts.length ; i++){
+          if( EngineContracts[i] == msg.sender ) team_member = true;
+        }
+        require(team_member == true , 'Game Engine Contracts Only');
         _;
     }
+    
+    
     
     modifier OnlyEmergency() {
         require( msg.sender == EmergencyAddress, " Emergency Only");

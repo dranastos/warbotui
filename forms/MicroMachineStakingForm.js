@@ -146,7 +146,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
             console.log("STAKE MICROMACHINES ", value, parseInt(data.months));
 
             const tx = await warbotmanufacturer
-                .stakeMicroMachines(value, parseInt(data.months), 0)
+                .stakeMicroMachines(value, parseInt(data.months), [0,0,0])
                 .send({ from: wallet.account, to: state.warbotmanufacturer });
 
             if (tx.status) {
@@ -185,12 +185,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                         <div className="col-lg-5">
                             <h1>Build a Warbot</h1>
                             <p>
-                                Praesent dis id aliquet urna enim facilisis sed.
-                                Tincidunt nunc, lectus quisque magna praesent
-                                vitae. Urna quisque neque ultrices amet massa
-                                urna scelerisque magna. Elit turpis amet, a
-                                eleifend scelerisque. Nulla orci, sit posuere
-                                habitant mauris id in mauris, facilisis.
+                                Manufacture warbots by staking MMAC. The length of time you stake your MMAC for will dictate how many Warbots you manufacture. For every period you stake your MMAC, you manufacture 1 Warbot per period. A period is 90 days. Ex. Stake your MMAC for 1 period and you earn 1 warbot in 90 days Stake your MMAC for 4 periods and you earn 4 warbots every 90 days for 4 periods. Stake your MMAC for 12 periods and you earn 12 warbots every 90 days for 12 periods. At the end of the staking period, your MMAC will be returned to you.
                             </p>
                             {/* <Tank_model /> */}
                         </div>

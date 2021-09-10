@@ -30,7 +30,7 @@ export default function PublicLayout({ children }) {
     const [drawer, showDrawer] = useState(false);
     const [state, actions] = useGlobal([]);
     const { security, getFields, connected } =
-        useMicroMachineManufacturingPlant(state.security);
+        useMicroMachineManufacturingPlant(state.warbotmanufacturer);
     const [loading, setLoading] = useState(false);
     // balance
     const [states, actionss] = useGlobal([
@@ -81,7 +81,7 @@ export default function PublicLayout({ children }) {
     // };
     // balance
     useEffect(() => {
-        if (wallet.status == "connected" && state.hasSecurity == false) {
+        if (wallet.status == "connected" && state.hasWarbotmanufacturer == false) {
             showDrawer(true);
         }
     }, [wallet.status]);
@@ -90,15 +90,15 @@ export default function PublicLayout({ children }) {
         if (connected && state.hasSecurity) {
             getMicroMachineManufacturingPlant();
         }
-    }, [connected, state.hasSecurity]);
+    }, [connected, state.hasWarbotmanufacturer]);
 
     const getMicroMachineManufacturingPlant = async () => {
         setLoading(true);
 
         const info = await getFields();
 
-        actions.setSecurityInfo(info);
-        actions.setWelfare(info.microMachineAddress);
+        //actions.setSecurityInfo(info);
+       //actions.setWelfare(info.microMachineAddress);
         setLoading(false);
     };
 
