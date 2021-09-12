@@ -81,7 +81,7 @@ const useStaking = () => {
                 .format("MM/DD/YYYY HH:mm"),
             timeAtExpirationUnix: timeofexpiration,
             "Time Left to Expiration":
-                timeLeft < 0 ? 0 : timeLeft / 60 + " Minutes",
+                timeLeft < 0 ? 0 : timeLeft / 60 / 60 / 24 + " Days",
             "Total Periods Locked": timeunitslocked,
             MonthlyProductionRate: periodproductionrate,
             WarBotsManufactured: warbotsmanufactured,

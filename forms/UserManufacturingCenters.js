@@ -114,7 +114,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
             <tr key={`vault-${id}`}>
                 <td> {mmstaked} </td>
                 <td> {vaults[id].timeAtExpiration} </td>
-                <td> {vaults[id]["Total Periods Locked"]} quarters </td>
+                <td> {vaults[id]["Total Periods Locked"]} periods </td>
                 <td> {vaults[id]["Time Left to Expiration"]} </td>
                 <td> {vaults[id].WarBotsManufactured} </td>
                 <td className="halka_edit">
