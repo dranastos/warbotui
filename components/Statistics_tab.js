@@ -10,9 +10,7 @@ function Statistics_tab() {
                         <div className="col-lg-5">
                             <h1>Statistics</h1>
                             <p>
-                                Praesent dis id aliquet urna enim facilisis sed.
-                                Tincidunt nunc, lectus quisque magna praesent
-                                vitae. Urna quisque neque ultrices amet!
+                                Statistics for Warbot Data will be shown here.
                             </p>
                             {/* <Tank_model /> */}
                         </div>
@@ -21,7 +19,7 @@ function Statistics_tab() {
                                 <div className="stat_box">
                                     <div className="stat_text">
                                         <p>Warbots in existence</p>
-                                        <h1 className="m-0">81</h1>
+                                        <h1 className="m-0">0</h1>
                                     </div>
                                     <div className="stat_img">
                                         <img src="/img/stat_cog.png" alt="" />
@@ -30,7 +28,7 @@ function Statistics_tab() {
                                 <div className="stat_box">
                                     <div className="stat_text">
                                         <p>Total Manufacturing Plants</p>
-                                        <h1 className="m-0">6</h1>
+                                        <h1 className="m-0">0</h1>
                                     </div>
                                     <div className="stat_img">
                                         <img src="/img/stat_cog.png" alt="" />
@@ -41,7 +39,7 @@ function Statistics_tab() {
                                 <div className="stat_box">
                                     <div className="stat_text">
                                         <p>Warbots manufactured per period</p>
-                                        <h1 className="m-0">62</h1>
+                                        <h1 className="m-0">0</h1>
                                     </div>
                                     <div className="stat_img">
                                         <img src="/img/stat_cog.png" alt="" />
@@ -50,7 +48,7 @@ function Statistics_tab() {
                                 <div className="stat_box">
                                     <div className="stat_text">
                                         <p>Manufacturing period in seconds</p>
-                                        <h1 className="m-0">120</h1>
+                                        <h1 className="m-0">0</h1>
                                     </div>
                                     <div className="stat_img">
                                         <img src="/img/stat_cog.png" alt="" />
