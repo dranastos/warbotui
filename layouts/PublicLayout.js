@@ -53,7 +53,7 @@ export default function PublicLayout({ children }) {
     const { warbotmanufacturer, web3, connected } =
         useMicroMachineManufacturingPlant(states.warbotmanufacturer);
     const [micromachines] = useMicroMachines(states.micromachines);
-    const [nanomachines] = useNanomachines(states.Nanomachines);
+    const [nanomachines] = useNanomachines(states.nanomachines);
     const [dicesiumBatteries] = useDicesiumBatteries(state.dicesiumBatteries);
     const [MMACbalance, setMMACBalance] = useState(0);
     const [nanobalance, setNanobalance] = useState(0);
@@ -134,10 +134,11 @@ export default function PublicLayout({ children }) {
 		
 	}
 
-
+    
 
     const renderWallet = useCallback(() => {
-        if (wallet.status == "connected" && wallet.account) {
+        if (wallet.status == "connected" && wallet.account){ getMMACbalance(); getDicesium(); getNanomachines(); }
+		if (wallet.status == "connected" && wallet.account) {
             return (
                 <div className="connect_btn">
                     <button onClick={() => connWallet()}>
@@ -189,11 +190,6 @@ export default function PublicLayout({ children }) {
         document.getElementById("open_menu").style.display = "block";
         document.getElementById("img_menu").style.display = "none";
     }
-
-    // COMMAND CENTER: 0xe73C89DFA51E82e7895b0E9E9B8E9b1b4A91b2b6
-    // BONUS: 0xEeCFE0b4c47cb5d61F180d721674a405A86FB53c
-    // WELFARE ADDRESS: 0xbEDA6Df7a5bCA914915fb80D13c1b6b32dF8F8ab
-    // SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
 
     return (
         <Layout>
