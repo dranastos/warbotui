@@ -61,28 +61,32 @@ export default function PublicLayout({ children }) {
     const [counter, setCounter] = useState(0);
 
     useEffect(() => {
-        if (micromachines && states.hasMicromachines) {
-            getMMACbalance();
+        if (wallet.status == "connected" && micromachines && states.hasMicromachines) {
+           
+		    getMMACbalance();
         }
     }, [micromachines, states.hasMicromachines]);
 
     useEffect(() => {
-        if (nanomachines && states.hasNanomachines) {
+        if (wallet.status == "connected" && nanomachines && states.hasNanomachines) {
             getNanomachines();
         }
     }, [nanomachines, states.hasNanomachines]);
 
     useEffect(() => {
-        if (dicesiumBatteries && states.hasDicesiumBatteries) {
+        if (wallet.status == "connected" && dicesiumBatteries && states.hasDicesiumBatteries) {
             getDicesium();
         }
     }, [dicesiumBatteries, states.hasDicesiumBatteries]);
 
     const getMMACbalance = async () => {
-        const MMACbalance = await micromachines
+         console.log ( "wall" + wallet.account )
+		const MMACbalance = await micromachines
             .balanceOf(wallet.account)
             .call();
-        setMMACBalance(web3.utils.fromWei(MMACbalance, "nano"));
+       
+		
+		setMMACBalance(web3.utils.fromWei(MMACbalance, "nano"));
         setCounter(counter + 1);
 		console.log ( "mmac bal: " + MMACbalance )
     };
@@ -212,7 +216,122 @@ export default function PublicLayout({ children }) {
                         </Text>
                     </Space>
 
-                    
+                    <Form.Item
+                        name="ss"
+                        label="Micromachine Manufacturing Plant"
+                    >
+                        <Text copyable>
+                            0xD2511C55246Bd9f697931C5e5CAfD64c30882B91
+                        </Text>
+                        <Input
+                            name="social"
+                            placeholder="MicroMachineManufacturingPlant"
+                            allowClear
+                            size="large"
+                            value={state.security}
+                            onChange={(e) =>
+                                actions.setSecurity(e.target.value)
+                            }
+                        />
+                    </Form.Item>
+
+                    <Form.Item name="nanomachines" label="Nanomachines Address">
+                        <Text copyable>
+                            0x9E59667490263361F39774D4e31678340795Ac81
+                        </Text>
+                        <Input
+                            name="command"
+                            placeholder="Nanomachines Address"
+                            allowClear
+                            value={state.nanomachines}
+                            size="large"
+                            onChange={(e) => actions.setCenter(e.target.value)}
+                        />
+                    </Form.Item>
+
+                    <Form.Item name="welfare" label="Micromachine Address">
+                        <Text copyable>
+                            0xc50Dcd6612eEE0A69822C2a0ABa2572ee65bD853
+                        </Text>
+                        <Input
+                            name="command"
+                            placeholder="MicroMachines Contract"
+                            allowClear
+                            value={state.welfare}
+                            size="large"
+                            onChange={(e) => actions.setWelfare(e.target.value)}
+                        />
+                    </Form.Item>
+
+                    <Form.Item name="nanobnblp" label="Nano/BNB LP Address">
+                        <Text copyable>
+                            0xad7806487D47613ce9Ce9e78633058381Abd784C
+                        </Text>
+                        <Input
+                            name="command"
+                            placeholder="Nanomachines Staking"
+                            allowClear
+                            value={state.nanobnblp}
+                            size="large"
+                            onChange={(e) => actions.setBonus(e.target.value)}
+                        />
+                    </Form.Item>
+
+                    <Form.Item name="masterchef" label="Masterchef">
+                        <Text copyable>
+                            0x9eB6DEA48F004FF1A20f0499C9099616C8038Bbb
+                        </Text>
+                        <Input
+                            name="command"
+                            placeholder="Masterchef"
+                            allowClear
+                            value={state.masterchef}
+                            size="large"
+                            onChange={(e) =>
+                                actions.setMasterchef(e.target.value)
+                            }
+                        />
+                    </Form.Item>
+
+                    <Form.Item name="microbnblp" label="Micro/BNB LP Address">
+                        <Text copyable>
+                            0xd1E0Da81736d365C1Ce99ABd942e490cFD0D5DDB
+                        </Text>
+                        <Input
+                            name="command"
+                            placeholder="Micro LP Address"
+                            allowClear
+                            value={state.microbnblp}
+                            size="large"
+                            onChange={(e) => actions.setBonus(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item name="warbotstats" label="Warbot Stats">
+                        <Text copyable>
+                            0x9E94f7cF3fBa377dD3B2c6358aE62cCfE40Ed350
+                        </Text>
+                        <Input
+                            name="command"
+                            placeholder="Warbot Stats Address"
+                            allowClear
+                            value={state.warbotstats}
+                            size="large"
+                            onChange={(e) => actions.setBonus(e.target.value)}
+                        />
+                    </Form.Item>
+                    <Form.Item name="nftcards" label="NFT Nano Cards">
+                        <Text copyable>
+                            0x2d9343900f2a4640054585dd70FB1e350c931B00
+                        </Text>
+                        <Input
+                            name="command"
+                            placeholder="Warbot Stats Address"
+                            allowClear
+                            value={state.nanonft}
+                            size="large"
+                            onChange={(e) => actions.setBonus(e.target.value)}
+                        />
+                    </Form.Item>
 
                     <div>
                         <Alert
