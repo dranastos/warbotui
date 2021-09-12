@@ -20,8 +20,9 @@ import useGlobal from "../hooks/useGlobal";
 
 import useMicroMachines from "../hooks/useMicroMachines";
 import MicroMachineStakingForm from "../forms/MicroMachineStakingForm";
-
+import useNanomachines from "../hooks/useNanomachines";
 import useMicroMachineManufacturingPlant from "../hooks/useMicroMachineManufacturingPlant";
+import useDicesiumBatteries from "../hooks/useDicesiumBatteries";
 const { Header, Content, Footer } = Layout;
 const { Title, Text } = Typography;
 
@@ -29,8 +30,14 @@ export default function PublicLayout({ children }) {
     const wallet = useWallet();
     const [drawer, showDrawer] = useState(false);
     const [state, actions] = useGlobal([]);
-    const { security, getFields, connected } =
-        useMicroMachineManufacturingPlant(state.warbotmanufacturer);
+
+   // const { security, getFields, connected } =
+   //     useMicroMachineManufacturingPlant(state.warbotmanufacturer);
+
+   // const { security, getFields } = useMicroMachineManufacturingPlant(
+   //     state.security
+   // );
+
     const [loading, setLoading] = useState(false);
     // balance
     const [states, actionss] = useGlobal([
@@ -38,19 +45,19 @@ export default function PublicLayout({ children }) {
         "hasWarbotmanufacturer",
         "micromachines",
         "hasMicromachines",
-        // "nanomachines",
-        // "hasNanomachines",
-        // "dicesiumBatteries",
-        // "hasDicesiumBatteries",
+        "nanomachines",
+        "hasNanomachines",
+        "dicesiumBatteries",
+        "hasDicesiumBatteries",
     ]);
-    const { warbotmanufacturer, web3 } = useMicroMachineManufacturingPlant(
-        states.warbotmanufacturer
-    );
+    const { warbotmanufacturer, web3, connected } =
+        useMicroMachineManufacturingPlant(states.warbotmanufacturer);
     const [micromachines] = useMicroMachines(states.micromachines);
-    // const [Nanomachines] = useNanomachines(states.Nanomachines);
+    const [nanomachines] = useNanomachines(states.Nanomachines);
+    const [dicesiumBatteries] = useDicesiumBatteries(state.dicesiumBatteries);
     const [MMACbalance, setMMACBalance] = useState(0);
-    // const [nanobalance, setNanobalance] = useState(0);
-    // const [dicesium, setDicesium] = useState(0);
+    const [nanobalance, setNanobalance] = useState(0);
+    const [dicesium, setDicesium] = useState(0);
     const [counter, setCounter] = useState(0);
 
     useEffect(() => {
@@ -59,11 +66,17 @@ export default function PublicLayout({ children }) {
         }
     }, [micromachines, states.hasMicromachines]);
 
-    // useEffect(() => {
-    //     if (Nanomachines && states.hasNanomachines) {
-    //         getNanomachines();
-    //     }
-    // }, [Nanomachines, states.hasNanomachines]);
+    useEffect(() => {
+        if (nanomachines && states.hasNanomachines) {
+            getNanomachines();
+        }
+    }, [nanomachines, states.hasNanomachines]);
+
+    useEffect(() => {
+        if (dicesiumBatteries && states.hasDicesiumBatteries) {
+            getDicesium();
+        }
+    }, [dicesiumBatteries, states.hasDicesiumBatteries]);
 
     const getMMACbalance = async () => {
         const MMACbalance = await micromachines
@@ -71,14 +84,22 @@ export default function PublicLayout({ children }) {
             .call();
         setMMACBalance(web3.utils.fromWei(MMACbalance, "nano"));
         setCounter(counter + 1);
+		console.log ( "mmac bal: " + MMACbalance )
     };
-    // const getNanomachines = async () => {
-    //     const nanobalance = await micromachines
-    //         .balanceOf(wallet.account)
-    //         .call();
-    //     setNanobalance(web3.utils.fromWei(nanobalance, "nano"));
-    //     setCounter(counter + 1);
-    // };
+    const getNanomachines = async () => {
+        const nanobalance = await nanomachines.balanceOf(wallet.account).call();
+        setNanobalance(web3.utils.fromWei(nanobalance, "nano"));
+        setCounter(counter + 1);
+    };
+
+    const getDicesium = async () => {
+        const dicesium = await dicesiumBatteries
+            .balanceOf(wallet.account)
+            .call();
+        setDicesium(web3.utils.fromWei(dicesium));
+        setCounter(counter + 1);
+		console.log ( "batteries: " + dicesium )
+    };
     // balance
     useEffect(() => {
         if (wallet.status == "connected" && state.hasWarbotmanufacturer == false) {
@@ -95,7 +116,7 @@ export default function PublicLayout({ children }) {
     const getMicroMachineManufacturingPlant = async () => {
         setLoading(true);
 
-        const info = await getFields();
+        //const info = await getFields();
 
         //actions.setSecurityInfo(info);
        //actions.setWelfare(info.microMachineAddress);
@@ -390,7 +411,7 @@ export default function PublicLayout({ children }) {
                                     <a
                                         href="#"
                                         title="Warbots"
-                                        onClick={() => Router.push("/warbots")}
+                                        onClick={() => Router.push("/")}
                                     >
                                         <li>
                                             <img
@@ -403,7 +424,7 @@ export default function PublicLayout({ children }) {
                                         href="#"
                                         title="NanoMachines"
                                         onClick={() =>
-                                            Router.push("/nanomachines")
+                                            Router.push("/")
                                         }
                                     >
                                         <li>
@@ -467,7 +488,7 @@ export default function PublicLayout({ children }) {
                                                     src="/img/NanoMachines.png"
                                                     alt=""
                                                 />
-                                                5261
+                                                {nanobalance}
                                             </a>
                                         </li>
 
@@ -477,7 +498,7 @@ export default function PublicLayout({ children }) {
                                                     src="/img/gem.png"
                                                     alt=""
                                                 />
-                                                157
+                                                {dicesium}
                                             </a>
                                         </li>
 
@@ -492,7 +513,6 @@ export default function PublicLayout({ children }) {
                                                     alt=""
                                                 />
 
-                                               
                                                 {addr}
                                             </a>
                                         </li> */}

@@ -247,7 +247,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                                         />
                                         <Space>
                                             <p className="time_line">
-                                                <b>{data.months} quarters </b>
+                                                <b>{data.months} periods </b>
                                                 <span>
                                                     {" "}
                                                     ({" "}
