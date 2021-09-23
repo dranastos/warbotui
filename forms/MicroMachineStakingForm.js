@@ -272,6 +272,12 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                                         <span> (0.8 years)</span>
                                     </p> */}
                                     <button
+                                        className="stake_btn2"
+                                        onClick={approve}
+                                    >
+                                        Approve Contract
+                                    </button>
+									<button
                                         className={
                                             allowance >= data.amount &&
                                             data.amount * data.months <= 50
@@ -312,12 +318,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                                 </div>
                                 <hr />
                                 <div className="stake_input_div">
-                                    <button
-                                        className="stake_btn2"
-                                        onClick={approve}
-                                    >
-                                        Approve Contract
-                                    </button>
+                                    
                                 </div>
                             </div>
                         </div>
