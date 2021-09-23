@@ -7,6 +7,7 @@ const useMicroMachines = (address) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
   const [connected, setConnected] = useState(false)
+  console.log("MMAC address: " +address)
 
   useEffect(() => {
 	 

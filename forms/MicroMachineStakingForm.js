@@ -299,7 +299,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                                             {data.amount * data.months} Warbots{" "}
                                         </span>
                                         a period by locking your MicroMachines
-                                        for {data.months} months for a total of
+                                        for {data.months} periods for a total of
                                         <span>
                                             {" "}
                                             {data.amount *
@@ -399,7 +399,7 @@ const MicroMachineStakingForm = ({ onComplete, address }) => {
                             <Text level={5} strong>
                                 Build {data.amount * data.months} WarBots a
                                 period by locking your MicroMachines for{" "}
-                                {data.months} month(s) for a total of{" "}
+                                {data.months} period(s) for a total of{" "}
                                 {data.amount * data.months * data.months}{" "}
                                 WarBots
                             </Text>

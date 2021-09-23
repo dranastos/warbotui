@@ -205,8 +205,8 @@ const actions = {
 };
 
 const initialState = {
-    chain: 137, // 56 - Mainnet | 97 - Testnet
-    //chain: 97, // 56 - Mainnet | 97 - Testnet
+    //chain: 137, // 56 - Mainnet | 97 - Testnet
+    chain: 56, // 56 - Mainnet | 97 - Testnet
     //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
     security: "0xF4225b776793B44391496636115CBF1483B5E153",
     securityInfo: {},
@@ -281,6 +281,6 @@ const initialState = {
     vaultCount: 0,
 };
 
-export const useGlobal = globalHook(React, initialState, actions);
+export const useGlobalBNB = globalHook(React, initialState, actions);
 
-export default useGlobal;
+export default useGlobalBNB;
