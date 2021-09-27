@@ -75,7 +75,8 @@ export default function Dashboard() {
 
         var WarBots = await warbotmanufacturer.totalSupply().call();
         var plants = await warbotmanufacturer.ManufacturingPlantCount().call();
-        var warbotproduction = await warbotmanufacturer
+        console.log("Plant Count " + plants )
+		var warbotproduction = await warbotmanufacturer
             .globalwarbotproduction()
             .call();
         var manufacturingPeriod = await warbotmanufacturer
