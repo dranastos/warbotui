@@ -91,7 +91,7 @@ export default function PublicLayout({ children }) {
         const dicesium = await dicesiumBatteries
             .balanceOf(wallet.account)
             .call();
-        setDicesium(web3.utils.fromWei(dicesium, "nano"));
+        setDicesium(web3.utils.fromWei(dicesium));
         setCounter(counter + 1);
     };
     // balance
