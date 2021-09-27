@@ -243,7 +243,7 @@ const initialState = {
     hasDicesiumBatteries: true,
 
     //matic nanomachines: '0xc10006027DCFdABdce5BA9c589b7900241681510',
-    nanomachines: "0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A",
+    nanomachines: "0xf6b353258ee23d2527442f11681b892ce8742adc",
     hasNanomachines: true,
 
     nanostaking: "0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68",
