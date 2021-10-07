@@ -1,12 +1,12 @@
 import {Col, Row} from 'antd';
 import Facility from '../Facility/Facility';
-
-// import staked_image_1 from '/img/facilities/staked_image_1.png'
+import styles from './Facilities.module.css';
 
 const Facilities = () => {
 	return (
-		<div>
-			<Row gutter={20} style={{marginTop: `10px`, marginBottom: `30px`}}>
+		<div className={styles.Facilities}>
+			<h2>Production Facilities</h2>
+			<Row gutter={20}>
 				<Col md={8}>
 					<Facility
 						title="Alpha Facility"
