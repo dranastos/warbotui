@@ -11,7 +11,7 @@ function Closed_manufacturing_plants() {
                             Warbot Manufacturing Plants
                         </h1>
                         <button className="Manufacturing_head_btn">
-                            <i class="fas fa-redo-alt"></i> Refresh
+                            <i className="fas fa-redo-alt"></i> Refresh
                         </button>
                     </div>
                     <div className="table_holder">

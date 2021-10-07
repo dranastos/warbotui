@@ -20,23 +20,23 @@ const NanoSalesForm = ({ onComplete, address }) => {
   const [nanosales] = useNanosales(state.nanosales)
   const [purchaseamount, setPurchaseamount] = useState(0)
   const [currentprice, setCurrentprice] = useState(0)
-  
+
   useEffect(() => {
     if (connected && busd && state.hasBusd) {
-      
+
 	  getBalance()
       getAllowance()
     }
   }, [connected, busd, state.hasBusd, data])
 
   const getBalance = async() => {
-	  
+
     const balance = await busd.balanceOf(wallet.account).call()
     const currentprice = await nanosales.calculatePrice( "1000000000000000000" ).call()
-	
+
 	setCurrentprice(web3.utils.fromWei(currentprice[0]))
 	setBalance(web3.utils.fromWei(balance))
-   
+
   }
 
   const getAllowance = async() => {
@@ -113,13 +113,13 @@ const NanoSalesForm = ({ onComplete, address }) => {
 
   }
 
-  
+
   const handleAmount = async(e) => {
    try{
     setData({ ...data, amount: parseInt(e.target.value) })
-	
+
 	var _purchaseamount = web3.utils.toWei(parseInt(e.target.value).toString());
-	
+
 	const purchaseamount = await nanosales.calculatePrice( _purchaseamount ).call()
     setPurchaseamount(web3.utils.fromWei(purchaseamount[0]))
    } catch (e) {}
@@ -131,32 +131,32 @@ const NanoSalesForm = ({ onComplete, address }) => {
 	  <Text level={5} strong>Price rises .15% for every Nanomachine sold </Text>
 	  <Text level={5} strong><p></p>NanoSales are subject to a 90 Day vesting period </Text>
 	   <Text level={5} strong><p>Every new purchase resets the 90 day vesting period </p></Text>
-	  
+
 	  <Card title="">
-	 
-	  
-	  
-	  
+
+
+
+
         <Form
           size="large"
           layout="vertical">
-          <Statistic class="ant-alert" title="DAI Balance" value={balance} />
+          <Statistic className="ant-alert" title="DAI Balance" value={balance} />
           <Statistic title="Approved" value={allowance} />
-         <Text level={5} strong> Next Nanomachine token price is {currentprice} BUSD</Text>         
+         <Text level={5} strong> Next Nanomachine token price is {currentprice} BUSD</Text>
 		 <Form.Item name="vAmount" label="Purchase Nanomachines" rules={[{ required: true, message: 'Enter deposit amount' }]}>
             <Input type="number" placeholder="e.g 10000" value={data.amount} onChange={handleAmount} />
           </Form.Item>
-          
+
           <Space>
             <Button size="large" onClick={approve}>Approve</Button>
             <Button size="large" type="primary" onClick={handleDeposit}>Purchase NanoMachines</Button>
           </Space>
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
-           
+
             <Text level={5} strong> {data.amount} Nanomachines will cost you {purchaseamount} BUSD. You will be vested for 90 days.</Text>
           </Card>
         </Form>
-		
+
 		</Card>
       </Card>
     </Spin>

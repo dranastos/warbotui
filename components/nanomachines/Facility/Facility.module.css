@@ -1,0 +1,81 @@
+.Facility {
+}
+
+.Facility__container {
+  padding: 40px 40px 80px 40px;
+  width: 100%;
+}
+
+.Facility__header {
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
+  grid-column-gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.Facility__header img {
+  height: 64px;
+}
+
+.Facility__header span {
+  background: rgba(113, 238, 255, 0.2);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: #71EEFF;
+}
+
+.Facility__title {
+  font-weight: 600;
+  font-size: 36px;
+  color: #FFFFFF;
+  padding: 0;
+  margin: 0;
+}
+
+.Facility__subtitle {
+  font-weight: 600;
+  font-size: 24px;
+  color: #778FBA;
+  padding: 0;
+  margin: 0;
+}
+
+.Facility__stakes {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 50px;
+}
+
+.Facility__stake {
+  display: flex;
+  flex-direction: column;
+}
+
+.Facility__stake span {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 20px;
+  color: #71EEFF;
+  line-height: 23px;
+}
+
+.Facility__stake output {
+  width: 100px;
+  padding: 16px;
+  font-family: Teko, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  background: rgba(113, 238, 255, 0.2);
+  border: 1px solid #71EEFF;
+  box-sizing: border-box;
+  border-radius: 10px;
+  color: #71EEFF;
+  text-align: center;
+  margin-top: 16px;
+}

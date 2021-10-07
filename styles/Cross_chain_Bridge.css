@@ -18,35 +18,3 @@
 .active-content {
     display: block;
 }
-
-/* meta */
-.tabs {
-    font-family: Teko;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 28px;
-    line-height: 40px;
-    text-align: center;
-    color: #778fba;
-}
-.active_tabs {
-    background: #24364f;
-    color: #eaf4fb;
-}
-.Cross_Chain_Bridge .tabs:nth-child(1) {
-    width: 166px;
-    height: 48px;
-    border: 0.791313px solid #24364f;
-
-    border-radius: 15.8263px 0px 0px 15.8263px;
-}
-.Cross_Chain_Bridge .tabs:nth-child(2) {
-    width: 129px;
-    height: 48px;
-    border: 0.791313px solid #24364f;
-    border-radius: 0px 20px 20px 0px;
-}
-
-.tab_btn_holder {
-    margin-bottom: 60px;
-}c

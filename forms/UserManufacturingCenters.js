@@ -147,7 +147,7 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
                             className="Manufacturing_head_btn"
                             onClick={getDeposits}
                         >
-                            <i class="fas fa-redo-alt"></i> Refresh
+                            <i className="fas fa-redo-alt"></i> Refresh
                         </button>
                     </div>
                     <div className="table_holder">

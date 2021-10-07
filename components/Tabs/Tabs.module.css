@@ -1,0 +1,38 @@
+.Tabs {
+  border-radius: 20px;
+  overflow: hidden;
+  display: inline-block;
+  border: 1px solid #24364f;
+}
+
+.Tabs .Tabs__item, .Tabs .Tabs__item_active {
+  background-color: transparent;
+  font-family: 'Teko', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  color: #778fba;
+  padding: 12px 48px;
+  border: none;
+  border-right: 1px solid #24364f;
+  transition: 0.2s ease-in-out;
+  outline: none;
+}
+
+.Tabs .Tabs__item:last-child, .Tabs .Tabs__item_active:last-child {
+  border-right: none;
+}
+
+.Tabs .Tabs__item_active {
+  background: #24364f;
+  color: #eaf4fb;
+  border-right-color: transparent;
+}
+
+@media (max-width: 767px) {
+  .Tabs {
+    margin-bottom: 60px;
+    display: flex;
+  }
+}
