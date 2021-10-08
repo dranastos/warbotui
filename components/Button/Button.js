@@ -1,8 +1,8 @@
 import styles from './Button.module.css';
 
-const Button = ({value}) => {
+const Button = ({value, disabled}) => {
 	return (
-		<button className={styles.Button}>{value}</button>
+		<button className={styles.Button} disabled={disabled}>{value}</button>
 	);
 };
 

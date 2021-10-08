@@ -15,6 +15,12 @@
   padding: 0 40px;
 }
 
+.Button:disabled {
+  background: rgba(119, 143, 186, 0.5);
+  box-shadow: 0 10px 0 0 rgba(119, 143, 186, 0.2);
+  color: #778fba;
+}
+
 .Button:active {
   -webkit-box-shadow: none;
   box-shadow: none;
