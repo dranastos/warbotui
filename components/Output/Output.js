@@ -6,7 +6,7 @@ const Output = ({value, text, label, buttonText}) => {
 		<div className={styles.Output}>
 			<div>
 				{label && text && (
-					<span><strong>{label}</strong> {text}</span>
+					<span><strong>{text}</strong> {label}</span>
 				)}
 			</div>
 			<div>
