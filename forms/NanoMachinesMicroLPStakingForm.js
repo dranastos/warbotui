@@ -49,9 +49,10 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 	const [allowance, setAllowance] = useState(0);
 	const [timeValue, setTimeValue] = useState(0);
 	const [canDeposit, setCanDeposit] = useState(false);
-	const [data, setData] = useState({months: 0, amount: null, timelock: 0});
+	const [data, setData] = useState({months: 0, amount: 0, timelock: 0});
 	const [loading, setLoading] = useState(false);
 	const [counter, setCounter] = useState(0);
+	const [inputValue, setInputValue] = useState(null);
 
 	useEffect(() => {
 		if (connected && state.hasSecurity) {
@@ -219,11 +220,13 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 		setData({...data, months});
 	};
 	const handleAmount = (e) => {
-		console.log('x' + web3.utils.toWei(e.target.value.toString()));
-		setData({
-			...data,
-			amount: parseInt(web3.utils.toWei(e.target.value.toString())),
-		});
+		if (e.target.value) {
+			setInputValue(e.target.value);
+			setData({...data, amount: parseInt(web3.utils.toWei(e.target.value.toString()))});
+		} else {
+			setInputValue(null);
+			setData({...data, amount: parseInt(web3.utils.toWei('0'))});
+		}
 	};
 
 	return (
@@ -236,7 +239,7 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 			stakedValue={web3.utils.fromWei(stakedbalance.toString())}
 			stakedText="MMAC/BNB LP"
 			producedText="NMAC"
-			inputValue={data.amount}
+			inputValue={inputValue}
 			setInputValue={handleAmount}
 			approve={approve}
 			stake={handleDeposit}

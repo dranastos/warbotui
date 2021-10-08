@@ -48,9 +48,10 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 	const [allowance, setAllowance] = useState(0);
 	const [timeValue, setTimeValue] = useState(0);
 	const [canDeposit, setCanDeposit] = useState(false);
-	const [data, setData] = useState({months: 0, amount: null, timelock: 0});
+	const [data, setData] = useState({months: 0, amount: 0, timelock: 0});
 	const [loading, setLoading] = useState(false);
 	const [counter, setCounter] = useState(0);
+	const [inputValue, setInputValue] = useState(null);
 
 	useEffect(() => {
 		if (connected && state.hasSecurity) {
@@ -245,10 +246,12 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 		setData({...data, months});
 	};
 	const handleAmount = (e) => {
-		if (e.target.value === '') {
-			setData({...data, amount: 0});
-		} else {
+		if (e.target.value) {
+			setInputValue(e.target.value);
 			setData({...data, amount: parseInt(e.target.value)});
+		} else {
+			setInputValue(null);
+			setData({...data, amount: 0});
 		}
 	};
 
@@ -262,6 +265,7 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 			stakedValue={stakedbalance}
 			stakedText="NMAC"
 			producedText="NMAC"
+			inputValue={inputValue}
 			setInputValue={handleAmount}
 			approve={approve}
 			stake={handleDeposit}
