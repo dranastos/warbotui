@@ -40,6 +40,7 @@ import useMasterchef from '../hooks/useMasterchef';
 import Tabs from '../components/Tabs/Tabs';
 import Card from '../components/Card/Card';
 import Facilities from '../components/nanomachines/Facilities/Facilities';
+import Nanomachines from '../components/nanomachines/Nanomachines/Nanomachines';
 
 
 const {Title, Text} = Typography;
@@ -68,7 +69,7 @@ export default function Dashboard() {
 	//const [welfare] = useWelfare(state.welfare)
 	const [nanomachines] = useNanomachines(state.nanomachines);
 	//const { wiccardminter, wicCardweb3, wicCardconnected , sendWicCardTx} = useWicCardMinter( state.wicCardMinter )
-	const [toggleState, setToggleState] = useState(0);
+	const [toggleFacility, setToggleFacility] = useState(0);
 
 	const [nanomachinesupply, setNanomachinesupply] = useState(0);
 	const [nanoproduction, setNanoproduction] = useState(0);
@@ -127,51 +128,15 @@ export default function Dashboard() {
 			<section className="War_dashboard_tabs Cross_Chain_Bridge">
 				<div className="container">
 					<h1>NanoMachine (NMAC) Production Facility</h1>
-
 					<Tabs
 						tabs={['Production Facilities', 'Statistics']}
-						defaultTab={toggleState}
-						callback={setToggleState}
+						defaultTab={toggleFacility}
+						callback={setToggleFacility}
 					/>
-
-					<h2>Production Facilities</h2>
-
 					{/*{*/}
 					{/*  (state.hasSecurity && wallet.status === 'connected') && (*/}
 					<Facilities/>
-
-					<div>
-						<Space style={{marginTop: 20}}>
-
-						</Space>
-						{/*<Tabs defaultActiveKey="dashboard" style={{marginTop: 20}}>*/}
-						{/*	<Tabs.TabPane tab="Nanomachine Dashboard" key="dashboard">*/}
-						<Row gutter={20} style={{marginTop: `10px`, marginBottom: `30px`}}>
-
-							<Col xs={8}>
-								<NanoMachinesMicroLPStakingForm2/>
-								<Space style={{marginTop: 20}}></Space>
-
-							</Col>
-							<Col xs={8}>
-								<NanoMachinesMicroLPStakingForm/>
-								<Space style={{marginTop: 20}}></Space>
-
-							</Col>
-							<Col xs={8}>
-								<NanoMachineStakingForm/>
-							</Col>
-						</Row>
-						{/*</Tabs.TabPane>*/}
-
-						{/*	<Tabs.TabPane*/}
-						{/*		tab="Nanomachine Statistics"*/}
-						{/*		key="details"*/}
-						{/*	>*/}
-						{/*		{renderStats()}*/}
-						{/*	</Tabs.TabPane>*/}
-						{/*</Tabs>*/}
-					</div>
+					<Nanomachines/>
 					{/*)}*/}
 				</div>
 			</section>
