@@ -762,11 +762,11 @@ contract WarContract is Ownable {
     
    
     constructor() {
-        micromachines = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
-        nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
-        micromachinemanufacturingplant = 0xa66360f9f48aFBAf42BA278AD8a1e4de30dafD94;
+        micromachines = 0xa066c43A8ACD8a8C1EC008f0Fd0e21802c139C61;
+        nanomachines = 0xD9713708Dae0153e08135F60d468ed7Db6880691;
+        micromachinemanufacturingplant = 0xfcC5edc6C95B47280E2C145AAc2889AF03eB8f55;
         warbotstats = 0xC665dFa4CEe8D947f181ccE176264b143A063933;
-        warbotstatsdata = 0x40fE42588870269d2592229c02d57baa84548E9D;
+        warbotstatsdata = 0xcb3A652fC525855a309a7c124477Dbd7d2034Dd7;
         burnAddress = 0x000000000000000000000000000000000000dEaD;
         oracle = 0x7cE0E55703F12D03Eb53B918aD6B9EB80d188afB;
         

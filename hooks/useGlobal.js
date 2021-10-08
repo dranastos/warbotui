@@ -205,7 +205,7 @@ const actions = {
 };
 
 const initialState = {
-    chain: 137, // 56 - Mainnet | 97 - Testnet
+    chain: 97, // 56 - Mainnet | 97 - Testnet
     //chain: 97, // 56 - Mainnet | 97 - Testnet
     //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
     security: "0xF4225b776793B44391496636115CBF1483B5E153",
@@ -231,7 +231,8 @@ const initialState = {
     masterchef: "0x2ad02356F07AbBb327cAF71f65A53270B8C10891",
     hasMasterchef: true,
 
-    micromachines: '0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A',
+    micromachines: '0xa066c43A8ACD8a8C1EC008f0Fd0e21802c139C61',
+    // micromachines: '0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A',
     //micromachines: "0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD",
     hasMicromachines: true,
 	
@@ -239,11 +240,13 @@ const initialState = {
     hasMicromachinesBNB: true,
 
     // Dicesium Batteries :'0x8373a372e8Fe67CF208e693F10C8a04B48367Db5',
-    dicesiumBatteries: "0x11910c3Ef32D5418F98559f5272201cdeb59af6e",
+    // dicesiumBatteries: "0x11910c3Ef32D5418F98559f5272201cdeb59af6e",
+    dicesiumBatteries: "0xde60536bdF938B0e951Ae311F4F4A3Cab1F94d38",
     hasDicesiumBatteries: true,
 
     //matic nanomachines: '0xc10006027DCFdABdce5BA9c589b7900241681510',
-    nanomachines: "0xf6b353258ee23d2527442f11681b892ce8742adc",
+    // nanomachines: "0xf6b353258ee23d2527442f11681b892ce8742adc",
+    nanomachines: "0xD9713708Dae0153e08135F60d468ed7Db6880691",
     hasNanomachines: true,
 
     nanostaking: "0x029B2Cc69a3f43F166C5684bD2E60a43CAC33e68",
@@ -259,7 +262,8 @@ const initialState = {
     warbotstats: "0xC665dFa4CEe8D947f181ccE176264b143A063933",
     hasWarbotstats: true,
 
-    warbotstatsdata: "0x40fE42588870269d2592229c02d57baa84548E9D",
+    // warbotstatsdata: "0x40fE42588870269d2592229c02d57baa84548E9D",
+    warbotstatsdata: "0xcb3A652fC525855a309a7c124477Dbd7d2034Dd7",
     hasWarbotstatsdata: true,
 
     warcontract: "0xf0c1f5C1ca09BF843Ec7eb861627e51f48De1C90",
@@ -274,8 +278,11 @@ const initialState = {
     //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
     microbnblp: "0xb4ec5205c12c6539fd6763354c7439811CF51C15",
     hasMicrobnblp: true,
+
     //matic warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-    warbotmanufacturer: "0xF4225b776793B44391496636115CBF1483B5E153",
+    // warbotmanufacturer: "0xF4225b776793B44391496636115CBF1483B5E153",
+    warbotmanufacturer: "0xfcC5edc6C95B47280E2C145AAc2889AF03eB8f55",
+    
     warbotmanufacturerInfo: {},
     hasWarbotmanufacturer: true,
     vaultCount: 0,

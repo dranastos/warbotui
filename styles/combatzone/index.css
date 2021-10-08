@@ -1,0 +1,7 @@
+@import url(header.css);
+@import url(battle-mode.css);
+@import url(warbot.css);
+
+.combatzone-container {
+  overflow-x: hidden;
+}

@@ -47,7 +47,7 @@ function To_Polygon() {
                                                     alt=""
                                                 />
                                                 <p>MMAC</p>
-                                                <i class="fas fa-caret-down"></i>
+                                                <i className="fas fa-caret-down"></i>
                                             </div>
                                         </div>
                                         <p className="available_MMAC mt-3">

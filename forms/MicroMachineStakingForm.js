@@ -25,7 +25,7 @@ import UserManufacturingCenters from "./UserManufacturingCenters";
 
 const slider_style = {
     backgroundColor: " rgba(113, 238, 255, 0.7)",
-    webkitAppearance: "none",
+    // webkitAppearance: "none",
     appearance: "none",
     height: "14px",
     width: "100%",

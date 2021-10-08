@@ -28,11 +28,11 @@ const { Item } = Descriptions
 export default function Dashboard() {
   const wallet = useWallet()
   const [address, setAddress] = useState(false)
-  const [state, actions] = useGlobal(['chain',  'micromachines', 'warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotmanufacturerInfo' ])
- 
+  const [state, actions] = useGlobal(['chain', 'micromachines', 'warbotmanufacturer', 'hasWarbotmanufacturer', 'warbotmanufacturerInfo'])
+
   const { warbotmanufacturer, web3, getField, sendTx, connected, getFields } = useMicroMachineManufacturingPlant(state.warbotmanufacturer)
   const [show, setShow] = useState(false)
-  const [data, setData] = useState({ })
+  const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
   const [nanomachines] = useNanomachines(state.nanomachines)
   const [warbotsupply, setWarbotsupply] = useState(0)
@@ -40,29 +40,29 @@ export default function Dashboard() {
   const [warbotproduction, setWarbotproduction] = useState(0)
   const [manufacturingperiod, setManufacturingPeriod] = useState(0)
   const [sufficientlyApproved, setSufficientlyApproved] = useState(0)
-  
+
   useEffect(() => {
     if (state.warbotmanufacturer && connected) {
       getInfo()
     }
-  }, [state.hasWarbotmanufacturer,  connected])
+  }, [state.hasWarbotmanufacturer, connected])
 
-  const getInfo = async() => {
+  const getInfo = async () => {
     setLoading(true)
-	
-	var WarBots = await warbotmanufacturer.totalSupply().call()
-	var plants = await warbotmanufacturer.ManufacturingPlantCount().call()
-    var warbotproduction = await warbotmanufacturer.globalwarbotproduction().call()
-    var manufacturingPeriod =await warbotmanufacturer.manufacturingPeriod().call()
 
-   
-	
-	const warbotInfo = await getFields( )
-	
-	setWarbotsupply( WarBots )
-	setPlants( plants )
-	setWarbotproduction( warbotproduction )
-	setManufacturingPeriod( manufacturingPeriod )
+    var WarBots = await warbotmanufacturer.totalSupply().call()
+    var plants = await warbotmanufacturer.ManufacturingPlantCount().call()
+    var warbotproduction = await warbotmanufacturer.globalwarbotproduction().call()
+    var manufacturingPeriod = await warbotmanufacturer.manufacturingPeriod().call()
+
+
+
+    const warbotInfo = await getFields()
+
+    setWarbotsupply(WarBots)
+    setPlants(plants)
+    setWarbotproduction(warbotproduction)
+    setManufacturingPeriod(manufacturingPeriod)
     setData(warbotInfo)
     actions.setSecurityInfo(warbotInfo)
     setLoading(false)
@@ -72,35 +72,33 @@ export default function Dashboard() {
     <Spin spinning={loading}>
       <Card title="Warbot Battle Statistics" extra={<Button type="primary" onClick={getInfo}>Refresh</Button>}>
         <Row gutter={[20, 20]}>
-           <Col span={8}>
+          <Col span={8}>
             <Statistic title="WarBots in Battle:" value={warbotsupply} />
           </Col>
-		  <Col span={8}>
+          <Col span={8}>
             <Statistic title="Total Warbot Battles:" value={plants} />
           </Col>
-		  <Col span={8}>
-          <Statistic title="Total Rounds of Combat" value={warbotproduction} />
+          <Col span={8}>
+            <Statistic title="Total Rounds of Combat" value={warbotproduction} />
           </Col>
-		    <Col span={8}>
+          <Col span={8}>
             <Statistic title="Total Warbot Victories:" value={manufacturingperiod} />
           </Col>
-        
+
         </Row>
       </Card>
     </Spin>
-  ), [ loading])
+  ), [loading])
 
   return (
     <PublicLayout>
       <div style={{ padding: `20px 0px` }}>
         <Title level={2}>Warbot Combat Zone</Title>
-		
-         
         {
           (state.hasSecurity && wallet.status == 'connected') && (
             <div>
               <Space style={{ marginTop: 20 }}>
-               
+
               </Space>
               <Tabs defaultActiveKey="dashboard" style={{ marginTop: 20 }}>
                 <Tabs.TabPane tab="Warzone  Dashboard" key="dashboard">
@@ -109,23 +107,21 @@ export default function Dashboard() {
                       <WarbotWarForm />
                     </Col>
                     <Col xs={16}>
-					  <AvailableBattles />
-					   <Space style={{ marginTop: 20 }}></Space>
-					  
+                      <AvailableBattles />
+                      <Space style={{ marginTop: 20 }}></Space>
                     </Col>
-
                   </Row>
                 </Tabs.TabPane>
-				<Tabs.TabPane tab="Battle Zone" key="battleZone">
-                    <Fight />
+                <Tabs.TabPane tab="Battle Zone" key="battleZone">
+                  <Fight />
                 </Tabs.TabPane>
-				<Tabs.TabPane tab="Battles Finalized" key="battleFinalized">
-                   <UserManufacturingCentersClosed />
+                <Tabs.TabPane tab="Battles Finalized" key="battleFinalized">
+                  <UserManufacturingCentersClosed />
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="WarBot Combat Statistics" key="details">
-                  { renderStats() }
+                  {renderStats()}
                 </Tabs.TabPane>
-				
+
               </Tabs>
             </div>
           )

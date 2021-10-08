@@ -206,7 +206,7 @@ const actions = {
 
 const initialState = {
     //chain: 137, // 56 - Mainnet | 97 - Testnet
-    chain: 56, // 56 - Mainnet | 97 - Testnet
+    chain: 97, // 56 - Mainnet | 97 - Testnet
     //matic security: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
     security: "0xF4225b776793B44391496636115CBF1483B5E153",
     securityInfo: {},
@@ -231,7 +231,8 @@ const initialState = {
     masterchef: "0x2ad02356F07AbBb327cAF71f65A53270B8C10891",
     hasMasterchef: true,
 
-    micromachines: '0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A',
+    micromachines: '0xa066c43A8ACD8a8C1EC008f0Fd0e21802c139C61',
+    // micromachines: '0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A',
     //micromachines: "0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD",
     hasMicromachines: true,
 	
@@ -275,7 +276,8 @@ const initialState = {
     microbnblp: "0xb4ec5205c12c6539fd6763354c7439811CF51C15",
     hasMicrobnblp: true,
     //matic warbotmanufacturer: '0x99465Cd00D42AEd0262c54EaE49365558AD5066f',
-    warbotmanufacturer: "0xF4225b776793B44391496636115CBF1483B5E153",
+    // warbotmanufacturer: "0xF4225b776793B44391496636115CBF1483B5E153",
+    warbotmanufacturer: "0xfcC5edc6C95B47280E2C145AAc2889AF03eB8f55",
     warbotmanufacturerInfo: {},
     hasWarbotmanufacturer: true,
     vaultCount: 0,

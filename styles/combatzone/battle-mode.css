@@ -1,0 +1,46 @@
+.battle-mode-card {
+  border: none !important;
+  background-color: transparent !important;
+  cursor: pointer;
+  transition: transform .5s;
+}
+
+.battle-mode-card:hover {
+  border-radius: 20px;
+  transform: scale(1.03);
+  opacity: 0.8;
+}
+
+.battle-mode-card-header {
+  background-color: #AC453A !important;
+  padding: 20px 0px 20px 50px !important;
+  border-top-left-radius: 20px !important;
+  border-top-right-radius: 20px !important;
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 47px;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.battle-mode-card-body {
+  background-color: #DA9A9A !important;
+  height: 400px;
+  border-bottom-left-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  position: relative;
+}
+
+.bottom-title {
+  position: absolute;
+  bottom: 20px;
+  left: 50px;
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 47px;
+  color: white;
+}

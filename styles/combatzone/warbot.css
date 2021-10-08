@@ -1,0 +1,149 @@
+.warbot-count {
+  font-family: Teko;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 26px;
+  line-height: 43px;
+}
+
+.warbot-count-suffix {
+  color: white;
+  padding-left: 10px;
+}
+
+.warbot-count-prefix {
+  color: #71EEFF;
+}
+
+.warbot-checkbox-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 20px 20px 20px;
+}
+
+.checkbox-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.warbot-card {
+  border: 4px solid transparent !important;
+  background-color: transparent !important;
+  cursor: pointer;
+  transition: transform .5s;
+  min-width: 350px !important;
+  margin: 20px 10px;
+}
+
+.warbot-card:hover {
+  border: 4px solid #71EEFF !important;
+  border-radius: 20px;
+}
+
+.warbot-card-img {
+  border-top-left-radius: 20px !important;
+  border-top-right-radius: 20px !important;
+}
+
+.warbot-card-body {
+  background-color: #24364F !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 50px !important;
+}
+
+.card-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.warbot-card-inner-title {
+  font-family: Exo;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 32px;
+  color: #FFFFFF;
+}
+
+.warbot-card-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.warbot-card-inner-img {
+  width: 22px;
+}
+
+.warbot-card-inner-text {
+  font-family: "IronMan", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 23px;
+  color: #778FBA;
+  margin-left: 10px;
+}
+
+.warbot-card-body-img {
+  width: 24px;
+}
+
+/* warbot footer */
+.warbot-card-footer {
+  background-color: #2A3E5B !important;
+  border-bottom-left-radius: 20px !important;
+  border-bottom-right-radius: 20px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.warbot-card-footer-title {
+  font-family: "IronMan", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  color: #556E99;
+  padding: 20px 0px 0px 30px;
+}
+
+.warbot-card-footer-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px 15px;
+}
+
+.stats-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0px 10px;
+}
+
+.item-img {
+  width: 18px;
+  height: 20px;
+  margin: 0px 5px;
+}
+
+.item-value {
+  font-family: "IronMan", sans-serif;
+  font-size: 20px;
+  color: #EAF4FB;
+}

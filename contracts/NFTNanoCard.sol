@@ -1489,9 +1489,9 @@ contract NanoNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable  {
     
     string public _tokenURI = '{"attributes": [],"name": "NFTNano","description": "Nano NFT","image": "https://gateway.pinata.cloud/ipfs/QmSzdA4nMeHyjLdW4qrWYkaByeDEhV2d2zo7xnxKmK4x2F"}';
     constructor() ERC721("MicroMachineWarBots", "MMWarBot") {
-        nanomachines = 0x4C0AeEB37210b97956309BB4585c5433Cc015F6c;
-        MicroMachineAddress = 0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD;
-        warbotsmanufacturer = 0xa99D7622bB560725346007Da01284Cf3D31a479D;
+        nanomachines = 0xD9713708Dae0153e08135F60d468ed7Db6880691;
+        MicroMachineAddress = 0xa066c43A8ACD8a8C1EC008f0Fd0e21802c139C61;
+        warbotsmanufacturer = 0xfcC5edc6C95B47280E2C145AAc2889AF03eB8f55;
         warbotstats = 0x692BE025C932E0E2faB2E946973d99F5ca7eC8db;
         mintingEnabled = !mintingEnabled;
         burningEnabled = !burningEnabled;

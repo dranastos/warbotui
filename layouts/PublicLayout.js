@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import Head from "next/head";
 import Router from "next/router";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import {
     Layout,
     Menu,
@@ -29,7 +28,7 @@ const { Title, Text } = Typography;
 export default function PublicLayout({ children }) {
     const wallet = useWallet();
     const [drawer, showDrawer] = useState(false);
-    
+
     const [loading, setLoading] = useState(false);
     // balance
     const [state, actions] = useGlobal([
@@ -57,8 +56,7 @@ export default function PublicLayout({ children }) {
 
     useEffect(() => {
         if (wallet.status == "connected" && micromachines && state.hasMicromachines) {
-            var bal = getMMACbalance();
-			console.log( "MMAC BALANCE: " + bal )
+            getMMACbalance();
         }
     }, [micromachines, state.hasMicromachines]);
 
@@ -69,10 +67,12 @@ export default function PublicLayout({ children }) {
     }, [nanomachines, state.hasNanomachines]);
 
     useEffect(() => {
-        if (wallet.status == "connected" &&  dicesiumBatteries && state.hasDicesiumBatteries) {
+        if (wallet.status == "connected" && dicesiumBatteries && state.hasDicesiumBatteries) {
             getDicesium();
         }
     }, [dicesiumBatteries, state.hasDicesiumBatteries]);
+
+
 
     const getMMACbalance = async () => {
         const MMACbalance = await micromachines
@@ -118,19 +118,16 @@ export default function PublicLayout({ children }) {
         setLoading(false);
     };
 
- const fillData =  async () => {
-	 setLoading(true);
-	 wallet.connect()
-	 
-	 console.log ("testttt " + micromachines )
-	 setLoading(false);
-       
-    }; 
+    const fillData = async () => {
+        setLoading(true);
+        await wallet.connect()
+        setLoading(false);
+    };
 
 
     const renderWallet = useCallback(() => {
-        if (wallet.status == "connected" && wallet.account) {
-			getMMACbalance(); getDicesium(); getNanomachines();
+        if (wallet.status == "connected" && wallet.account && micromachines) {
+            getMMACbalance(); getDicesium(); getNanomachines();
             return (
                 <div className="connect_btn">
                     <button onClick={() => fillData()}>
@@ -169,7 +166,7 @@ export default function PublicLayout({ children }) {
                 </button>
             </div>
         );
-    }, [wallet]);
+    }, [wallet, micromachines]);
 
     function open() {
         document.getElementById("open_menu").style.display = "none";
@@ -183,11 +180,11 @@ export default function PublicLayout({ children }) {
         document.getElementById("img_menu").style.display = "none";
     }
 
-   
+
 
     return (
         <Layout>
-            
+
             <Header
                 style={{
                     position: "fixed",

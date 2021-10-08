@@ -6,7 +6,7 @@
 
 
 
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.0;
 
 
 
@@ -1520,16 +1520,16 @@ contract MicroMachineManufacturingPlant is ERC721, ERC721Enumerable, ERC721URISt
         //nanomachines =0x664B3F930fF131758FCeeE9Ed1f1d080a6DCFD76;// rinkeby
         //MicroMachineAddress = 0x36E89d61DB6280c459992bDF7e200d786CBe64ed; //rinkeby
        // MicroMachineAddress = 0xcc116e59Dd51DF5460E8B11Ff615E3E706a9202A;
-        MicroMachineAddress = 0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A; // matic
+        // MicroMachineAddress = 0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A; // matic
+        MicroMachineAddress = 0xa066c43A8ACD8a8C1EC008f0Fd0e21802c139C61; // bsc test net
         mintingEnabled = !mintingEnabled;
         burningEnabled = !burningEnabled;
         EmergencyAddress = msg.sender;
-        manufacturingPeriod = 90 days;
+        manufacturingPeriod = 3 minutes;
         burnAddress = 0x0000000000000000000000000000000000000001;
         plantMaxLevel = 1;
         EngineContracts.push ( msg.sender );
         royaltyContract = payable(msg.sender);
-     
     }
     
     function emergencyWithdraw() public OnlyEmergency {

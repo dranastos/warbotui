@@ -1,6 +1,8 @@
 @import "antd/dist/antd.css";
 @import url("https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Exo:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
+
 *,
 ::before,
 ::after {
@@ -10,14 +12,14 @@
     font-family: "Exo", sans-serif;
 }
 
-/* @font-face {
+@font-face {
     font-family: "IronMan";
     src: url("../public/fonts/RobotoCondensed-Regular.ttf");
 }
 @font-face {
     font-family: "destructobeambb_reg";
     src: url("../public/fonts/Teko-Regular.ttf");
-} */
+}
 :root {
     --bg_color: #1f304e;
     --cards: #24364f;

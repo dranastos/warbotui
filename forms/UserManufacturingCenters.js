@@ -147,22 +147,25 @@ const UserManufacturingCenters = ({ onComplete, address }) => {
                             className="Manufacturing_head_btn"
                             onClick={getDeposits}
                         >
-                            <i class="fas fa-redo-alt"></i> Refresh
+                            <i className="fas fa-redo-alt"></i> Refresh
                         </button>
                     </div>
                     <div className="table_holder">
                         <table>
-                            <tr>
-                                <th>Staked</th>
-                                <th>Time and date staked</th>
-                                <th>Time lock</th>
-                                <th>Time left</th>
-                                <th>Warbots Manufactured</th>
-                                <th>Unclaimed Warbots</th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th>Staked</th>
+                                    <th>Time and date staked</th>
+                                    <th>Time lock</th>
+                                    <th>Time left</th>
+                                    <th>Warbots Manufactured</th>
+                                    <th>Unclaimed Warbots</th>
+                                </tr>
+                            </thead>
                             {}
-
-                            {hasVaults && deposits.map(renderDeposit)}
+                            <tbody>
+                                {hasVaults && deposits.map(renderDeposit)}
+                            </tbody>
                         </table>
                     </div>
                 </div>

@@ -1,0 +1,109 @@
+.combat-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px 0px;
+  position: relative;
+}
+
+.combat-header-back-button {
+  width: 300px;
+  height: 70px;
+  background: linear-gradient(180deg, #AC4832 0%, #AA4046 100%);
+  border-radius: 20px;
+  box-shadow: 0px 10px 0 #742f48;
+  border: 4px solid rgba(232, 146, 84, 0.5);
+  position: relative;
+  left: -20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  color: white;
+  padding-right: 50px;
+  cursor: pointer;
+}
+
+.back-icon {
+  width: 40px;
+}
+
+.back-title {
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  padding-left: 50px;
+}
+
+.combat-header-title {
+  font-family: "Teko", sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  font-style: normal;
+  line-height: 47px;
+  text-align: center;
+  color: white;
+}
+
+.confirm-icon {
+  width: 40px;  
+}
+
+.combat-header-confirm-button {
+  width: 300px;
+  height: 70px;
+  background: #54AD63;
+  border-radius: 20px;
+  box-shadow: 0px 10px 0 #147A55;
+  border: 4px solid rgba(113, 207, 128, 0.5);
+  position: relative;
+  right: -20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  padding-left: 20px;
+  cursor: pointer;
+}
+
+.confirm-title {
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  padding-left: 30px;
+  color: white;
+}
+
+.combat-header-confirm-button-disable {
+  width: 300px;
+  height: 70px;
+  opacity: 0.7;
+  background: #556E99;
+  border-radius: 20px;
+  box-shadow: 0px 5px 0 #5c739c;
+  border: 4px solid #819bc7;
+  position: relative;
+  right: -20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+  padding-left: 20px;
+  cursor: not-allowed;
+}
+
+.confirm-title-disable {
+  font-family: "Teko";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  padding-left: 30px;
+  color: #819bc7;
+}
+

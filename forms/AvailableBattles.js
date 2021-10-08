@@ -50,31 +50,23 @@ const AvailableBattles = ({ onComplete, address }) => {
     //const deps = await warbotmanufacturer.getUserManufacturingPlants(wallet.account).call()
 	//const totalDeps = await warbotmanufacturer.userManufacturingPlantCount(wallet.account).call()
 	const warCount = await warcontract.warCount().call()
-	console.log ( warCount )
 	const newBattles = await warcontract.getNewBattles().call()
-	console.dir ( newBattles )
 	setDeposits(newBattles)
 
     let vaults = {}
     for (let battle of newBattles) {
 	  if ( battle == 0 ) continue
 	 try{ 
-		
-		
 		const mainbot = await warcontract.BotsInWar(battle, 0).call()  
-		
 		const data = await getWars( battle, mainbot )
-		console.log( " test " + mainbot )
+		console.log( " test " + data )
 		vaults[battle] = { ...data}
      }catch (e) {
       console.log(battle , e)
     }    
-	}  
-       
-      
-
+	}
     
-	console.dir ( vaults )
+	console.log ( vaults )
     setVaults(vaults)
     
     setHasVaults(true)
@@ -199,7 +191,6 @@ const AvailableBattles = ({ onComplete, address }) => {
   }
 
   const renderDeposit = (id, key) => {
-    console.log( "id num is " + id )
 	if ( vaults[id] === undefined ) return
 	var warbotid = "War Number: " + vaults[id].WarNumber
 	var warbotlevel = "Warbot Level: " + vaults[id].Level
@@ -229,10 +220,10 @@ const AvailableBattles = ({ onComplete, address }) => {
                 Object.keys(vaults[id]).map((name, key) => (
                   <Col
                     key={`${id}-${name}-${key}`}
-                    span={vaults.[id]['WarNumber'].toString().startsWith('0x') ? 24 : 8}>
+                    span={vaults?.[id]['WarNumber'].toString().startsWith('0x') ? 24 : 8}>
                     <Statistic
                       title={name.toUpperCase()}
-                      value={vaults.[id][name]   }
+                      value={vaults?.[id][name]   }
                       precision={ name == "POOL WEIGHT" ? 9 : 0 }
                       style={{ marginBottom: 20 }}
                       />

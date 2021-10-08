@@ -51,7 +51,7 @@ function To_BSC() {
                                                     alt=""
                                                 />
                                                 <p>NMAC</p>
-                                                <i class="fas fa-caret-down"></i>
+                                                <i className="fas fa-caret-down"></i>
                                             </div>
                                         </div>
                                         <p className="available_MMAC mt-3">

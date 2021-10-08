@@ -140,7 +140,7 @@ const NanoSalesForm = ({ onComplete, address }) => {
         <Form
           size="large"
           layout="vertical">
-          <Statistic class="ant-alert" title="DAI Balance" value={balance} />
+          <Statistic className="ant-alert" title="DAI Balance" value={balance} />
           <Statistic title="Approved" value={allowance} />
          <Text level={5} strong> Next Nanomachine token price is {currentprice} BUSD</Text>         
 		 <Form.Item name="vAmount" label="Purchase Nanomachines" rules={[{ required: true, message: 'Enter deposit amount' }]}>

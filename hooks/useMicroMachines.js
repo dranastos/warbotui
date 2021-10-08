@@ -7,17 +7,16 @@ const useMicroMachines = (address) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState({})
   const [connected, setConnected] = useState(false)
-  console.log("MMAC address: " +address)
+  // console.log("MMAC address: " +address)
 
   useEffect(() => {
-	 
     if (address) {
       Contract.setProvider(global.window && window.ethereum)
       setContract(new Contract(MicroMachines.abi, address))
-	  setConnected(true)
+	    setConnected(true)
       console.log("MicroMachines ADDRESS", address)
     } else {
-      console.log("MICROMACHINES NOT SET")
+      console.log("MicroMachines NOT SET")
     }
   }, [address])
 

@@ -82,7 +82,6 @@ export default function Dashboard() {
         var manufacturingPeriod = await warbotmanufacturer
             .manufacturingPeriod()
             .call();
-
         const warbotInfo = await getFields();
 
         setWarbotsupply(WarBots);
@@ -93,7 +92,6 @@ export default function Dashboard() {
         actions.setSecurityInfo(warbotInfo);
         setLoading(false);
     };
-
     const renderStats = useCallback(
         () => (
             <Spin spinning={loading}>
