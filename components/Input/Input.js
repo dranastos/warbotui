@@ -1,14 +1,11 @@
 import styles from './Input.module.css';
 
-const Input = ({value, setValue, placeholder, label, additionalLabel, balance}) => {
+const Input = ({label, additionalLabel, balance, ...props}) => {
 	return (
 		<label className={styles.Input}>
 			<span>{label}</span>
 			<input
-				type="number"
-				// value={value}
-				// onInput={setValue}
-				placeholder={placeholder}
+				{...props}
 			/>
 			<div>
 				<span>{additionalLabel}</span>

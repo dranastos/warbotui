@@ -1,12 +1,12 @@
 import styles from './Output.module.css';
 import Button from '../Button/Button';
 
-const Output = ({value, text, label, buttonText, buttonDisabled}) => {
+const Output = ({value, text, label, buttonText, buttonOptions}) => {
 	return (
 		<div className={styles.Output}>
 			<div>
 				{label && text && (
-					<span><strong>{text}</strong> {label}</span>
+					<span><strong>{label}</strong> {text}</span>
 				)}
 			</div>
 			<div>
@@ -14,7 +14,7 @@ const Output = ({value, text, label, buttonText, buttonDisabled}) => {
 					<output>{value}</output>
 				)}
 				{buttonText && (
-					<Button value={buttonText} disabled={buttonDisabled}/>
+					<Button value={buttonText} {...buttonOptions}/>
 				)}
 			</div>
 		</div>
