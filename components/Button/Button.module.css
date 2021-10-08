@@ -12,6 +12,7 @@
   border: none;
   background-color: rgba(110, 209, 223, 1);
   box-shadow: 0 10px 0 0 rgba(110, 209, 223, 0.5);
+  padding: 0 40px;
 }
 
 .Button:active {
