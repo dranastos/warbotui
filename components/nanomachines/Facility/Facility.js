@@ -1,9 +1,9 @@
 import styles from './Facility.module.css';
 
 import Card from '../../Card/Card';
-import Image from 'next/image';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faArrowRight} from '@fortawesome/free-solid-svg-icons';
+import Output from '../../Output/Output';
 
 const Facility = ({
 	                  title,
@@ -26,17 +26,11 @@ const Facility = ({
 						</span>
 						<img src={producedImage} alt=""/>
 					</header>
-					<h3 className={styles.Facility__title}>{title}</h3>
-					<h4 className={styles.Facility__subtitle}>{subtitle}</h4>
+					<h3>{title}</h3>
+					<h4>{subtitle}</h4>
 					<div className={styles.Facility__stakes}>
-						<div className={styles.Facility__stake}>
-							<span><strong>{stakedText}</strong> staked</span>
-							<output>{stakedValue}</output>
-						</div>
-						<div className={styles.Facility__stake}>
-							<span><strong>{producedText}</strong> produced</span>
-							<output>{producedValue}</output>
-						</div>
+						<Output value={stakedValue} label={stakedText} text="staked"/>
+						<Output value={producedValue} label={producedText} text="produced"/>
 					</div>
 				</div>
 			</Card>

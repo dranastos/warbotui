@@ -1,0 +1,26 @@
+.Output {
+  display: flex;
+  flex-direction: column;
+}
+
+.Output span {
+   font-family: 'Roboto Condensed', sans-serif;
+   font-size: 20px;
+   color: #71EEFF;
+   line-height: 23px;
+ }
+
+.Output output {
+  width: 100px;
+  padding: 16px;
+  font-family: Teko, sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  background: rgba(113, 238, 255, 0.2);
+  border: 1px solid #71EEFF;
+  box-sizing: border-box;
+  border-radius: 10px;
+  color: #71EEFF;
+  text-align: center;
+  margin-top: 16px;
+}
