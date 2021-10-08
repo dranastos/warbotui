@@ -210,7 +210,7 @@ const NanoMachineMicroLPStakingForm2 = ({onComplete, address}) => {
 	};
 	const handleAmount = (e) => {
 		console.log('x' + web3.utils.toWei(e.target.value.toString()));
-		setData({...data, amount: e.target.value});
+		setData({...data, amount: parseInt(web3.utils.toWei(e.target.value.toString()))});
 	};
 
 	return (
@@ -223,7 +223,6 @@ const NanoMachineMicroLPStakingForm2 = ({onComplete, address}) => {
 			stakedValue={web3.utils.fromWei(stakedbalance.toString())}
 			stakedText="NMAC/BUSD LP"
 			producedText="NMAC"
-			inputValue={data.amount}
 			setInputValue={handleAmount}
 			approve={approve}
 			stake={handleDeposit}

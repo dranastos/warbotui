@@ -245,7 +245,11 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 		setData({...data, months});
 	};
 	const handleAmount = (e) => {
-		setData({...data, amount: parseInt(e.target.value)});
+		if (e.target.value === '') {
+			setData({...data, amount: 0});
+		} else {
+			setData({...data, amount: parseInt(e.target.value)});
+		}
 	};
 
 	return (
@@ -258,7 +262,6 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 			stakedValue={stakedbalance}
 			stakedText="NMAC"
 			producedText="NMAC"
-			inputValue={data.amount}
 			setInputValue={handleAmount}
 			approve={approve}
 			stake={handleDeposit}
