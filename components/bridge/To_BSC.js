@@ -1,4 +1,5 @@
 import Select from '../Select/Select';
+import Button from '../Button/Button';
 
 function To_BSC() {
   return (
@@ -73,9 +74,7 @@ function To_BSC() {
                   </h1>
 
                   <div className="row mx-5">
-                    <button className="approve_btn">
-                      Approve
-                    </button>
+                    <Button value="Approve"/>
                   </div>
                 </div>
                 <p className="downside_p">
