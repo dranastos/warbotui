@@ -11,8 +11,8 @@ const Facilities = () => {
 					<Facility
 						title="Alpha Facility"
 						subtitle="Stake NMAC/BUSD LP to get NMAC"
-						stakedImage='/img/facilities/staked_image_1.png'
-						producedImage='/img/facilities/produced_image_1.png'
+						stakedImage='/img/nanomachines/staked_image_1.png'
+						producedImage='/img/nanomachines/produced_image_1.png'
 						stakedText="NMAC/BUSD LP"
 						producedText="NMAC"
 						stakedValue="0.00"
@@ -23,8 +23,8 @@ const Facilities = () => {
 					<Facility
 						title="Beta Facility"
 						subtitle="Stake NMAC/BNB LP to get NMAC"
-						stakedImage='/img/facilities/staked_image_1.png'
-						producedImage='/img/facilities/produced_image_1.png'
+						stakedImage='/img/nanomachines/staked_image_1.png'
+						producedImage='/img/nanomachines/produced_image_1.png'
 						stakedText="NMAC/BNB LP"
 						producedText="NMAC"
 						stakedValue="0.00"
@@ -35,8 +35,8 @@ const Facilities = () => {
 					<Facility
 						title="Gamma Facility"
 						subtitle="Stake NMAC to get NMAC"
-						stakedImage='/img/facilities/produced_image_1.png'
-						producedImage='/img/facilities/produced_image_1.png'
+						stakedImage='/img/nanomachines/produced_image_1.png'
+						producedImage='/img/nanomachines/produced_image_1.png'
 						stakedText="NMAC/BUSD LP"
 						producedText="NMAC"
 						stakedValue="0.00"

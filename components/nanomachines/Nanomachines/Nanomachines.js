@@ -19,8 +19,6 @@ const Nanomachines = () => {
 				style={{marginLeft: 'auto', marginRight: 'auto'}}
 			/>
 			<div>
-				{/*<Tabs defaultActiveKey="dashboard" style={{marginTop: 20}}>*/}
-				{/*	<Tabs.TabPane tab="Nanomachine Dashboard" key="dashboard">*/}
 				{toggleNanomachine === 0 && (
 					<Row>
 						<Col md={24}>

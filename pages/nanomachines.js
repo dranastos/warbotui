@@ -41,6 +41,7 @@ import Tabs from '../components/Tabs/Tabs';
 import Card from '../components/Card/Card';
 import Facilities from '../components/nanomachines/Facilities/Facilities';
 import Nanomachines from '../components/nanomachines/Nanomachines/Nanomachines';
+import Statistics from '../components/nanomachines/Statistics/Statistics';
 
 
 const {Title, Text} = Typography;
@@ -116,8 +117,6 @@ export default function Dashboard() {
 						<Statistic title="Nanomachines Manufactured Per Day"
 						           value={web3.utils.fromWei(dailyproduction.toString())}/>
 					</Col>
-
-
 				</Row>
 			</Card>
 		</Spin>
@@ -128,15 +127,25 @@ export default function Dashboard() {
 			<section className="War_dashboard_tabs Cross_Chain_Bridge">
 				<div className="container">
 					<h1>NanoMachine (NMAC) Production Facility</h1>
+					{/*{(state.hasSecurity && wallet.status === 'connected') && (*/}
+					{/*		<>*/}
 					<Tabs
 						tabs={['Production Facilities', 'Statistics']}
 						defaultTab={toggleFacility}
 						callback={setToggleFacility}
 					/>
-					{/*{*/}
-					{/*  (state.hasSecurity && wallet.status === 'connected') && (*/}
-					<Facilities/>
-					<Nanomachines/>
+					{toggleFacility === 0 && (
+						<>
+							<Facilities/>
+							<Nanomachines/>
+						</>
+					)}
+					{toggleFacility === 1 && (
+						<>
+							<Statistics/>
+						</>
+					)}
+					{/*	</>*/}
 					{/*)}*/}
 				</div>
 			</section>
