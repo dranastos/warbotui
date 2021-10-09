@@ -1,3 +1,11 @@
 .Facilities {
   margin-bottom: 115px;
+  margin-top: 60px;
+}
+
+@media (max-width: 767px) {
+  .Facilities {
+    margin-bottom: 70px;
+    margin-top: 30px;
+  }
 }

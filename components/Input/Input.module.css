@@ -21,6 +21,7 @@
   padding: 16px 32px;
   margin: 16px 0;
   display: block;
+  width: 100%;
 }
 
 .Input input[type='number'] {
@@ -44,4 +45,20 @@
   font-size: 18px;
   text-align: right;
   color: #EAF4FB;
+}
+
+@media (max-width: 720px) {
+  .Input span {
+    font-size: 16px;
+  }
+
+  .Input input {
+    font-size: 32px;
+    padding: 8px 16px;
+    margin: 8px 0;
+  }
+
+  .Input div i {
+    font-size: 16px;
+  }
 }

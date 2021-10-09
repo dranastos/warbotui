@@ -1,4 +1,5 @@
 .Facility {
+  height: 100%;
 }
 
 .Facility__container {
@@ -35,4 +36,28 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 50px;
+}
+
+@media (max-width: 1200px) {
+  .Facility__container {
+    padding: 30px 30px 50px 30px;
+    width: 100%;
+  }
+
+  .Facility__stakes {
+    grid-column-gap: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .Facility__container {
+    padding: 20px;
+  }
+
+  .Facility__stakes {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    grid-column-gap: 0;
+    grid-row-gap: 20px;
+  }
 }

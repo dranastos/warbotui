@@ -849,6 +849,28 @@ input:focus-visible {
   height: 100%;
 }
 
+@media (max-height: 960px) {
+  .img_menu li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+
+@media (max-height: 870px) {
+  .img_menu li {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 1540px) {
+  .nav_menu_holder {
+    position: absolute;
+    left: -80px;
+    top: 18px;
+  }
+}
+
 @media (max-width: 1399px) {
   .container {
     margin-right: 49px;
@@ -920,6 +942,12 @@ input:focus-visible {
   .stat_box_holder {
     justify-content: center;
     flex-wrap: wrap;
+  }
+  .War_dashboard_tabs h1, .War_dashboard_tabs h2 {
+    font-size: 36px;
+    line-height: 100%;
+    margin-bottom: 24px;
+    text-align: center;
   }
 }
 
@@ -995,5 +1023,9 @@ input:focus-visible {
   }
   .stake_btn2 {
     margin-top: 0;
+  }
+  .War_dashboard_tabs h1, .War_dashboard_tabs h2 {
+    font-size: 30px;
+    margin-bottom: 24px;
   }
 }

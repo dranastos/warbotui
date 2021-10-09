@@ -6,8 +6,8 @@ const Facilities = () => {
 	return (
 		<div className={styles.Facilities}>
 			<h2>Production Facilities</h2>
-			<Row gutter={20}>
-				<Col md={8}>
+			<Row gutter={20} gap={30} justify="center" align="center">
+				<Col md={24} lg={8}>
 					<Facility
 						title="Alpha Facility"
 						subtitle="Stake NMAC/BUSD LP to get NMAC"
@@ -19,7 +19,7 @@ const Facilities = () => {
 						producedValue="0.00"
 					/>
 				</Col>
-				<Col md={8}>
+				<Col md={24} lg={8}>
 					<Facility
 						title="Beta Facility"
 						subtitle="Stake NMAC/BNB LP to get NMAC"
@@ -31,7 +31,7 @@ const Facilities = () => {
 						producedValue="0.00"
 					/>
 				</Col>
-				<Col md={8}>
+				<Col md={24} lg={8}>
 					<Facility
 						title="Gamma Facility"
 						subtitle="Stake NMAC to get NMAC"

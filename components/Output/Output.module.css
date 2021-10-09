@@ -18,7 +18,8 @@
  }
 
 .Output output {
-  width: 100px;
+  width: 100%;
+  min-width: 100px;
   padding: 16px;
   font-family: Teko, sans-serif;
   font-weight: bold;
@@ -30,4 +31,31 @@
   color: #71EEFF;
   text-align: center;
   margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .Output > div {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-column-gap: 0;
+    grid-row-gap: 10px;
+  }
+}
+
+@media (max-width: 720px) {
+  .Output > div {
+    grid-column-gap: 10px;
+  }
+
+  .Output span {
+    font-size: 16px;
+    line-height: 16px;
+  }
+
+  .Output output {
+    min-width: 80px;
+    padding: 12px;
+    font-size: 24px;
+    margin-top: 0;
+  }
 }

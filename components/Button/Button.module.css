@@ -27,3 +27,24 @@
   -webkit-transform: translateY(10px);
   transform: translateY(10px);
 }
+
+@media (max-width: 720px) {
+  .Button {
+    height: 56px;
+    font-size: 24px;
+    border-radius: 10px;
+    line-height: 24px;
+    box-shadow: 0 6px 0 0 rgba(110, 209, 223, 0.5);
+    padding: 0 20px;
+    margin-top: 6px;
+  }
+
+  .Button:disabled {
+    box-shadow: 0 6px 0 0 rgba(119, 143, 186, 0.2);
+  }
+
+  .Button:active {
+    -webkit-transform: translateY(6px);
+    transform: translateY(6px);
+  }
+}

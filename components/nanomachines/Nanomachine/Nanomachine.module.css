@@ -67,3 +67,62 @@
   display: grid;
   grid-row-gap: 30px;
 }
+
+@media (max-width: 1200px) {
+  .Nanomachine__container {
+    padding: 30px 40px;
+    border-bottom: 1px solid #425575;
+  }
+
+  .Nanomachine__header {
+    grid-column-gap: 25px;
+  }
+
+  .Nanomachine__values {
+    grid-column-gap: 25px;
+  }
+
+  .Nanomachine__values div span {
+    font-size: 16px;
+  }
+
+  .Nanomachine__values div i {
+    font-size: 24px;
+  }
+
+  .Nanomachine__main {
+    grid-column-gap: 30px;
+  }
+
+  .Nanomachine__stake {
+    display: grid;
+    grid-row-gap: 30px;
+  }
+}
+
+@media (max-width: 991px) {
+  .Nanomachine__main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    grid-row-gap: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .Nanomachine {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  .Nanomachine__container {
+    padding: 20px;
+  }
+}
+
+.Nanomachine__values {
+  grid-template-columns: auto;
+  grid-template-rows: auto auto;
+  grid-column-gap: 0;
+  grid-row-gap: 20px;
+}

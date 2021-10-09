@@ -18,7 +18,7 @@ const Statistics = () => {
 						<div className={styles.Statistics__container}>
 							<div>
 								<span>NanoMachines in existence</span>
-								<h2>52,592.453599999999999981</h2>
+								<h2>52,592.453599999999999</h2>
 							</div>
 								<img src="/img/nanomachines/statistics_image_2.png" alt=""/>
 						</div>
