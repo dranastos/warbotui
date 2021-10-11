@@ -221,7 +221,7 @@ const NanoMachineMicroLPStakingForm2 = ({onComplete, address}) => {
 
 	return (
 		<Nanomachine
-			label="Alpha Facility"
+			label="MMAC/MATIC"
 			title="Build from NMAC/BUSD LP"
 			subtitle="Stake NMAC/BUSD LP to get NMAC"
 			balanceValue={web3.utils.fromWei(balance.toString())}

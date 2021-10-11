@@ -32,12 +32,12 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
 
   useEffect(() => {
     if (connected && state.hasSecurity) {
-      
+
     }
   }, [data])
 
   useEffect(() => {
-	  
+
     if (connected && nanomachines && state.hasNanomachines) {
       getBalance()
       getAllowance()
@@ -46,17 +46,17 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
 
   const getBalance = async() => {
     const balance = await nanobnblp.balanceOf(wallet.account).call()
-	
+
     var userShare = await masterchef.pendingSushi( '0' , wallet.account ).call()
 	var userInfo = await masterchef.userInfo( '0', wallet.account ).call()
 	var stakedBalance = userInfo['amount'] ;
-	
-	
+
+
 	setBalance(balance)
 	setUsershare(web3.utils.fromWei(userShare))
 	setStakedbalance(stakedBalance)
-	
-	
+
+
     setCounter(counter + 1)
   }
 
@@ -66,9 +66,9 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
     setCounter(counter + 1)
   }
 
- 
 
- 
+
+
 
   const approve = async() => {
     setLoading(true)
@@ -78,7 +78,7 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
       if (parseInt(data.amount) > 0) {
         const value = data.amount.toString()
 
-        
+
 
         const tx = await nanobnblp.approve(state.masterchef, value).send({
           from: wallet.account,
@@ -140,7 +140,7 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
     setLoading(false)
 
   }
-  
+
   const handleWithdrawal = async() => {
     setLoading(true)
 
@@ -212,7 +212,7 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
 
   const handleTimeLock = (months, amount ) => {
     setData({ ...data, months })
-	
+
   }
   const handleAmount = (e) => {
     console.log ( "x" + web3.utils.toWei(e.target.value.toString()) )
@@ -221,7 +221,7 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
 
   return (
     <Spin spinning={loading}>
-      <Card title="Nanomachines Alpha Facility">
+      <Card title="Nanomachines MMAC/MATIC">
 	  <Card title="Build Nanomachines from Nano/BNB LP">
         <Form
           size="large"
@@ -232,17 +232,17 @@ const NanoMachineMicroLPStakingForm2 = ({ onComplete, address }) => {
           <Form.Item name="vAmount" label="Deposit Amount" rules={[{ required: true, message: 'Enter deposit amount' }]}>
             <Input type="number" placeholder="e.g 10000" value={data.amount} onChange={handleAmount} />
           </Form.Item>
-          
+
           <Space>
            <Button size="large" onClick={approve}>Approve</Button>
             <Button size="large" type="primary" onClick={handleDeposit}>Stake</Button>
-			 
+
           </Space>
 		  <Space>
-           
+
 			<Button size="large" type="primary" onClick={handleWithdrawal}>Unstake</Button>
           </Space>
-		  
+
           <Card style={{ marginTop: 20, textAlign: 'center' }}>
             <Title level={3} type="success"  strong>Nanomachines Produced:</Title>
 			<Button size="large" type="primary" onClick={handleNanoWithdrawal}>Withdraw {usershare}</Button>

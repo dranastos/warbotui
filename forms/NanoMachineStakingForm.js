@@ -257,7 +257,7 @@ const NanoMachineStakingForm = ({onComplete, address}) => {
 
 	return (
 		<Nanomachine
-			label="Gamma Facility"
+			label="NMAC STAKED"
 			title="Build NMAC from NMAC"
 			subtitle="Stake NMAC to get NMAC"
 			balanceValue={balance}

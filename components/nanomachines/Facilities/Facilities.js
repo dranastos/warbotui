@@ -9,7 +9,7 @@ const Facilities = () => {
 			<Row gutter={20} gap={30} justify="center" align="center">
 				<Col md={24} lg={8}>
 					<Facility
-						title="Alpha Facility"
+						title="MMAC/MATIC"
 						subtitle="Stake NMAC/BUSD LP to get NMAC"
 						stakedImage='/img/nanomachines/staked_image_1.png'
 						producedImage='/img/nanomachines/produced_image_1.png'
@@ -33,7 +33,7 @@ const Facilities = () => {
 				</Col>
 				<Col md={24} lg={8}>
 					<Facility
-						title="Gamma Facility"
+						title="NMAC STAKED"
 						subtitle="Stake NMAC to get NMAC"
 						stakedImage='/img/nanomachines/produced_image_1.png'
 						producedImage='/img/nanomachines/produced_image_1.png'

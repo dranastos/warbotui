@@ -1,7 +1,11 @@
-import Select from '../Select/Select';
-import Button from '../Button/Button';
+import Select from '../../Select/Select';
+import Button from '../../Button/Button';
+import Input from '../../Input/Input';
+import {useState} from 'react';
 
 function To_BSC() {
+  const [data, setData] = useState({months: 0, amount: '', timelock: 0});
+
   return (
     <>
       <section className="To_BSC">
@@ -26,17 +30,18 @@ function To_BSC() {
             </div>
             <div className="col-md-8">
               <div className="to_pol_card">
-                <div className="to_pol_upside">
+                <div className="to_pol_upside mt-3">
                   <h1 className="text-center">
                     <img src="/img/polygon.png" alt=""/>
                     &nbsp; Polygon Network
                   </h1>
                   <div className="row mx-4">
                     <div className="col-md-8">
-                      <div className="BSC_input">
-                        <input
-                          type="text"
+                      <div className="BSC_input mb-3">
+                        <Input
                           placeholder="E.G. 10000"
+                          value={data.amount}
+                          onInput={(event) => setData({...data, amount: event.target.value})}
                         />
                         <button>MAX</button>
                       </div>

@@ -1,15 +1,14 @@
 import {useEffect, useState, useCallback} from 'react';
 import PublicLayout from '../layouts/PublicLayout_BNB';
-import To_BSC from '../components/bridge/To_BSC';
-import To_Polygon from '../components/bridge/To_Polygon';
 import Tabs from '../components/Tabs/Tabs';
+import Transfer from '../components/bridge/Transfer/Transfer';
 
 export default function bridge() {
 	const [toggleState, setToggleState] = useState(0);
 
 	return (
 		<PublicLayout>
-			<section className="War_dashboard_tabs Cross_Chain_Bridge">
+			<section className="War_dashboard_tabs">
 				<div className="container">
 					<h1>Cross-Chain Bridge</h1>
 
@@ -19,29 +18,7 @@ export default function bridge() {
 						callback={setToggleState}
 					/>
 
-					<div className="tab_content_holder">
-						<div
-							className={
-								toggleState === 0
-									? 'content  active-content'
-									: 'content'
-							}
-						>
-							<To_Polygon/>
-							{/* <For_innovators_tab /> */}
-						</div>
-
-						<div
-							className={
-								toggleState === 1
-									? 'content  active-content'
-									: 'content'
-							}
-						>
-							<To_BSC/>
-							{/* <Closed_plants_tab /> */}
-						</div>
-					</div>
+					<Transfer toggleState={toggleState}/>
 				</div>
 			</section>
 		</PublicLayout>

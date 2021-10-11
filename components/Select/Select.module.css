@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
   height: 84px;
   background: #19283d;
@@ -14,7 +14,7 @@
 .select__placeholder {
   display: flex;
   align-items: center;
-  margin-left: -80px;
+  margin-left: 16px;
 }
 
 .select__placeholder p {
@@ -88,7 +88,7 @@
 
 .select__options div p, .select__options_active div p {
   color: #ffffff;
-  font-family: Teko;
+  font-family: 'Teko', sans-serif;
   font-weight: 600;
   font-size: 36px;
   margin: 0 0 0 16px;
@@ -116,11 +116,19 @@
   background-color: #6ed1df;
 }
 
+@media (max-width: 1400px) {
+  .select__placeholder p {
+    font-size: 30px;
+    margin: 0 0 0 8px;
+  }
+}
+
 @media (max-width: 560px) {
   .select, .select__active {
     padding: 15px;
   }
-  .select__options_active {
-    /*max-height: 360px;*/
+
+  .select__placeholder {
+    margin-left: 0;
   }
 }

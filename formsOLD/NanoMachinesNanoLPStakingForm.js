@@ -229,7 +229,7 @@ const NanoMachinesNanoLPStakingForm = ({ onComplete, address }) => {
 
     return (
         <Spin spinning={loading}>
-            <Card title="Nanomachines Alpha Facility">
+            <Card title="Nanomachines MMAC/MATIC">
                 <Card title="Build Nanomachines from Nano/BNB LP">
                     <Form size="large" layout="vertical">
                         <Statistic
