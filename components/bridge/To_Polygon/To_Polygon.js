@@ -1,54 +1,61 @@
 import Select from '../../Select/Select';
 import Button from '../../Button/Button';
 import useGlobal from '../../../hooks/useGlobal';
-import {useState} from 'react';
-import useGlobalBNB from '../../../hooks/useGlobalBNB';
-import useMicroMachines from '../../../hooks/useMicroMachines';
+import {useEffect, useState} from 'react';
 import {useWallet} from 'use-wallet';
-import useMasterchef from '../../../hooks/useMasterchef';
 import {notification} from 'antd';
 import Input from '../../Input/Input';
+import useMMACbridge from '../../../hooks/useMMACBridge';
+import useWeb3 from '../../../hooks/useWeb3';
 
 function To_Polygon() {
 	const wallet = useWallet();
-	const [state, actions] = useGlobal(['micromachinesBNB', 'hasMicromachinesBNB',]);
+	const [state, actions] = useGlobal(['bridge', 'masterchef']);
 	const [data, setData] = useState({months: 0, amount: '', timelock: 0});
-	const [masterchef] = useMasterchef(state.masterchef);
+	const web3 = useWeb3();
+	const [counter, setCounter] = useState(0);
+	const [allowance, setAllowance] = useState(0);
+	const [currentId, setCurrentId] = useState();
 
-	const [micromachinesBNB] = useMicroMachines(state.micromachinesBNB);
+	const [bridge] = useMMACbridge(state.MMACBridge);
 
-	// const getAllowance = async () => {
-	// 	const balance = await nanobnblp.allowance(wallet.account, state.masterchef).call();
-	// 	setAllowance(balance);
-	// 	setCounter(counter + 1);
-	// };
+	const getAllowance = async () => {
+		const balance = await bridge.allowance(wallet.account, state.masterchef).call();
+		setAllowance(balance);
+		setCounter(counter + 1);
+	};
 
-	// const approve = async () => {
-	// 	try {
-	// 		if (parseInt(data.amount) > 0) {
-	// 		  const value = data.amount.toString();
-	//
-	// 		  const tx = await micromachinesBNB.approve(state.masterchef, value).send({
-	// 		    from: wallet.account,
-	// 		    to: state.nanomachines
-	// 		  });
-	//
-	// 			if (tx.status) {
-	// 				notification.success({
-	// 					message: 'Approve Successful',
-	// 					description: tx.transactionHash
-	// 				});
-	//
-	// 				// await getAllowance();
-	// 			}
-	// 		}
-	// 	} catch (e) {
-	// 		notification.error({
-	// 			message: 'Deposit Failed',
-	// 			description: e.toString()
-	// 		});
-	// 	}
-	// };
+	const approve = async () => {
+		if (currentId === 56) {
+			try {
+				if (parseInt(data.amount) > 0) {
+					const value = data.amount.toString();
+
+					const tx = await bridge.approve(state.masterchef, web3.utils.toBN(String(value))).send({
+						from: wallet.account
+					});
+
+					if (tx.status) {
+						notification.success({
+							message: 'Approve Successful',
+							description: tx.transactionHash
+						});
+
+						await getAllowance();
+					}
+				}
+			} catch (e) {
+				notification.error({
+					message: 'Deposit Failed',
+					description: e.toString()
+				});
+			}
+		}
+	};
+
+	useEffect(() => {
+		web3.eth.net.getId().then(setCurrentId);
+	});
 
 	return (
 		<>
@@ -66,7 +73,7 @@ function To_Polygon() {
 							</p>
 							<br/>
 							<p className="to_pol_bal">Your BNB Balance:</p>
-							<button className="to_pol_btn">361 BNB</button>
+							<button className="to_pol_btn">{allowance} BNB</button>
 						</div>
 						<div className="col-md-8">
 							<div className="to_pol_card">
@@ -87,7 +94,7 @@ function To_Polygon() {
 													value={data.amount}
 													onInput={(event) => setData({...data, amount: event.target.value})}
 												/>
-												<button>MAX</button>
+												<button onClick={() => setData({...data, amount: allowance})}>MAX</button>
 											</div>
 										</div>
 										<div className="col-lg-12 col-xl-4">
@@ -103,7 +110,7 @@ function To_Polygon() {
 											/>
 										</div>
 										<p className="available_MMAC mt-3">
-											Available: 361 MMAC
+											Available: {allowance} MMAC
 										</p>
 									</div>
 								</div>
@@ -120,7 +127,7 @@ function To_Polygon() {
 									<div className="row mx-5">
 										<Button
 											value="Approve"
-											// onClick={approve}
+											onClick={approve}
 										/>
 									</div>
 								</div>
