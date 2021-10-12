@@ -234,7 +234,7 @@ const initialState = {
     micromachines: '0xB4C2E61Dbf9ad64bE35F2c665b7e22aCE9310A0A',
     //micromachines: "0x8Bc3EB7ded0ec83D0A8EF18D327644c04191f7DD",
     hasMicromachines: true,
-	
+
 	micromachinesBNB: '0xcc116e59Dd51DF5460E8B11Ff615E3E706a9202A',
     hasMicromachinesBNB: true,
 
@@ -264,12 +264,15 @@ const initialState = {
 
     warcontract: "0xf0c1f5C1ca09BF843Ec7eb861627e51f48De1C90",
     hasWarcontract: true,
-	
+
 	welfare: "0xf0c1f5C1ca09BF843Ec7eb861627e51f48De1C90",
     hasWelfare: true,
-	
-	MMACBridge: "0xEdECC0c3bd2A58f4F35226f20393c80Cf5C66D51",
-	hasMMACBridge: true,
+
+    MMACBridge: "0xEdECC0c3bd2A58f4F35226f20393c80Cf5C66D51",
+    hasMMACBridge: true,
+
+    Matic: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+    hasMatic: true,
 
     //matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
     microbnblp: "0xb4ec5205c12c6539fd6763354c7439811CF51C15",

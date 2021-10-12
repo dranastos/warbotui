@@ -271,6 +271,9 @@ const initialState = {
 	MMACBridge: '0xEdECC0c3bd2A58f4F35226f20393c80Cf5C66D51',
 	hasMMACBridge: true,
 
+	Matic: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+	hasMatic: true,
+
 	//matic microbnblp: '0xb0E283BB71471F6b1A046580AA2117317D1b50a1',
 	microbnblp: '0xb4ec5205c12c6539fd6763354c7439811CF51C15',
 	hasMicrobnblp: true,

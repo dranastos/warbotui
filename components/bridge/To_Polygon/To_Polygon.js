@@ -53,9 +53,9 @@ function To_Polygon() {
 		}
 	};
 
-	useEffect(() => {
-		web3.eth.net.getId().then(setCurrentId);
-	});
+	// useEffect(() => {
+	// 	web3.eth.net.getId().then(setCurrentId);
+	// });
 
 	return (
 		<>
