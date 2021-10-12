@@ -1,8 +1,7 @@
 import {useEffect, useState} from 'react';
-import {Typography, notification} from 'antd';
+import {notification} from 'antd';
 
 import {useWallet} from 'use-wallet';
-import useWeb3 from '../hooks/useWeb3';
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant';
 import useGlobal from '../hooks/useGlobal';
 import useWelfare from '../hooks/useWelfare';
@@ -221,9 +220,9 @@ const NanoMachineMicroLPStakingForm2 = ({onComplete, address}) => {
 
 	return (
 		<Nanomachine
-			label="MMAC/MATIC"
+			label="Alpha Facility"
 			title="Build from NMAC/BUSD LP"
-			subtitle="Stake NMAC/BUSD LP to get NMAC"
+			subtitle="Stake MMAC/MATIC to get NMAC"
 			balanceValue={web3.utils.fromWei(balance.toString())}
 			approvedValue={web3.utils.fromWei(allowance.toString())}
 			stakedValue={web3.utils.fromWei(stakedbalance.toString())}
