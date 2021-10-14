@@ -27,25 +27,14 @@ const Nanomachine = (props) => {
 		<div className={styles.Nanomachine}>
 			<span className={styles.Nanomachine__label}>{label}</span>
 			<Card>
-				<div className={styles.Nanomachine__container}>
-					<header className={styles.Nanomachine__header}>
-						<div>
-							<h3>{title}</h3>
-							<h4>{subtitle}</h4>
-						</div>
-						<div className={styles.Nanomachine__values}>
-							<div>
-								<span>{stakedText} Balance</span>
-								<i>{Number(balanceValue).toFixed(2)}</i>
-							</div>
-							<div>
-								<span>Approved</span>
-								<i>{Number(approvedValue).toFixed(2)}</i>
-							</div>
-						</div>
-					</header>
-				</div>
-				<div className={styles.Nanomachine__container}>
+				<Card.Header
+					title={title}
+					subtitle={subtitle}
+					stakedText={stakedText}
+					balanceValue={balanceValue}
+					approvedValue={approvedValue}
+				/>
+				<Card.Main>
 					<div className={styles.Nanomachine__main}>
 						<div className={styles.Nanomachine__outputs}>
 							<Output
@@ -81,10 +70,10 @@ const Nanomachine = (props) => {
 							/>
 						</div>
 					</div>
-				</div>
-				<div className={styles.Nanomachine__container}>
-					<Button value="Approve Contract" onClick={approve}/>
-				</div>
+				</Card.Main>
+				<Card.Footer
+					callback={approve}
+				/>
 			</Card>
 		</div>
 	);

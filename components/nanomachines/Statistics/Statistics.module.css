@@ -16,16 +16,6 @@
   margin-top: 0;
 }
 
-.Statistics p {
-  text-align: left;
-  font-family: 'Roboto Condensed', sans-serif;
-  font-size: 20px;
-  line-height: 150%;
-  margin: 40px 0;
-  padding: 0;
-  color: #90BBDA;
-}
-
 .Statistics__stat {
   display: grid;
   grid-row-gap: 20px;
@@ -82,12 +72,6 @@
     margin-bottom: 0;
   }
 
-  .Statistics p {
-    font-size: 18px;
-    line-height: 150%;
-    margin: 20px 0;
-  }
-
   .Statistics__container {
     padding: 15px;
   }
@@ -134,10 +118,6 @@
 @media (max-width: 480px) {
   .Statistics {
     margin-top: 20px;
-  }
-
-  .Statistics p {
-    font-size: 18px;
   }
 
   .Statistics__container {

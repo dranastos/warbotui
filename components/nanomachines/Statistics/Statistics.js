@@ -1,17 +1,14 @@
 import styles from './Statistics.module.css';
 import Card from '../../Card/Card';
+import Aside from '../../Aside/Aside';
 
 const Statistics = () => {
 	return (
 		<div className={styles.Statistics}>
-			<div>
-				<h2>Statistics</h2>
-				<p>
-					Praesent dis id aliquet urna enim facilisis sed. Tincidunt nunc, lectus quisque magna praesent vitae. Urna
-					quisque neque ultrices amet!
-				</p>
-				<img src="/img/nanomachines/statistics_image_1.png" alt=""/>
-			</div>
+			<Aside
+				title="Statistics"
+				text="Praesent dis id aliquet urna enim facilisis sed. Tincidunt nunc, lectus quisque magna praesent vitae. Urna quisque neque ultrices amet!"
+			/>
 			<div className={styles.Statistics__stat}>
 				<div>
 					<Card>

@@ -1,39 +1,20 @@
 import {useEffect, useState, useCallback} from 'react';
 import {useWallet} from 'use-wallet';
-import moment from 'moment';
-import Head from 'next/head';
-//import Image from 'next/image'
-//import profilePic from '../images/badguy1.jpeg'
 
 import {
-	Layout,
-	Menu,
-	Breadcrumb,
 	Typography,
-	Space,
 	Spin,
-	Alert,
 	Statistic,
 	Row,
 	Col,
-	Slider,
-	Form,
 	Button,
-	Input,
 	Descriptions,
-	notification,
 } from 'antd';
 
 import PublicLayout from '../layouts/PublicLayout';
-import NanoMachineStakingForm from '../forms/NanoMachineStakingForm';
 
-import NanoMachinesMicroLPStakingForm from '../forms/NanoMachinesMicroLPStakingForm';
-import NanoMachinesMicroLPStakingForm2 from '../forms/NanoMachinesMicroLPStakingForm2';
 import useGlobal from '../hooks/useGlobal';
 import useMicroMachineManufacturingPlant from '../hooks/useMicroMachineManufacturingPlant';
-//import useWelfare from '../hooks/useWelfare'
-//import useWicCardMinter from '../hooks/useWicCardMinter'
-import NanoMachinesNanoLPStakingForm from '../forms/NanoMachinesNanoLPStakingForm';
 
 import useNanomachines from '../hooks/useNanomachines';
 import useMasterchef from '../hooks/useMasterchef';
@@ -42,10 +23,6 @@ import Card from '../components/Card/Card';
 import Facilities from '../components/nanomachines/Facilities/Facilities';
 import Nanomachines from '../components/nanomachines/Nanomachines/Nanomachines';
 import Statistics from '../components/nanomachines/Statistics/Statistics';
-
-
-const {Title, Text} = Typography;
-const {Item} = Descriptions;
 
 // import SettleForm from '../forms/SettleForm'
 // import PenaltyAdjustForm from '../forms/PenaltyAdjustForm'
@@ -124,28 +101,28 @@ export default function Dashboard() {
 
 	return (
 		<PublicLayout>
-			<section className="War_dashboard_tabs Cross_Chain_Bridge">
+			<section className="War_dashboard_tabs">
 				<div className="container">
 					<h1>NanoMachine (NMAC) Production Facility</h1>
 					{/*{(state.hasSecurity && wallet.status === 'connected') && (*/}
-					{/*		<>*/}
-					<Tabs
-						tabs={['Production Facilities', 'Statistics']}
-						defaultTab={toggleFacility}
-						callback={setToggleFacility}
-					/>
-					{toggleFacility === 0 && (
 						<>
-							<Facilities/>
-							<Nanomachines/>
+							<Tabs
+								tabs={['Production Facilities', 'Statistics']}
+								defaultTab={toggleFacility}
+								callback={setToggleFacility}
+							/>
+							{toggleFacility === 0 && (
+								<>
+									<Facilities/>
+									<Nanomachines/>
+								</>
+							)}
+							{toggleFacility === 1 && (
+								<>
+									<Statistics/>
+								</>
+							)}
 						</>
-					)}
-					{toggleFacility === 1 && (
-						<>
-							<Statistics/>
-						</>
-					)}
-					{/*	</>*/}
 					{/*)}*/}
 				</div>
 			</section>
