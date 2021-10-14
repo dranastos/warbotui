@@ -1,0 +1,50 @@
+.Aside {
+
+}
+
+.Aside h2 {
+  text-align: left;
+  margin-top: 0;
+}
+
+.Aside p {
+  text-align: left;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 20px;
+  line-height: 150%;
+  margin: 40px 0;
+  padding: 0;
+  color: #90BBDA;
+}
+
+.Aside img {
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .Aside h2 {
+    margin-bottom: 0;
+  }
+
+  .Aside p {
+    font-size: 18px;
+    line-height: 150%;
+    margin: 20px 0;
+  }
+
+  .Aside img {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .Aside h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Aside p {
+    font-size: 18px;
+  }
+}

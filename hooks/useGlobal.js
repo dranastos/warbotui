@@ -224,7 +224,7 @@ const initialState = {
     nanosales: "0x28241184DC0FCBDa2a0A414C48Ee7Ab2AA76cA3F",
     hasNanosales: true,
 
-    busd: "0x314E8457a3A2f80f620CD4965287044fc2fACB0e",
+    busd: "0xdAb529f40E671A1D4bF91361c21bf9f0C9712ab7",
     hasBusd: true,
 
     //matic masterchef: '0xe7576D71f162dfCC64c7128d46Ac41Ee8116d424',
