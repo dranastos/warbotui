@@ -34,7 +34,6 @@ import Statistics from '../components/nanomachines/Statistics/Statistics';
 // SOCIAL SECURITY: 0x5d09f5E94f8f2cAb11DB1A7D1C71cdd80E7c0e69
 
 export default function Dashboard() {
-
 	const wallet = useWallet();
 	const [address, setAddress] = useState(false);
 	const [state, actions] = useGlobal(['chain', 'nanomachines', 'masterchef']);
@@ -104,7 +103,7 @@ export default function Dashboard() {
 			<section className="War_dashboard_tabs">
 				<div className="container">
 					<h1>NanoMachine (NMAC) Production Facility</h1>
-					{/*{(state.hasSecurity && wallet.status === 'connected') && (*/}
+					{(state.hasSecurity && wallet.status === 'connected') && (
 						<>
 							<Tabs
 								tabs={['Production Facilities', 'Statistics']}
@@ -123,7 +122,7 @@ export default function Dashboard() {
 								</>
 							)}
 						</>
-					{/*)}*/}
+					)}
 				</div>
 			</section>
 		</PublicLayout>

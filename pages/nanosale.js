@@ -121,7 +121,7 @@ export default function Dashboard() {
 					{(state.hasSecurity && wallet.status === 'connected') && (
 						<>
 							<NanoSalesForm/>
-							{/*<NanosPurchased/>*/}
+							<NanosPurchased/>
 						</>
 					)}
 				</div>

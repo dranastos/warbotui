@@ -4,7 +4,7 @@ import Card from '../../Card/Card';
 import Input from '../../Input/Input';
 import Button from '../../Button/Button';
 
-const Upgrade = ({balanceValue, approvedValue, inputValue, setInputValue, purchaseAmount, approve, handleDeposit}) => {
+const Upgrade = ({balanceValue, approvedValue, inputValue, setInputValue, purchaseAmount, approve, handleDeposit, setPurchaseAmount}) => {
 	return (
 		<div className={styles.Upgrade}>
 			<Aside
@@ -31,7 +31,10 @@ const Upgrade = ({balanceValue, approvedValue, inputValue, setInputValue, purcha
 						label="Enter NanoMachines Amount"
 						placeholder="e.g 10000"
 						value={inputValue}
-						onChange={setInputValue}
+						onChange={(event) => {
+							setInputValue(event);
+							setPurchaseAmount(event.target.value);
+						}}
 					/>
 					<div className={styles.Upgrade__text}>
 						<Button

@@ -51,6 +51,7 @@ const NanoSalesForm = ({onComplete, address}) => {
 
 		try {
 
+			console.log("GGGGGGGG")
 			if (purchaseamount > 0) {
 				const value = web3.utils.toWei(((purchaseamount || 0) * 1.0).toString()).toString();
 
@@ -132,6 +133,7 @@ const NanoSalesForm = ({onComplete, address}) => {
 			inputValue={data.amount}
 			setInputValue={handleAmount}
 			purchaseAmount={purchaseamount}
+			setPurchaseAmount={setPurchaseamount}
 			approve={approve}
 			handleDeposit={handleDeposit}
 		/>
