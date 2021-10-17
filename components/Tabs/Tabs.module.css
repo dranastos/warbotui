@@ -4,6 +4,7 @@
   display: block;
   width: fit-content;
   border: 1px solid #24364f;
+  background-color: #19283D;
 }
 
 .Tabs .Tabs__item, .Tabs .Tabs__item_active {
@@ -31,7 +32,7 @@
   border-right-color: transparent;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .Tabs {
     margin-bottom: 30px;
     display: flex;
@@ -60,5 +61,17 @@
   .Tabs .Tabs__item, .Tabs .Tabs__item_active {
     font-size: 16px;
     padding: 8px 12px;
+  }
+
+  .Tabs {
+    flex-direction: column;
+    width: 60%;
+    padding: 4px;
+    border-radius: 8px;
+  }
+
+  .Tabs .Tabs__item, .Tabs .Tabs__item_active {
+    border: none;
+    border-radius: 8px;
   }
 }

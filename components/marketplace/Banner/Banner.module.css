@@ -1,0 +1,66 @@
+.Banner {
+  background-color: #000000;
+  transform: translateX(-50px);
+  width: calc(100% + 100px);
+  padding: 50px 0;
+  position: relative;
+}
+
+.Banner__label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.Banner__label i {
+  font-style: normal;
+  font-size: 30px;
+  color: #71eeff;
+}
+
+h1.Banner__title {
+  margin: 0 0 0 24px;
+  padding: 0;
+  color: #F7F5D9;
+}
+
+.Banner__subtitle {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 18px;
+  color: #90BBDA;
+  position: relative;
+  z-index: 1;
+}
+
+.Banner__image {
+  position: absolute;
+  max-height: 115%;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  right: 0;
+  transform: translateY(15%) translateX(-80px);
+}
+
+@media (max-width: 991px) {
+  .Banner__image {
+    max-height: 80%;
+    transform: translateY(0) translateX(-60px);
+  }
+}
+
+@media (max-width: 720px) {
+  .Banner__image {
+    display: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .Banner {
+    transform: translateX(0px);
+    width: 100%;
+    padding: 30px 0;
+  }
+}

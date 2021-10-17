@@ -198,7 +198,7 @@ export default function PublicLayout({children}) {
                     </Link>
                   </li>
                   <li>
-                    <Link href="#">
+                    <Link href="/marketplace">
                       <a title="MarketPlace">
                         <img
                           src="/img/Marketplace.png"
