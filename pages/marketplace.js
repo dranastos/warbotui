@@ -4,6 +4,7 @@ import useGlobal from '../hooks/useGlobal';
 import Banner from '../components/marketplace/Banner/Banner';
 import {useState} from 'react';
 import Tabs from '../components/Tabs/Tabs';
+import Catalog from '../components/marketplace/Catalog/Catalog';
 
 const marketplace = () => {
 	const wallet = useWallet();
@@ -46,6 +47,7 @@ const marketplace = () => {
 								callback={setActiveTab}
 								style={{transform: 'translateY(-20px)'}}
 							/>
+							<Catalog/>
 						</>
 					{/*)}*/}
 				</div>
