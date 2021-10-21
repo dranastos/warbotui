@@ -12,16 +12,17 @@ const List = () => {
 		<div className={styles.List}>
 			<header className={styles.List__header}>
 				<h2>18 Warbots</h2>
-				<Tabs
-					tabs={[
-						<FontAwesomeIcon icon={faList}/>,
-						<FontAwesomeIcon icon={faGripHorizontal}/>
-					]}
-					defaultTab={activeTab}
-					callback={setActiveTab}
-					minimize={true}
-					className={styles.List__tabs}
-				/>
+				<div className={styles.List__tabs}>
+					<Tabs
+						tabs={[
+							<FontAwesomeIcon icon={faList}/>,
+							<FontAwesomeIcon icon={faGripHorizontal}/>
+						]}
+						defaultTab={activeTab}
+						callback={setActiveTab}
+						minimize={true}
+					/>
+				</div>
 			</header>
 			<div className={activeTab === 1 ? styles.List__products : styles.List__products_minimize}>
 				<Product

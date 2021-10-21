@@ -1,7 +1,7 @@
 import styles from './Tabs.module.css';
 import {useState} from 'react';
 
-const Tabs = ({tabs, defaultTab, callback, style, minimize = false, ...props}) => {
+const Tabs = ({tabs, defaultTab, callback, style, minimize = false}) => {
 	const [activeTab, setActiveTab] = useState(defaultTab);
 
 	const tabsList = tabs.map((tab, i) => (
@@ -21,7 +21,7 @@ const Tabs = ({tabs, defaultTab, callback, style, minimize = false, ...props}) =
 	));
 
 	return (
-		<div className={styles.Tabs} style={style} {...props}>
+		<div className={styles.Tabs} style={style}>
 			{tabsList}
 		</div>
 	);
