@@ -1,0 +1,30 @@
+.List {
+  text-align: left;
+}
+
+.List__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.List__buttons {
+  border: 1px solid #24364f;
+  background-color: #19283D;
+}
+
+.List h2 {
+  text-align: left;
+  margin-top: 0;
+  margin-left: 16px;
+  margin-bottom: 0;
+}
+
+.List__products {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 52px;
+  margin-top: 24px;
+}

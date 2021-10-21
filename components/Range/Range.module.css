@@ -2,6 +2,7 @@
   position: relative;
   width: 100%;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .Slider__wrapper {
@@ -34,7 +35,7 @@
 .Slider__wrapper > .Slider__thumb_left,
 .Slider__wrapper > .Slider__thumb_left_hover,
 .Slider__wrapper > .Slider__thumb_right,
-.Slider__wrapper > .Slider__thumb_right_hover{
+.Slider__wrapper > .Slider__thumb_right_hover {
   position: absolute;
   z-index: 3;
   width: 30px;
@@ -74,4 +75,5 @@
   border: 0 none;
   background-color: red;
   -webkit-appearance: none;
+  cursor: pointer;
 }

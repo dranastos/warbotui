@@ -2,15 +2,15 @@ import styles from './Range.module.css';
 import {createRef, useEffect, useLayoutEffect, useState} from 'react';
 import {parse} from '@fortawesome/fontawesome-svg-core';
 
-const Range = ({min, max, step}) => {
+const Range = ({min, max, step, setMinValue, setMaxValue}) => {
 	const inputLeft = createRef();
 	const inputRight = createRef();
 	const thumbLeft = createRef();
 	const thumbRight = createRef();
 	const range = createRef();
 
-	const [leftInputValue, setLeftInputValue] = useState(0);
-	const [rightInputValue, setRightInputValue] = useState(100);
+	const [leftInputValue, setLeftInputValue] = useState(min);
+	const [rightInputValue, setRightInputValue] = useState(max);
 
 	const [onLeftHover, setOnLeftHover] = useState(false);
 	const [onRightHover, setOnRightHover] = useState(false);
@@ -52,8 +52,9 @@ const Range = ({min, max, step}) => {
 		<div className={styles.Slider}>
 			<input
 				type="range"
-				min={0}
-				max={100}
+				min={min}
+				max={max}
+				step={step}
 				value={leftInputValue}
 				ref={inputLeft}
 				onInput={setLeftValue}
@@ -62,8 +63,9 @@ const Range = ({min, max, step}) => {
 			/>
 			<input
 				type="range"
-				min={0}
-				max={100}
+				min={min}
+				max={max}
+				step={step}
 				value={rightInputValue}
 				ref={inputRight}
 				onInput={setRightValue}

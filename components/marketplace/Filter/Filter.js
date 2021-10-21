@@ -37,7 +37,10 @@ const Checkbox = ({label}) => {
 };
 
 const Range = ({label, icon, color, min, max, step}) => {
-	const [value, setValue] = useState(0);
+
+	const reset = () => {
+		// setValue()
+	};
 
 	return (
 		<div className={styles.Range}>
@@ -48,9 +51,13 @@ const Range = ({label, icon, color, min, max, step}) => {
 					)}
 					{label}
 				</h6>
-				<button>Reset</button>
+				<button onClick={reset}>Reset</button>
 			</header>
-			<InputRange min={min} max={max} step={step}/>
+			<InputRange
+				min={min}
+				max={max}
+				step={step}
+			/>
 		</div>
 	);
 };

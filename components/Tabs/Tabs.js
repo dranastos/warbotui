@@ -1,7 +1,7 @@
 import styles from './Tabs.module.css';
 import {useState} from 'react';
 
-const Tabs = ({tabs, defaultTab, callback, style}) => {
+const Tabs = ({tabs, defaultTab, callback, style, minimize = false}) => {
 	const [activeTab, setActiveTab] = useState(defaultTab);
 
 	const tabsList = tabs.map((tab, i) => (
@@ -14,6 +14,7 @@ const Tabs = ({tabs, defaultTab, callback, style}) => {
 				callback(i);
 			}}
 			key={i}
+			style={{padding: minimize && '10px 20px'}}
 		>
 			{tab}
 		</button>
