@@ -27,4 +27,32 @@
   grid-column-gap: 20px;
   grid-row-gap: 52px;
   margin-top: 24px;
+  transition: 0.3s ease-in-out;
+}
+
+.List__products_minimize {
+  margin-top: 24px;
+  grid-row-gap: 52px;
+  display: grid;
+  grid-template-columns: auto;
+  transition: 0.3s ease-in-out;
+}
+
+@media (max-width: 1200px) {
+  .List__products {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 991px) {
+  .List__products {
+    margin-top: 24px;
+    grid-row-gap: 52px;
+    display: grid;
+    grid-template-columns: auto;
+  }
+
+  .List__tabs {
+    display: none;
+  }
 }

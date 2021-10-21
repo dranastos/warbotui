@@ -2,9 +2,11 @@ import styles from './Product.module.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faHeart, faShieldAlt, faFire, faAngleDoubleRight, faArrowsAlt} from '@fortawesome/free-solid-svg-icons';
 
-const Product = ({img, name, priceBNB, priceUSD, hitpoints, armor, damage, speed, movement}) => {
+const Product = ({img, name, priceBNB, priceUSD, hitpoints, armor, damage, speed, movement, minimize}) => {
 	return (
-		<div className={styles.Product}>
+		<div
+			className={!minimize ? styles.Product : styles.Product_minimize}
+		>
 			<header className={styles.Product__header}>
 				<img src={img} alt=""/>
 			</header>

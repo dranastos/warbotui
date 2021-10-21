@@ -168,3 +168,9 @@
   border: none;
   background: transparent;
 }
+
+@media (max-width: 840px) {
+  .Filter {
+    display: none;
+  }
+}

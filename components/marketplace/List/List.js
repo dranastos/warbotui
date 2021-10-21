@@ -6,7 +6,7 @@ import {useState} from 'react';
 import Product from '../Product/Product';
 
 const List = () => {
-	const [activeTab, setActiveTab] = useState(0);
+	const [activeTab, setActiveTab] = useState(1);
 
 	return (
 		<div className={styles.List}>
@@ -20,9 +20,10 @@ const List = () => {
 					defaultTab={activeTab}
 					callback={setActiveTab}
 					minimize={true}
+					className={styles.List__tabs}
 				/>
 			</header>
-			<div className={styles.List__products}>
+			<div className={activeTab === 1 ? styles.List__products : styles.List__products_minimize}>
 				<Product
 					img="/img/marketplace/marketplace_product_image_1.png"
 					name="Warbot #3126234"
@@ -32,6 +33,7 @@ const List = () => {
 					armor={75}
 					damage={75}
 					speed={75}
+					minimize={activeTab === 0}
 				/>
 				<Product
 					img="/img/marketplace/marketplace_product_image_1.png"
@@ -42,6 +44,7 @@ const List = () => {
 					armor={75}
 					damage={75}
 					speed={75}
+					minimize={activeTab === 0}
 				/>
 				<Product
 					img="/img/marketplace/marketplace_product_image_1.png"
@@ -52,6 +55,7 @@ const List = () => {
 					armor={75}
 					damage={75}
 					speed={75}
+					minimize={activeTab === 0}
 				/>
 				<Product
 					img="/img/marketplace/marketplace_product_image_1.png"
@@ -62,6 +66,18 @@ const List = () => {
 					armor={75}
 					damage={75}
 					speed={75}
+					minimize={activeTab === 0}
+				/>
+				<Product
+					img="/img/marketplace/marketplace_product_image_1.png"
+					name="Warbot #3126234"
+					priceBNB={100}
+					priceUSD={335}
+					hitpoints={75}
+					armor={75}
+					damage={75}
+					speed={75}
+					minimize={activeTab === 0}
 				/>
 			</div>
 		</div>

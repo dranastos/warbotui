@@ -1,6 +1,24 @@
 .Catalog {
   display: grid;
-  grid-template-columns: 30% 70%;
+  grid-template-columns: 25% 75%;
   grid-column-gap: 30px;
   margin-top: 40px;
+}
+
+@media (max-width: 1200px) {
+  .Catalog {
+    grid-template-columns: 30% 70%;
+  }
+}
+
+@media (max-width: 991px) {
+  .Catalog {
+    grid-template-columns: 35% 65%;
+  }
+}
+
+@media (max-width: 840px) {
+  .Catalog {
+    grid-template-columns: auto;
+  }
 }
