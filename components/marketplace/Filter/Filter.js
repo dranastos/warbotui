@@ -1,7 +1,6 @@
 import styles from './Filter.module.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSearch, faCheck} from '@fortawesome/free-solid-svg-icons';
-import {useState} from 'react';
 import InputRange from '../../Range/Range';
 
 const Item = ({title, children}) => {
@@ -44,15 +43,17 @@ const Range = ({label, icon, color, min, max, step}) => {
 
 	return (
 		<div className={styles.Range}>
-			<header className={styles.Range__header}>
-				<h6>
-					{icon && (
-						<FontAwesomeIcon icon={icon} style={{color: color ? color : '#71EEFF'}}/>
-					)}
-					{label}
-				</h6>
-				<button onClick={reset}>Reset</button>
-			</header>
+			{label && (
+				<header className={styles.Range__header}>
+					<h6>
+						{icon && (
+							<FontAwesomeIcon icon={icon} style={{color: color ? color : '#71EEFF'}}/>
+						)}
+						{label}
+					</h6>
+					<button onClick={reset}>Reset</button>
+				</header>
+			)}
 			<InputRange
 				min={min}
 				max={max}
