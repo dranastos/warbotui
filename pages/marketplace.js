@@ -6,8 +6,12 @@ import Catalog from '../components/marketplace/Catalog/Catalog';
 import Filter from '../components/marketplace/Filter/Filter';
 import {faAngleDoubleRight, faArrowsAlt, faFire, faHeart, faShieldAlt} from '@fortawesome/free-solid-svg-icons';
 import List from '../components/marketplace/List/List';
+import {useWallet} from 'use-wallet';
+import useGlobal from '../hooks/useGlobal';
 
 const marketplace = () => {
+	const wallet = useWallet();
+	const [state, actions] = useGlobal(['hasSecurity']);
 	const [activeTab, setActiveTab] = useState(0);
 
 	const warbotsList = [
