@@ -1,0 +1,29 @@
+.Warbots {}
+
+.Warbots__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Warbots__header h2 {
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+
+.Warbots__header h2 span {
+  font-family: 'Exo', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color: #24364F;
+  width: 36px;
+  height: 36px;
+  background: #71EEFF;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+}

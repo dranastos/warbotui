@@ -28,6 +28,47 @@
   transform: translateY(10px);
 }
 
+.ButtonSecondary {
+  font-family: 'Exo', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  color: #71EEFF;
+  padding: 8px 24px;
+  border: 1px solid #6ED1DF;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: transparent;
+  position: relative;
+}
+
+.ButtonSecondary::after {
+  content: '';
+  display: block;
+  border-radius: 0 0 10px 10px;
+  border: 1px solid #6ED1DF;
+  border-top: none;
+  position: absolute;
+  inset: 0;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  transform: translateY(7px) translateX(-1px);
+}
+
+.ButtonSecondary:active::after {
+  border-radius: 10px;
+  border: 1px solid #6ED1DF;
+  transform: translateY(-1px) translateX(-1px);
+}
+
+.ButtonSecondary:active {
+  transform: translateY(7px);
+}
+
+.ButtonSecondary svg {
+  margin-right: 8px;
+}
+
 @media (max-width: 720px) {
   .Button {
     height: 56px;
@@ -46,5 +87,24 @@
   .Button:active {
     -webkit-transform: translateY(6px);
     transform: translateY(6px);
+  }
+
+  .ButtonSecondary {
+    font-size: 14px;
+    padding: 8px;
+    border-radius: 2px;
+    transform: translateY(7px);
+  }
+
+  .ButtonSecondary::after {
+    display: none;
+  }
+
+  .ButtonSecondary:active {
+    transform: translateY(7px);
+  }
+
+  .ButtonSecondary svg {
+    display: none;
   }
 }

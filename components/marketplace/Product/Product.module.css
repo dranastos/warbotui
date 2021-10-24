@@ -40,6 +40,13 @@
   align-items: center;
 }
 
+.Product__label h4 {
+  font-family: 'Teko', sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  color: #FFFFFF;
+}
+
 .Product__label h5 {
   font-family: 'Roboto Condensed', sans-serif;
   font-weight: bold;
@@ -97,6 +104,26 @@
   font-size: 20px;
   color: #EAF4FB;
   margin-left: 4px;
+}
+
+.Product__id {
+  display: flex;
+  align-items: center;
+}
+
+.Product__id button {
+  font-size: 18px;
+  color: #778FBA;
+  background: transparent;
+  border: none;
+  margin-right: 8px;
+}
+
+.Product__id span {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  color: #778FBA;
 }
 
 @media (max-width: 1400px) {

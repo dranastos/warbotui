@@ -9,48 +9,6 @@
   align-items: center;
 }
 
-.Purchased__button {
-  font-family: 'Exo', sans-serif;
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
-  color: #71EEFF;
-  padding: 8px 24px;
-  border: 1px solid #6ED1DF;
-  box-sizing: border-box;
-  border-radius: 10px;
-  background: transparent;
-  position: relative;
-}
-
-.Purchased__button::after {
-  content: '';
-  display: block;
-  border-radius: 0 0 10px 10px;
-  border: 1px solid #6ED1DF;
-  border-top: none;
-  position: absolute;
-  inset: 0;
-  width: calc(100% + 2px);
-  height: calc(100% + 2px);
-
-  transform: translateY(7px) translateX(-1px);
-}
-
-.Purchased__button:active::after {
-  border-radius: 10px;
-  border: 1px solid #6ED1DF;
-  transform: translateY(-1px) translateX(-1px);
-}
-
-.Purchased__button:active {
-  transform: translateY(7px);
-}
-
-.Purchased__button svg {
-  margin-right: 8px;
-}
-
 .Purchased__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -102,24 +60,5 @@
     grid-template-rows: auto auto;
     grid-column-gap: 0;
     grid-row-gap: 30px;
-  }
-
-  .Purchased__button {
-    font-size: 14px;
-    padding: 8px;
-    border-radius: 2px;
-    transform: translateY(7px);
-  }
-
-  .Purchased__button::after {
-    display: none;
-  }
-
-  .Purchased__button:active {
-    transform: translateY(7px);
-  }
-
-  .Purchased__button svg {
-    display: none;
   }
 }
