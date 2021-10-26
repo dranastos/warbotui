@@ -30,6 +30,7 @@ import useWarbotStatsData from '../hooks/useWarbotStatsData';
 
 import moment from 'moment';
 import Warbots from '../components/warbots/Warbots/Warbots';
+import Product from '../components/marketplace/Product/Product';
 
 
 const WarbotInventory = ({onComplete, address}) => {
@@ -55,7 +56,6 @@ const WarbotInventory = ({onComplete, address}) => {
 
 
 	const getDeposits = async () => {
-
 		setLoading(true);
 
 		//const deps = await warbotmanufacturer.getUserManufacturingPlants(wallet.account).call()
@@ -159,44 +159,22 @@ const WarbotInventory = ({onComplete, address}) => {
 
 
 	const renderDeposit = (id, key) => {
-
 		if (vaults[id] === undefined) return;
 		var warbotid = 'Warbot Identification Number: ' + vaults[id].WarbotNumber;
 		var warbotlevel = 'Warbot Level: ' + vaults[id].Level;
 		var type = vaults[id].WarbotType;
 
-
 		return (
-			<div key={`vault-${id}`}>
-				<Collapse>
-					<Collapse.Panel header={`${warbotid} -${warbotlevel} -${type}`}>
-						<Row style={{marginTop: 10}} gutter={[20, 20]}>
-							{
-								Object.keys(vaults[id]).map((name, key) => (
-									<Col
-										key={`${id}-${name}-${key}`}
-										span={vaults[id]['WarbotNumber'].toString().startsWith('0x') ? 24 : 8}>
-										<Statistic
-											title={name.toUpperCase()}
-											value={vaults[id][name]}
-											precision={name == 'POOL WEIGHT' ? 9 : 0}
-											style={{marginBottom: 20}}
-										/>
-									</Col>
-								))
-							}
-						</Row>
-					</Collapse.Panel>
-				</Collapse>
-			</div>
-		);
-	};
-
-
-	return (
-		<>
-			<Warbots
-				updateOnClick={getDeposits}
+			<Product.Dashboard
+				img={vaults[id].img}
+				name={vaults[id].name}
+				id={vaults[id].WarbotNumber}
+				hitpoints={vaults[id].hitpoints}
+				armor={vaults[id].armor}
+				damage={vaults[id].damage}
+				speed={vaults[id].speed}
+				minimize={activeTab === 0}
+				key={key}
 				items={[
 					{text: 'Activation Cost', eventListener: approve},
 					{text: 'Activate Warbot', eventListener: (id) => activateWarbot(id)},
@@ -208,8 +186,39 @@ const WarbotInventory = ({onComplete, address}) => {
 				]}
 				deposits={deposits}
 			/>
-			{deposits.map(renderDeposit)}
-			{hasVaults && deposits.map(renderDeposit)}
+			// <div key={`vault-${id}`}>
+			// 	<Collapse>
+			// 		<Collapse.Panel header={`${warbotid} -${warbotlevel} -${type}`}>
+			// 			<Row style={{marginTop: 10}} gutter={[20, 20]}>
+			// 				{
+			// 					Object.keys(vaults[id]).map((name, key) => (
+			// 						<Col
+			// 							key={`${id}-${name}-${key}`}
+			// 							span={vaults[id]['WarbotNumber'].toString().startsWith('0x') ? 24 : 8}>
+			// 							<Statistic
+			// 								title={name.toUpperCase()}
+			// 								value={vaults[id][name]}
+			// 								precision={name == 'POOL WEIGHT' ? 9 : 0}
+			// 								style={{marginBottom: 20}}
+			// 							/>
+			// 						</Col>
+			// 					))
+			// 				}
+			// 			</Row>
+			// 		</Collapse.Panel>
+			// 	</Collapse>
+			// </div>
+		);
+	};
+
+
+	return (
+		<>
+			<Warbots
+				updateOnClick={getDeposits}
+			>
+				{hasVaults && deposits.map(renderDeposit)}
+			</Warbots>
 		</>
 	);
 };

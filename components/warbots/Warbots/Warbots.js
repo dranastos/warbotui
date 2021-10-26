@@ -4,7 +4,7 @@ import {faUndo} from '@fortawesome/free-solid-svg-icons';
 import Button from '../../Button/Button';
 import List from '../../marketplace/List/List';
 
-const Warbots = ({updateOnClick, items, deposits}) => {
+const Warbots = ({updateOnClick, children}) => {
 	const warbotsList = [
 		{
 			img: '/img/marketplace/marketplace_product_image_1.png',
@@ -62,12 +62,13 @@ const Warbots = ({updateOnClick, items, deposits}) => {
 					Refresh
 				</Button.Secondary>
 			</header>
-			<List
-				products={warbotsList}
-				dashboard={true}
-				items={items}
-				deposits={deposits}
-			/>
+			<div>{children}</div>
+			{/*<List*/}
+			{/*	products={warbotsList}*/}
+			{/*	dashboard={true}*/}
+			{/*	items={items}*/}
+			{/*	deposits={deposits}*/}
+			{/*/>*/}
 		</div>
 	);
 };
