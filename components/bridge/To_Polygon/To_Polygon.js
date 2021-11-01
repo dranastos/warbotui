@@ -26,7 +26,7 @@ function To_Polygon() {
 	};
 
 	const approve = async () => {
-		if (currentId === 137) {
+		if (currentId === 56) {
 			try {
 				if (parseInt(data.amount) > 0) {
 					const value = data.amount.toString();
@@ -53,9 +53,9 @@ function To_Polygon() {
 		}
 	};
 
-	// useEffect(() => {
-	// 	web3.eth.net.getId().then(setCurrentId);
-	// });
+	useEffect(() => {
+		web3.eth.net.getId().then(setCurrentId);
+	});
 
 	return (
 		<>
@@ -101,12 +101,12 @@ function To_Polygon() {
 											<Select
 												placeholder="Option"
 												options={[
-													{img: '/img/MMAC-sm.png', text: 'NMAC'},
-													{img: '/img/MMAC-sm.png', text: 'NMAC1'},
-													{img: '/img/MMAC-sm.png', text: 'NMAC2'},
+													{img: '/img/MMAC-sm.png', text: 'MMAC'},
+													{img: '/img/MMAC-sm.png', text: 'MMAC'},
+													{img: '/img/MMAC-sm.png', text: 'MMAC'},
 												]}
 												setSelectData={(e) => console.log(e)}
-												selectData={'NMAC'}
+												selectData={'MMAC'}
 											/>
 										</div>
 										<p className="available_MMAC mt-3">

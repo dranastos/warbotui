@@ -26,8 +26,7 @@ function To_BSC() {
 	};
 
 	const approve = async () => {
-		console.log(currentId);
-		if (currentId === 56) {
+		if (currentId === 137) {
 			try {
 				if (parseInt(data.amount) > 0) {
 					const value = data.amount.toString();
@@ -102,12 +101,12 @@ function To_BSC() {
 											<Select
 												placeholder="Option"
 												options={[
-													{img: '/img/MMAC-sm.png', text: 'NMAC'},
-													{img: '/img/MMAC-sm.png', text: 'NMAC1'},
-													{img: '/img/MMAC-sm.png', text: 'NMAC2'},
+													{img: '/img/MMAC-sm.png', text: 'MMAC'},
+													{img: '/img/MMAC-sm.png', text: 'MMAC'},
+													{img: '/img/MMAC-sm.png', text: 'MMAC'},
 												]}
 												setSelectData={(e) => console.log(e)}
-												selectData={'NMAC'}
+												selectData={'MMAC'}
 											/>
 										</div>
 										<p className="available_MMAC mt-3">
