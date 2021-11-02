@@ -100,7 +100,10 @@ const NanosPurchased = ({onComplete, address}) => {
 	return (
 		<>
 			<Purchased
+				title="NMACs Purchased"
 				getDeposits={getDeposits}
+				firstLabel="NancMachines Locked"
+				secondLabel="Lock Expiration"
 				lockedValue={lockednanos}
 				lockedTime={lockedtime}
 			/>

@@ -266,13 +266,15 @@ export default function PublicLayout({children}) {
                     </li>
 
                     <li className="nav-item">
-                      <a className="nav-link " href="#">
-                        <img
-                          src="/img/gem.png"
-                          alt=""
-                        />
-
-                      </a>
+                      <Link href="/dicesium">
+                        <a className="nav-link ">
+                          <img
+                            src="/img/dicesium.png"
+                            alt=""
+                          />
+                          {/*{dicesium}*/}
+                        </a>
+                      </Link>
                     </li>
 
                     {/* <li

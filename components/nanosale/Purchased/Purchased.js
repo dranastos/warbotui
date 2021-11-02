@@ -4,11 +4,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUndo, faCog} from '@fortawesome/free-solid-svg-icons';
 import Button from '../../Button/Button';
 
-const Purchased = ({getDeposits, lockedValue, lockedTime}) => {
+const Purchased = ({title, getDeposits, firstLabel, secondLabel, lockedValue, lockedTime}) => {
 	return (
 		<div className={styles.Purchased}>
 			<header className={styles.Purchased__header}>
-				<h2>NMACs Purchased</h2>
+				<h2>{title}</h2>
 				<Button.Secondary onClick={getDeposits}>
 					<FontAwesomeIcon icon={faUndo}/>
 					Refresh
@@ -18,7 +18,7 @@ const Purchased = ({getDeposits, lockedValue, lockedTime}) => {
 				<Card>
 					<Card.Main>
 						<div>
-							<span>NancMachines Locked</span>
+							<span>{firstLabel}</span>
 							<b>{lockedValue}</b>
 						</div>
 						<FontAwesomeIcon icon={faCog}/>
@@ -27,7 +27,7 @@ const Purchased = ({getDeposits, lockedValue, lockedTime}) => {
 				<Card>
 					<Card.Main>
 						<div>
-							<span>Lock Expiration</span>
+							<span>{secondLabel}</span>
 							<b>{lockedTime}</b>
 						</div>
 						<FontAwesomeIcon icon={faCog}/>
