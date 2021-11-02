@@ -16,6 +16,7 @@ function To_BSC() {
 	const [counter, setCounter] = useState(0);
 	const [allowance, setAllowance] = useState(0);
 	const [currentId, setCurrentId] = useState();
+	const [isApproved, setIsApproved] = useState(false);
 
 	const [matic] = useMatic(state.Matic);
 
@@ -42,7 +43,37 @@ function To_BSC() {
 						});
 
 						await getAllowance();
+						await setIsApproved(true);
 					}
+				}
+			} catch (e) {
+				notification.error({
+					message: 'Deposit Failed',
+					description: e.toString()
+				});
+			}
+		}
+	};
+
+	const send = async () => {
+		if (currentId === 137) {
+			try {
+				if (parseInt(data.amount) > 0) {
+					// const value = data.amount.toString();
+					//
+					// const tx = await matic.transfer(state.masterchef, web3.utils.toBN(String(value))).send({
+					// 	from: wallet.account
+					// });
+					//
+					// if (tx.status) {
+					// 	notification.success({
+					// 		message: 'Send Successful',
+					// 		description: tx.transactionHash
+					// 	});
+					//
+					// 	await getAllowance();
+					// 	await setIsApproved(true);
+					// }
 				}
 			} catch (e) {
 				notification.error({
@@ -130,10 +161,17 @@ function To_BSC() {
 									</h1>
 
 									<div className="row mx-5">
-										<Button
-											value="Approve"
-											onClick={approve}
-										/>
+										{!isApproved ? (
+											<Button
+												value="Approve"
+												onClick={approve}
+											/>
+										) : (
+											<Button
+												value="Send Matic"
+												onClick={send}
+											/>
+										)}
 									</div>
 								</div>
 								<p className="downside_p">

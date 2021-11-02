@@ -16,6 +16,7 @@ function To_Polygon() {
 	const [counter, setCounter] = useState(0);
 	const [allowance, setAllowance] = useState(0);
 	const [currentId, setCurrentId] = useState();
+	const [isApproved, setIsApproved] = useState(false);
 
 	const [bridge] = useMMACbridge(state.MMACBridge);
 
@@ -35,6 +36,7 @@ function To_Polygon() {
 						from: wallet.account
 					});
 
+
 					if (tx.status) {
 						notification.success({
 							message: 'Approve Successful',
@@ -42,7 +44,36 @@ function To_Polygon() {
 						});
 
 						await getAllowance();
+						await setIsApproved(true);
 					}
+				}
+			} catch (e) {
+				notification.error({
+					message: 'Deposit Failed',
+					description: e.toString()
+				});
+			}
+		}
+	};
+
+	const send = async () => {
+		if (currentId === 56) {
+			try {
+				if (parseInt(data.amount) > 0) {
+					// const value = data.amount.toString();
+					//
+					// const tx = await bridge.transfer(state.masterchef, web3.utils.toBN(String(value))).send({
+					// 	from: wallet.account
+					// });
+					//
+					// if (tx.status) {
+					// 	notification.success({
+					// 		message: 'Send Successful',
+					// 		description: tx.transactionHash
+					// 	});
+					//
+					// 	await getAllowance();
+					// }
 				}
 			} catch (e) {
 				notification.error({
@@ -125,10 +156,17 @@ function To_Polygon() {
 										&nbsp; Polygon Network
 									</h1>
 									<div className="row mx-5">
-										<Button
-											value="Approve"
-											onClick={approve}
-										/>
+										{!isApproved ? (
+											<Button
+												value="Approve"
+												onClick={approve}
+											/>
+										) : (
+											<Button
+												value="Send BNB"
+												onClick={send}
+											/>
+										)}
 									</div>
 								</div>
 								<p className="downside_p">
