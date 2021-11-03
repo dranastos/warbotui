@@ -30,11 +30,11 @@ const Main = ({children}) => {
 	);
 };
 
-const Footer = ({callback}) => {
+const Footer = ({callback, disabled}) => {
 	return (
 		<div className={styles.Card__container}>
 			<div className={styles.Footer}>
-				<Button value="Approve Contract" onClick={callback}/>
+				<Button value="Approve Contract" onClick={callback} disabled={disabled}/>
 			</div>
 		</div>
 	);
