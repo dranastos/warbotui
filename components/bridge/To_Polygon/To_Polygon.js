@@ -1,16 +1,17 @@
 import Select from '../../Select/Select';
 import Button from '../../Button/Button';
-import useGlobal from '../../../hooks/useGlobal';
+import useGlobalBNB from '../../../hooks/useGlobalBNB';
 import {useEffect, useState} from 'react';
 import {useWallet} from 'use-wallet';
 import {notification} from 'antd';
 import Input from '../../Input/Input';
 import useMMACbridge from '../../../hooks/useMMACBridge';
 import useWeb3 from '../../../hooks/useWeb3';
+import useMicroMachines from '../../../hooks/useMicroMachines';
 
 function To_Polygon() {
 	const wallet = useWallet();
-	const [state, actions] = useGlobal(['bridge', 'masterchef']);
+	const [state, actions] = useGlobalBNB(['bridge', 'masterchef', 'micromachinesBNB']);
 	const [data, setData] = useState({months: 0, amount: '', timelock: 0});
 	const web3 = useWeb3();
 	const [counter, setCounter] = useState(0);
@@ -19,9 +20,10 @@ function To_Polygon() {
 	const [isApproved, setIsApproved] = useState(false);
 
 	const [bridge] = useMMACbridge(state.MMACBridge);
+	const [micromachines] = useMicroMachines(state.micromachinesBNB)
 
 	const getAllowance = async () => {
-		const balance = await bridge.allowance(wallet.account, state.masterchef).call();
+		const balance = await micromachines.allowance(wallet.account, state.masterchef).call();
 		setAllowance(balance);
 		setCounter(counter + 1);
 	};
@@ -32,7 +34,7 @@ function To_Polygon() {
 				if (parseInt(data.amount) > 0) {
 					const value = data.amount.toString();
 
-					const tx = await bridge.approve(state.masterchef, web3.utils.toBN(String(value))).send({
+					const tx = await micromachines.approve(state.masterchef, web3.utils.toBN(String(value))).send({
 						from: wallet.account
 					});
 
@@ -60,20 +62,20 @@ function To_Polygon() {
 		if (currentId === 56) {
 			try {
 				if (parseInt(data.amount) > 0) {
-					// const value = data.amount.toString();
-					//
-					// const tx = await bridge.transfer(state.masterchef, web3.utils.toBN(String(value))).send({
-					// 	from: wallet.account
-					// });
-					//
-					// if (tx.status) {
-					// 	notification.success({
-					// 		message: 'Send Successful',
-					// 		description: tx.transactionHash
-					// 	});
-					//
-					// 	await getAllowance();
-					// }
+					const value = data.amount.toString();
+
+					const tx = await bridge.BridgeMMAC(value).send({
+						from: wallet.account
+					});
+
+					if (tx.status) {
+						notification.success({
+							message: 'Send Successful',
+							description: tx.transactionHash
+						});
+
+						await getAllowance();
+					}
 				}
 			} catch (e) {
 				notification.error({
@@ -163,7 +165,7 @@ function To_Polygon() {
 											/>
 										) : (
 											<Button
-												value="Send BNB"
+												value="Bridge MMAC"
 												onClick={send}
 											/>
 										)}

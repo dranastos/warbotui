@@ -71,20 +71,20 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 		if (wallet.status === 'connected' && dicesiumBatteries && state.hasDicesiumBatteries) {
 			try {
 				if (parseInt(amountValue) > 0) {
-					// const value = amountValue.toString();
-					//
-					// const tx = await dicesiumBatteries.transfer(state.masterchef, web3.utils.toBN(String(value))).send({
-					// 	from: wallet.account
-					// });
-					//
-					// if (tx.status) {
-					// 	notification.success({
-					// 		message: 'Purchase Successful',
-					// 		description: tx.transactionHash
-					// 	});
-					//
-					// 	await getAllowance();
-					// }
+					const value = amountValue.toString();
+
+					const tx = await dicesiumBatteries.purchaseDicesiumBatteries().send({
+						from: wallet.account
+					});
+
+					if (tx.status) {
+						notification.success({
+							message: 'Purchase Successful',
+							description: tx.transactionHash
+						});
+
+						await getAllowance();
+					}
 				}
 			} catch (e) {
 				notification.error({
