@@ -73,7 +73,7 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 				if (parseInt(amountValue) > 0) {
 					const value = amountValue.toString();
 
-					const tx = await dicesiumBatteries.purchaseDicesiumBatteries().send({
+					const tx = await dicesiumBatteries.purchaseDicesiumBatteries(amountValue).send({
 						from: wallet.account
 					});
 
