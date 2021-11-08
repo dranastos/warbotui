@@ -16,6 +16,8 @@ function To_Polygon() {
 	const web3 = useWeb3();
 	const [counter, setCounter] = useState(0);
 	const [allowance, setAllowance] = useState(0);
+	const [bal, setBal] = useState(0);
+	
 	const [currentId, setCurrentId] = useState();
 	const [isApproved, setIsApproved] = useState(false);
 
@@ -23,7 +25,9 @@ function To_Polygon() {
 	const [micromachines] = useMicroMachines(state.micromachinesBNB)
 
 	const getAllowance = async () => {
+		const _bal = await micromachines.balanceOf(wallet.account).call();
 		const balance = await micromachines.allowance(wallet.account, state.MMACBridge).call();
+		setBal(_bal);
 		setAllowance(balance);
 		setCounter(counter + 1);
 	};
@@ -144,6 +148,7 @@ function To_Polygon() {
 											/>
 										</div>
 										<p className="available_MMAC mt-3">
+											MMAC Balance : {bal}
 											Available: {allowance} MMAC
 										</p>
 									</div>
