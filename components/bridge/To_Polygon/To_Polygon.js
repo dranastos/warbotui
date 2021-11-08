@@ -173,9 +173,7 @@ function To_Polygon() {
 									</div>
 								</div>
 								<p className="downside_p">
-									Lorem ipsum dolor <span>XX fee</span> to
-									ultrices amet massa urna scelerisque magna.
-									Elit turpis amet, a eleifend scelerisque.
+									
 								</p>
 							</div>
 						</div>
