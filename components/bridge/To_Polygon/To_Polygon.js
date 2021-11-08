@@ -66,7 +66,8 @@ function To_Polygon() {
 		if (currentId === 56) {
 			try {
 				if (parseInt(data.amount) > 0) {
-					const value = data.amount.toString();
+					var _amount = data.amount * 1000000000;
+					const value = _amount.toString();
                                         console.log( "amount to bridge:" + value)
 					const tx = await bridge.BridgeMMAC(value).send({
 						from: wallet.account,
