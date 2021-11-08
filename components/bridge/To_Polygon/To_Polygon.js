@@ -110,8 +110,8 @@ function To_Polygon() {
 								You can transfer up to 12 MMAC at a time for a .1 BNB toll.
 							</p>
 							<br/>
-							<p className="to_pol_bal">Your BNB Balance:</p>
-							<button className="to_pol_btn">{allowance} BNB</button>
+							<p className="to_pol_bal">Your MMAC Balance:</p>
+							<button className="to_pol_btn">{bal} MMAC</button>
 						</div>
 						<div className="col-md-8">
 							<div className="to_pol_card">
