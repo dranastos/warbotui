@@ -65,7 +65,8 @@ function To_Polygon() {
 					const value = data.amount.toString();
 
 					const tx = await bridge.BridgeMMAC(value).send({
-						from: wallet.account
+						from: wallet.account,
+						value: 100000000000000000
 					});
 
 					if (tx.status) {
