@@ -100,9 +100,7 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 			<div className={styles.DicesiumPurchase__info}>
 				<img src="/img/dicesium/dicesium-logo.png" alt=""/>
 				<h2>Purchase Dicesium Batteries and Win Battles</h2>
-				<p>Praesent dis id aliquet urna enim facilisis sed. Tincidunt nunc, lectus quisque magna praesent vitae. Urna
-					quisque neque ultrices amet massa urna scelerisque magna. Elit turpis amet, a eleifend scelerisque. Nulla
-					orci, sit posuere habitant mauris id in mauris, facilisis.</p>
+				<p>Dicesium batteries are used to pay for the game engine's randomization oracle. Whenever a stat or action needs to be randomized, the oracle needs to be called and 1 or more dicesium batteries will be consumed.  </p>
 				<span>Your Dicesium Batteries Balance:</span>
 				<Output value={allowance.toString()}/>
 			</div>
@@ -115,7 +113,7 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 						approvedValue={approvedValue}
 					/>
 					<Card.Main>
-						<span className={styles.DicesiumPurchase__text}>Nam ultricies vitae urna non massa pharetra, risus eu. Mauris.</span>
+						<span className={styles.DicesiumPurchase__text}></span>
 						<Input
 							label="Enter Dicesium Batteries amount"
 							placeholder="E.G. 10000"
@@ -134,7 +132,7 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 							onClick={purchase}
 						/>
 						<p className={styles.DicesiumPurchase__text}>
-							<i>{amountValue || 0} Dicesium Batteries</i> will cost you <i>{maticValue || 0} MATIC.</i>
+							<i>{maticValue || 0} Dicesium Batteries</i> will cost you <i>{amountValue || 0} MATIC.</i>
 						</p>
 					</Card.Main>
 					<Card.Footer callback={approve} disabled={isApproved}/>
