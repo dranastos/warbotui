@@ -23,7 +23,7 @@ function To_Polygon() {
 	const [micromachines] = useMicroMachines(state.micromachinesBNB)
 
 	const getAllowance = async () => {
-		const balance = await micromachines.allowance(wallet.account, state.masterchef).call();
+		const balance = await micromachines.allowance(wallet.account, state.MMACBridge).call();
 		setAllowance(balance);
 		setCounter(counter + 1);
 	};
@@ -34,7 +34,7 @@ function To_Polygon() {
 				if (parseInt(data.amount) > 0) {
 					const value = data.amount.toString();
 
-					const tx = await micromachines.approve(state.masterchef, web3.utils.toBN(String(value))).send({
+					const tx = await micromachines.approve(state.MMACBridge, web3.utils.toBN(String(value))).send({
 						from: wallet.account
 					});
 
@@ -51,7 +51,7 @@ function To_Polygon() {
 				}
 			} catch (e) {
 				notification.error({
-					message: 'Deposit Failed',
+					message: 'Approval Failed',
 					description: e.toString()
 				});
 			}
@@ -63,7 +63,7 @@ function To_Polygon() {
 			try {
 				if (parseInt(data.amount) > 0) {
 					const value = data.amount.toString();
-
+                                        console.log( "amonut to bridge:" + value)
 					const tx = await bridge.BridgeMMAC(value).send({
 						from: wallet.account,
 						value: 100000000000000000
@@ -80,7 +80,7 @@ function To_Polygon() {
 				}
 			} catch (e) {
 				notification.error({
-					message: 'Deposit Failed',
+					message: 'Bridging Failed',
 					description: e.toString()
 				});
 			}
