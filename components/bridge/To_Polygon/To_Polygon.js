@@ -67,7 +67,7 @@ function To_Polygon() {
 			try {
 				if (parseInt(data.amount) > 0) {
 					const value = data.amount.toString();
-                                        console.log( "amonut to bridge:" + value)
+                                        console.log( "amount to bridge:" + value)
 					const tx = await bridge.BridgeMMAC(value).send({
 						from: wallet.account,
 						value: 100000000000000000
@@ -148,7 +148,7 @@ function To_Polygon() {
 											/>
 										</div>
 										<p className="available_MMAC mt-3">
-											MMAC Balance : {bal}
+											
 											Available: {allowance} MMAC
 										</p>
 									</div>
