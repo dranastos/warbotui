@@ -24,10 +24,18 @@ function To_Polygon() {
 	const [bridge] = useMMACbridge(state.MMACBridge);
 	const [micromachines] = useMicroMachines(state.micromachinesBNB)
 
+	const getBalance = async () => {
+		if (!!wallet.account) {
+			const _bal = Math.fround(await micromachines.balanceOf(wallet.account).call() * 0.000000001);
+			setBal(_bal);
+		}
+		else {
+			setBal("--");
+		}
+	}
+
 	const getAllowance = async () => {
-		const _bal = await micromachines.balanceOf(wallet.account).call();
 		const balance = await micromachines.allowance(wallet.account, state.MMACBridge).call();
-		setBal(_bal);
 		setAllowance(balance);
 		setCounter(counter + 1);
 	};
@@ -94,6 +102,8 @@ function To_Polygon() {
 
 	useEffect(() => {
 		web3.eth.net.getId().then(setCurrentId);
+		
+		getBalance().then();
 	});
 
 	return (
