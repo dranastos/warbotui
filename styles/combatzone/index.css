@@ -1,7 +1,18 @@
 @import url(header.css);
 @import url(battle-mode.css);
 @import url(warbot.css);
+@import url(choose.css);
+@import url(join.css);
+@import url(prepare.css);
 
 .combatzone-container {
   overflow-x: hidden;
+}
+
+.prepare-container {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #24364F;
 }

@@ -1,0 +1,66 @@
+.select-warbot {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.bot-container {
+  width: 400px;
+  margin: 40px;
+}
+
+.select-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.battle-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  background: #24354F;
+  border-radius: 16px;
+  width: 390px;
+  height: 170px;
+  margin: 20px 0px;
+  cursor: pointer;
+  border: 4px solid transparent;
+}
+
+.battle-active {
+  border: 4px solid #71EEFF;
+}
+
+.battle-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.battle-title {
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 36px;
+  color: #EAF4FB;
+  letter-spacing: 1px;
+}
+
+.battle-content {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 21px;
+  color: #778FBA;
+}
+
+.create-img {
+  width: 110px;
+}

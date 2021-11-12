@@ -1,0 +1,111 @@
+.prepare-bottom {
+  height: 250px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #19283D;
+}
+
+.prepare-card-footer {
+  position: relative;
+  top: -150px;
+  width: 300px;
+}
+
+.confirm-icon {
+  margin-right: 10px;
+}
+
+.ready-btn {
+  position: relative;
+  top: -35px;
+  background: #54AD63;
+  border-radius: 20px;
+  box-shadow: 0px 5px 0 #147A55;
+  border: 4px solid rgba(113, 207, 128, 0.5);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 45px;
+  line-height: 47px;
+  color: #EAF4FB;
+}
+
+.ready-btn:active {
+  box-shadow: none;
+  transform: translateY(5px);
+}
+
+.vs-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.me-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 45%;
+}
+
+.vs {
+  width: 10%;
+}
+.vs span {
+  font-family: Teko;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 72px;
+  line-height: 103.8%;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.opponent-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 45%;
+}
+
+.ready-status {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 30px;
+  font-family: Teko;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 38px;
+  text-align: right;
+  color: #FFFFFF;
+}
+
+
+.ready-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.ready-img {
+  margin: 0px 20px;
+}

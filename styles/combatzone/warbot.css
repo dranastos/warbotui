@@ -34,14 +34,18 @@
   border: 4px solid transparent !important;
   background-color: transparent !important;
   cursor: pointer;
-  transition: transform .5s;
-  min-width: 350px !important;
+  transition: transform .1s;
+  min-width: 400px !important;
   margin: 20px 10px;
 }
 
-.warbot-card:hover {
+/* .warbot-card:hover {
+  transform: scale(1.01);
+} */
+
+.warbot-card-active {
   border: 4px solid #71EEFF !important;
-  border-radius: 20px;
+  border-radius: 20px !important;
 }
 
 .warbot-card-img {
@@ -146,4 +150,81 @@
   font-family: "IronMan", sans-serif;
   font-size: 20px;
   color: #EAF4FB;
+}
+
+.confirm-alert-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 30px auto;
+}
+
+.confirm-alert-img {
+  width: 80px;
+}
+
+.alert-title {
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 38px;
+  text-align: center;
+  color: #FFFFFF !important;
+  letter-spacing: 1px;
+  margin: 20px auto;
+}
+
+.alert-content {
+  /* font-family: Roboto Condensed; */
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 150%;
+  text-align: center;
+  color: #EAF4FB;
+}
+
+.alert-button {
+  background: #6ED1DF;
+  border-radius: 20px;
+  box-shadow: 0px 5px 0 #2BA2C8;
+  border: none;
+  padding: 20px 50px;
+  color: #1F304E;
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin: 20px 0px 10px 0px;
+}
+
+.alert-button:active {
+  box-shadow: none;
+  transform: translateY(5px);
+}
+
+.alert-button-cancel {
+  background: #24354F;
+  border: 1px solid #71EEFF;
+  box-sizing: border-box;
+  border-radius: 20px;
+  box-shadow: 0px 5px 0 #71EEFF;
+  padding: 20px 50px;
+  color: #71EEFF;
+  font-family: 'Teko';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin: 20px 0px 10px 0px;
+}
+
+.alert-button-cancel:active {
+  box-shadow: none;
+  transform: translateY(5px);
 }

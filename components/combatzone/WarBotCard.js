@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const StatsItem = (props) => {
   const {src, value} = props;
@@ -11,10 +11,28 @@ const StatsItem = (props) => {
 }
 
 const WarBotCard = (props) => {
-  const { onClick, card } = props;
+  const { 
+    onClick = () => {}, 
+    card, 
+    selectWarbot
+  } = props;
+
+  const [warbotClassName, setWarbotClassName] = useState('card warbot-card');
+
+  useEffect(() => {
+    if(card && selectWarbot) {
+      if(selectWarbot.id == card.id) {
+        setWarbotClassName('card warbot-card warbot-card-active')
+      } else {
+        setWarbotClassName('card warbot-card')
+      }
+    }
+  }, [card, selectWarbot])
+  
+
   return (
     <div 
-      className="card warbot-card"
+      className={warbotClassName}
       onClick={onClick}
     >
       <img 

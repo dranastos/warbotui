@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import Checkbox from "react-custom-checkbox";
+import SweetAlert from 'react-bootstrap-sweetalert';
 import * as Icon from "react-icons/fi";
+
 import CombatHeader from '../../components/combatzone/CombatHeader';
 import WarBotCard from '../../components/combatzone/WarBotCard';
 import Router from "next/router";
 
 const warbotCardList = [
   {
+    "id": 1,
     "img": "/img/combatzone/1.png",
     "title": "Renegade",
     "settingValue": "#31226234"
   },
   {
+    "id": 2,
     "img": "/img/combatzone/2.png",
     "title": "Renegade",
     "settingValue": "#31226234"
   },
   {
+    "id": 3,
     "img": "/img/combatzone/3.png",
-    "title": "Renegade",
-    "settingValue": "#31226234"
-  },
-  {
-    "img": "/img/combatzone/4.png",
-    "title": "Renegade",
-    "settingValue": "#31226234"
-  },
-  {
-    "img": "/img/combatzone/1.png",
-    "title": "Renegade",
-    "settingValue": "#31226234"
-  },
-  {
-    "img": "/img/combatzone/2.png",
     "title": "Renegade",
     "settingValue": "#31226234"
   }
@@ -54,7 +44,7 @@ const checkList = [
 ]
 
 const CheckBox = (props) => {
-  const {checked, label, onChange} = props; 
+  const { checked, label, onChange } = props;
   return (
     <div className="checkbox-container">
       <Checkbox
@@ -66,6 +56,7 @@ const CheckBox = (props) => {
               flex: 1,
               backgroundColor: "transparent",
               alignSelf: "stretch",
+              cursor: 'pointer'
             }}
           >
             <Icon.FiCheck color="#71EEFF" size={40} />
@@ -74,16 +65,18 @@ const CheckBox = (props) => {
         borderColor="#131D2D"
         borderWidth={2}
         borderRadius={5}
-        style={{ 
-          overflow: 'hidden', 
-          backgroundColor: '#131D2D', 
+        style={{
+          overflow: 'hidden',
+          backgroundColor: '#131D2D',
+          cursor: 'pointer !important'
         }}
-        labelStyle={{ 
-          margin: '0px 20px 0px 10px', 
+        labelStyle={{
+          margin: '0px 20px 0px 10px',
           color: 'white',
           fontFamily: 'Teko',
           fontSize: '26px',
           fontWeight: 'bold',
+          cursor: 'pointer'
         }}
         size={40}
         label={label}
@@ -94,7 +87,10 @@ const CheckBox = (props) => {
 }
 
 const SelectWarBot = () => {
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(true);
+  const [selectWarbot, setSelectWarbot] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
   return (
     <div className="combatzone-container">
       <CombatHeader
@@ -102,6 +98,9 @@ const SelectWarBot = () => {
         showConfirmButton={true}
         confirmDisable={showConfirm}
         goBack={() => Router.back()}
+        onConfirm={() => {
+          setShowConfirmModal(true);
+        }}
       />
       <div className="container">
         <div className="warbot-checkbox-container">
@@ -113,10 +112,11 @@ const SelectWarBot = () => {
             {
               checkList.map((check, index) => {
                 return (
-                  <CheckBox 
+                  <CheckBox
+                    key={index}
                     checked={false}
                     label={check.label}
-                    onChange={(checked) => {}}
+                    onChange={(checked) => { }}
                   />
                 )
               })
@@ -129,8 +129,12 @@ const SelectWarBot = () => {
               return (
                 <div className="col-md-12 col-lg-6 col-xl-4" key={index}>
                   <WarBotCard
-                    onClick={() => { }}
+                    onClick={() => {
+                      setSelectWarbot(warbot);
+                      setShowConfirm(false);
+                    }}
                     card={warbot}
+                    selectWarbot={selectWarbot}
                   />
                 </div>
               )
@@ -138,6 +142,39 @@ const SelectWarBot = () => {
           }
         </div>
       </div>
+      <SweetAlert
+        custom
+        show={showConfirmModal}
+        style={{
+          background: '#24354F',
+          borderRadius: 15
+        }}
+        title=""
+        onConfirm={() => setShowConfirmModal(false)}
+        onCancel={() => setShowConfirmModal(false)}
+        showCancel={false}
+        showConfirm={false}
+        closeOnClickOutside={true}
+      >
+        <div className="confirm-alert-container">
+          <img src="img/combatzone/checkout.png" className="confirm-alert-img" />
+          <span className="alert-title">
+            Contract Interaction
+          </span>
+          <span className="alert-content">
+            Please click the button below to continue
+          </span>
+          <button
+            className="alert-button"
+            onClick={() => {
+              setShowConfirmModal(false)
+              Router.push('/combatzone_ui/choose')
+            }}
+          >
+            Approve Contract
+          </button>
+        </div>
+      </SweetAlert>
     </div>
   )
 }
