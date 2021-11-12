@@ -8,7 +8,11 @@ const Input = ({label, additionalLabel, balance, ...props}) => {
 				{...props}
 				type="number"
 				min={0}
-				onKeyPress={(e) => e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57) && e.preventDefault()}
+				onKeyPress={(e) => {
+					if (e.which !== 8 && e.which !== 0 && (e.which < 48 || e.which > 57) && e.which !== 46) {
+						e.preventDefault();
+					}
+				}}
 			/>
 			{(additionalLabel || balance) && (
 				<div>
