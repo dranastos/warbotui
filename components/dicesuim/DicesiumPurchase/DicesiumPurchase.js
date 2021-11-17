@@ -14,13 +14,11 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 	const [amountValue, setAmountValue] = useState();
 	const web3 = useWeb3();
 	const [maticValue, setMaticValue] = useState();
-	const [approvedValue, setApprovedValue] = useState(0);
 	const [isApproved, setIsApproved] = useState(false);
-	const [allowance, setAllowance] = useState(0);
 
 	const getAllowance = async () => {
 		const balance = await dicesiumBatteries.allowance(wallet.account, state.masterchef).call();
-		setAllowance(balance);
+		setIsApproved(balance > 0);
 	};
 
 	const getDicesium = async () => {
@@ -32,31 +30,26 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 
 	useEffect(() => {
 		if (wallet.status === 'connected' && dicesiumBatteries && state.hasDicesiumBatteries) {
-			getDicesium();
+			getDicesium().then();
+			getAllowance().then();
 		}
 	}, [dicesiumBatteries, state.hasDicesiumBatteries]);
 
 	const approve = async () => {
 		if (wallet.status === 'connected' && dicesiumBatteries && state.hasDicesiumBatteries) {
 			try {
-				if (parseInt(amountValue) > 0) {
-					const value = amountValue.toString();
+				const tx = await dicesiumBatteries.approve(state.masterchef, web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')).send({
+					from: wallet.account
+				});
 
-					const tx = await dicesiumBatteries.approve(state.masterchef, web3.utils.toBN(String(value))).send({
-						from: wallet.account
+				if (tx.status) {
+					notification.success({
+						message: 'Approve Successful',
+						description: tx.transactionHash
 					});
 
-					if (tx.status) {
-						notification.success({
-							message: 'Approve Successful',
-							description: tx.transactionHash
-						});
-
-						setApprovedValue(amountValue);
-
-						await getAllowance();
-						setIsApproved(true);
-					}
+					await getDicesium();
+					await getAllowance();
 				}
 			} catch (e) {
 				notification.error({
@@ -70,12 +63,16 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 	const purchase = async () => {
 		if (wallet.status === 'connected' && dicesiumBatteries && state.hasDicesiumBatteries) {
 			try {
-				if (parseInt(amountValue) > 0) {
-					const value = amountValue.toString();
+				const value = `${amountValue}`;
+				const numValue = parseFloat(value);
 
-					const tx = await dicesiumBatteries.purchaseDicesiumBatteries(amountValue).send({
-						from: wallet.account
+				if (numValue > 0) {
+					const tx = await dicesiumBatteries.purchaseDicesiumBatteries().send({
+						from: wallet.account,
+						value: `${web3.utils.toWei(value, 'ether')}`
 					});
+
+					console.log(tx)
 
 					if (tx.status) {
 						notification.success({
@@ -83,6 +80,7 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 							description: tx.transactionHash
 						});
 
+						await getDicesium();
 						await getAllowance();
 					}
 				}
@@ -102,32 +100,30 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 				<h2>Purchase Dicesium Batteries and Win Battles</h2>
 				<p>Dicesium batteries are used to pay for the game engine's randomization oracle. Whenever a stat or action needs to be randomized, the oracle needs to be called and 1 or more dicesium batteries will be consumed.  </p>
 				<span>Your Dicesium Batteries Balance:</span>
-				<Output value={allowance.toString()}/>
+				<Output value={dicesium.toString()}/>
 			</div>
 			<div className={styles.DicesiumPurchase__form}>
 				<Card>
 					<Card.Header
 						title="Purchase Dicesium Batteries"
 						stakedText="Battery"
-						balanceValue={allowance}
-						approvedValue={approvedValue}
+						balanceValue={dicesium}
 					/>
 					<Card.Main>
 						<span className={styles.DicesiumPurchase__text}></span>
 						<Input
 							label="Enter Dicesium Batteries amount"
 							placeholder="E.G. 10000"
-							value={amountValue}
+							value={maticValue}
 							onInput={(event) => {
-								setAmountValue(event.target.value);
+								setMaticValue(event.target.value);
 								dicesiumBatteries.rate().call().then((r) => {
-									setMaticValue(event.target.value * r);
+									setAmountValue(2 * event.target.value / r);
 								});
 							}}
 						/>
 						<Button
 							style={{marginTop: '56px'}}
-							disabled={!isApproved}
 							value="Purchase Dicesium Batteries"
 							onClick={purchase}
 						/>
