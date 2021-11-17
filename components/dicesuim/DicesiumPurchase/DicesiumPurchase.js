@@ -15,11 +15,10 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 	const web3 = useWeb3();
 	const [maticValue, setMaticValue] = useState();
 	const [isApproved, setIsApproved] = useState(false);
-	const [allowance, setAllowance] = useState(0);
 
 	const getAllowance = async () => {
 		const balance = await dicesiumBatteries.allowance(wallet.account, state.masterchef).call();
-		setAllowance(balance);
+		setIsApproved(balance > 0);
 	};
 
 	const getDicesium = async () => {
@@ -39,22 +38,18 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 	const approve = async () => {
 		if (wallet.status === 'connected' && dicesiumBatteries && state.hasDicesiumBatteries) {
 			try {
-				if (parseInt(amountValue) > 0) {
-					const value = amountValue.toString();
+				const tx = await dicesiumBatteries.approve(state.masterchef, web3.utils.toBN('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')).send({
+					from: wallet.account
+				});
 
-					const tx = await dicesiumBatteries.approve(state.masterchef, web3.utils.toBN(String(value))).send({
-						from: wallet.account
+				if (tx.status) {
+					notification.success({
+						message: 'Approve Successful',
+						description: tx.transactionHash
 					});
 
-					if (tx.status) {
-						notification.success({
-							message: 'Approve Successful',
-							description: tx.transactionHash
-						});
-
-						await getAllowance();
-						setIsApproved(true);
-					}
+					await getDicesium();
+					await getAllowance();
 				}
 			} catch (e) {
 				notification.error({
@@ -85,6 +80,7 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 							description: tx.transactionHash
 						});
 
+						await getDicesium();
 						await getAllowance();
 					}
 				}
@@ -112,7 +108,6 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 						title="Purchase Dicesium Batteries"
 						stakedText="Battery"
 						balanceValue={dicesium}
-						approvedValue={allowance}
 					/>
 					<Card.Main>
 						<span className={styles.DicesiumPurchase__text}></span>
@@ -136,6 +131,7 @@ const DicesiumPurchase = ({dicesiumBatteries, state}) => {
 							<i>{maticValue || 0} Dicesium Batteries</i> will cost you <i>{amountValue || 0} MATIC.</i>
 						</p>
 					</Card.Main>
+					<Card.Footer callback={approve} disabled={isApproved}/>
 				</Card>
 			</div>
 		</div>

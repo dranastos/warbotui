@@ -10,11 +10,11 @@ const Header = ({title, subtitle, stakedText, balanceValue, approvedValue}) => {
 					<h4>{subtitle}</h4>
 				</div>
 				<div className={styles.Header__values}>
-					<div>
+					<div hidden={balanceValue === undefined}>
 						<span>{stakedText} Balance</span>
 						<i>{Number(balanceValue).toFixed(2)}</i>
 					</div>
-					<div>
+					<div hidden={approvedValue === undefined}>
 						<span>Approved</span>
 						<i>{Number(approvedValue).toFixed(2)}</i>
 					</div>
