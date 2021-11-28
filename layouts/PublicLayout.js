@@ -428,7 +428,7 @@ export default function PublicLayout({children, style}) {
 				}}
 			>
 				<Alert message="This is a test site used in development." description='To stake, bridge or otherwise manage your tokens, please visit https://RiseOfTheWarbots.com/app'
-					   type="warning" showIcon closeable style={{marginTop: 10}}/>
+					   type="warning" showIcon closeable style={{marginTop: 10, margin: "0 auto", maxWidth: "1300px"}}/>
 				{wallet.status != 'connected' && (
 					<Alert
 						message="Connect Wallet"
