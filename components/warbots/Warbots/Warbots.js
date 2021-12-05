@@ -53,6 +53,14 @@ const Warbots = ({updateOnClick, children}) => {
 		},
 	];
 
+	const items = [
+		{text: 'Lorem ipsum', eventListener(id) {console.log(id)}}
+	];
+
+	const deposits = [
+		{id: 0}
+	];
+
 	return (
 		<div className={styles.Warbots}>
 			<header className={styles.Warbots__header}>
@@ -63,12 +71,12 @@ const Warbots = ({updateOnClick, children}) => {
 				</Button.Secondary>
 			</header>
 			<div>{children}</div>
-			{/*<List*/}
-			{/*	products={warbotsList}*/}
-			{/*	dashboard={true}*/}
-			{/*	items={items}*/}
-			{/*	deposits={deposits}*/}
-			{/*/>*/}
+			<List
+				products={warbotsList}
+				dashboard={true}
+				items={items}
+				deposits={deposits}
+			/>
 		</div>
 	);
 };

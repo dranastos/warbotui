@@ -171,6 +171,6 @@
 
 @media (max-width: 840px) {
   .Filter {
-    display: none;
+    /*display: none;*/
   }
 }

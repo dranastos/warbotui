@@ -23,7 +23,7 @@ const Facilities = () => {
 					<Facility
 						title="Beta Facility"
 						subtitle="Stake NMAC/MATIC to get NMAC"
-						stakedImage='/img/nanomachines/staked_image_1.png'
+						stakedImage='/img/nanomachines/staked_image_2.png'
 						producedImage='/img/nanomachines/produced_image_1.png'
 						stakedText="NMAC/MATIC LP"
 						producedText="NMAC"
