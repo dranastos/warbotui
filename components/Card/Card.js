@@ -40,9 +40,9 @@ const Footer = ({callback, disabled}) => {
 	);
 };
 
-const Card = ({children}) => {
+const Card = ({children, ...props}) => {
 	return (
-		<div className={styles.Card}>{children}</div>
+		<div className={styles.Card} {...props}>{children}</div>
 	);
 };
 

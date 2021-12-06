@@ -1,0 +1,125 @@
+.Plant {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+}
+
+.Plant .Plant__img img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.Plant .Plant__name {
+  background: #2A3E5B;
+  padding: 24px;
+}
+
+.Plant .Plant__name h4 {
+  font-weight: 600;
+  font-size: 28px;
+  color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+}
+
+.Plant .Plant__unclaimed {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-gap: 20px;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.Plant .Plant__unclaimed h5 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  color: #EAF4FB;
+}
+
+.Plant .Plant__details {
+  padding: 24px;
+  text-align: center;
+}
+
+.Plant .Plant__details > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  grid-gap: 30px;
+}
+
+.Plant .Plant__details > div > .Plant__detail, .Plant .Plant__details > div > .Plant__detail_active {
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: calc(50% - 30px);
+}
+
+.Plant .Plant__details > div > .Plant__detail {
+  height: 0;
+}
+
+.Plant .Plant__details > div > .Plant__detail_active {
+  height: 100%;
+}
+
+.Plant .Plant__details > div > div img {
+  height: 20px;
+  object-fit: contain;
+  margin-right: auto;
+}
+
+.Plant .Plant__details > div > div span {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 18px;
+  line-height: 21px;
+  color: #778FBA;
+  margin-top: 8px;
+}
+
+.Plant .Plant__details > div > div b {
+  font-family: 'Teko', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 40px;
+  color: #FFFFFF;
+  margin-top: 6px;
+}
+
+.Plant .Plant__details .Plant__button {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  color: #71EEFF;
+  margin: auto auto auto auto;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  grid-column-gap: 8px;
+}
+
+@media (max-width: 1400px) {
+  .Plant .Plant__unclaimed {
+    flex-direction: column;
+    align-items: flex-start;
+    grid-gap: 0;
+    justify-content: flex-start;
+  }
+
+  .Plant .Plant__unclaimed h5 {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 1200px) {
+  .Plant .Plant__details > div > .Plant__detail, .Plant .Plant__details > div > .Plant__detail_active {
+    width: 100%;
+  }
+}

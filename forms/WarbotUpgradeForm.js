@@ -274,9 +274,7 @@ const WarbotUpgradeForm = ({onComplete, address}) => {
 		// 		</Card>
 		// 	</Card>
 		// </Spin>
-		<Upgrade
-
-		/>
+		<Upgrade/>
 	);
 };
 
