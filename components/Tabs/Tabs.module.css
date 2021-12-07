@@ -1,4 +1,4 @@
-.Tabs {
+.Tabs, .TabsAlternate {
   border-radius: 20px;
   overflow: hidden;
   display: block;
@@ -7,70 +7,114 @@
   background-color: #19283D;
 }
 
-.Tabs .Tabs__item, .Tabs .Tabs__item_active {
+.TabsAlternate {
+  border: 1px solid #71EEFF;
+  border-radius: 7px;
+}
+
+.Tabs .Tabs__item,
+.Tabs .Tabs__item_active,
+.TabsAlternate .TabsAlternate__item,
+.TabsAlternate .TabsAlternate__item_active {
   background-color: transparent;
   font-family: 'Teko', sans-serif;
-  font-style: normal;
   font-weight: bold;
   font-size: 24px;
   text-align: center;
-  color: #778fba;
   padding: 12px 48px;
   border: none;
-  border-right: 1px solid #24364f;
   transition: 0.2s ease-in-out;
   outline: none;
 }
 
-.Tabs .Tabs__item:last-child, .Tabs .Tabs__item_active:last-child {
+.Tabs .Tabs__item,
+.Tabs .Tabs__item_active {
+  color: #778fba;
+  border-right: 1px solid #24364f;
+}
+
+.TabsAlternate .TabsAlternate__item,
+.TabsAlternate .TabsAlternate__item_active {
+  padding: 2px 32px;
+}
+
+.TabsAlternate .TabsAlternate__item {
+  color: #71EEFF;
+}
+
+.TabsAlternate .TabsAlternate__item_active {
+  color: #24364F;
+  background: #71EEFF;
+}
+
+.Tabs .Tabs__item:last-child,
+.Tabs .Tabs__item_active:last-child,
+.TabsAlternate .TabsAlternate__item:last-child,
+.TabsAlternate .TabsAlternate__item_active:last-child {
   border-right: none;
+}
+
+.Tabs .Tabs__item_active,
+.TabsAlternate .TabsAlternate__item_active {
+  border-right-color: transparent;
 }
 
 .Tabs .Tabs__item_active {
   background: #24364f;
   color: #eaf4fb;
-  border-right-color: transparent;
 }
 
 @media (max-width: 991px) {
-  .Tabs {
+  .Tabs, .TabsAlternate {
     margin-bottom: 30px;
     display: flex;
     margin-left: auto;
     margin-right: auto;
   }
-  .Tabs .Tabs__item, .Tabs .Tabs__item_active {
+  .Tabs .Tabs__item,
+  .Tabs .Tabs__item_active,
+  .TabsAlternate .TabsAlternate__item,
+  .TabsAlternate .TabsAlternate__item_active {
     font-size: 20px;
     padding: 12px 30px;
   }
 }
 
 @media (max-width: 640px) {
-  .Tabs {
+  .Tabs, .TabsAlternate {
     display: flex;
     margin-left: auto;
     margin-right: auto;
   }
-  .Tabs .Tabs__item, .Tabs .Tabs__item_active {
+  .Tabs .Tabs__item,
+  .Tabs .Tabs__item_active,
+  .TabsAlternate .TabsAlternate__item,
+  .TabsAlternate .TabsAlternate__item_active {
     font-size: 18px;
     padding: 12px 18px;
   }
 }
 
 @media (max-width: 480px) {
-  .Tabs .Tabs__item, .Tabs .Tabs__item_active {
+  .Tabs .Tabs__item,
+  .Tabs .Tabs__item_active,
+  .TabsAlternate .TabsAlternate__item,
+  .TabsAlternate .TabsAlternate__item_active {
     font-size: 16px;
     padding: 8px 12px;
   }
 
-  .Tabs {
+  .Tabs, .TabsAlternate {
     flex-direction: column;
     width: 60%;
     padding: 4px;
     border-radius: 8px;
   }
 
-  .Tabs .Tabs__item, .Tabs .Tabs__item_active {
+  .Tabs .Tabs__item,
+  .Tabs .Tabs__item_active,
+  .TabsAlternate .TabsAlternate__item,
+  .TabsAlternate .TabsAlternate__item_active {
     border: none;
     border-radius: 8px;
   }
