@@ -43,6 +43,14 @@
   grid-column-gap: 20px;
 }
 
+.Statistics__row {
+  padding: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .Statistics__stat > div {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -87,6 +95,13 @@
   .Statistics__stat span {
     font-size: 16px;
     line-height: 100%;
+  }
+
+  .Statistics__row {
+    padding: 15px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 }
 

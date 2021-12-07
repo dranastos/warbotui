@@ -21,7 +21,6 @@
   font-weight: bold;
   font-size: 24px;
   text-align: center;
-  padding: 12px 48px;
   border: none;
   transition: 0.2s ease-in-out;
   outline: none;
@@ -31,11 +30,13 @@
 .Tabs .Tabs__item_active {
   color: #778fba;
   border-right: 1px solid #24364f;
+  padding: 12px 48px;
 }
 
 .TabsAlternate .TabsAlternate__item,
 .TabsAlternate .TabsAlternate__item_active {
-  padding: 2px 32px;
+  padding: 2px 28px;
+  border-right: 1px solid #71EEFF;
 }
 
 .TabsAlternate .TabsAlternate__item {
@@ -65,23 +66,27 @@
 }
 
 @media (max-width: 991px) {
-  .Tabs, .TabsAlternate {
+  .Tabs {
     margin-bottom: 30px;
     display: flex;
     margin-left: auto;
     margin-right: auto;
   }
-  .Tabs .Tabs__item,
-  .Tabs .Tabs__item_active,
+
   .TabsAlternate .TabsAlternate__item,
   .TabsAlternate .TabsAlternate__item_active {
+    padding: 0 20px;
+  }
+
+  .Tabs .Tabs__item,
+  .Tabs .Tabs__item_active {
     font-size: 20px;
     padding: 12px 30px;
   }
 }
 
 @media (max-width: 640px) {
-  .Tabs, .TabsAlternate {
+  .Tabs {
     display: flex;
     margin-left: auto;
     margin-right: auto;
@@ -109,6 +114,10 @@
     width: 60%;
     padding: 4px;
     border-radius: 8px;
+  }
+
+  .TabsAlternate {
+    width: fit-content;
   }
 
   .Tabs .Tabs__item,
