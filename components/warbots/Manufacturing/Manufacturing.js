@@ -53,7 +53,7 @@ const Manufacturing = () => {
 		},
 		{
 			id: 83,
-			staked: 123,
+			staked: 1,
 			date: '03-DEC-21',
 			lock: 3,
 			finished: '15:00 2022-04-23',
@@ -63,7 +63,7 @@ const Manufacturing = () => {
 		},
 		{
 			id: 92,
-			staked: 123,
+			staked: 1,
 			date: '03-DEC-21',
 			lock: 3,
 			finished: '15:00 2022-04-23',
@@ -85,6 +85,7 @@ const Manufacturing = () => {
 					finished={plant.finished}
 					warbots={plant.warbots}
 					unclaimed={plant.unclaimed}
+					produced={plant.produced}
 				/>
 			</Card>
 		);
