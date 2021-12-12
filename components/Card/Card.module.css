@@ -14,8 +14,10 @@
 }
 
 .Card h4 {
-  font-weight: 600;
-  font-size: 24px;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
   color: #778FBA;
   padding: 0;
   margin: 0;
@@ -25,6 +27,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 40px;
+  align-items: flex-start;
 }
 
 .Card__container {

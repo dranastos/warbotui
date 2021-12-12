@@ -1,7 +1,8 @@
 import styles from './Card.module.css';
 import Button from '../Button/Button';
+import Output from '../Output/Output';
 
-const Header = ({title, subtitle, stakedText, balanceValue, approvedValue}) => {
+const Header = ({title, subtitle, stakedText, balanceValue, approvedValue, outputValue}) => {
 	return (
 		<div className={styles.Card__container}>
 			<header className={styles.Header}>
@@ -9,6 +10,11 @@ const Header = ({title, subtitle, stakedText, balanceValue, approvedValue}) => {
 					<h3>{title}</h3>
 					<h4>{subtitle}</h4>
 				</div>
+				{outputValue && (
+					<div style={{marginLeft: 'auto'}}>
+						<Output value={outputValue} style={{marginTop: 0}}/>
+					</div>
+				)}
 				<div className={styles.Header__values}>
 					<div hidden={balanceValue === undefined}>
 						<span>{stakedText} Balance</span>

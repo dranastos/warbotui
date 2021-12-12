@@ -18,7 +18,8 @@ const Manufacturing = () => {
 			lock: 3,
 			finished: '15:00 2022-04-23',
 			warbots: 3,
-			unclaimed: 0,
+			unclaimed: 3,
+			produced: 0,
 		},
 		{
 			id: 82,
@@ -27,7 +28,8 @@ const Manufacturing = () => {
 			lock: 3,
 			finished: '15:00 2022-04-23',
 			warbots: 3,
-			unclaimed: 0,
+			unclaimed: 3,
+			produced: 0,
 		},
 		{
 			id: 91,
@@ -36,7 +38,8 @@ const Manufacturing = () => {
 			lock: 3,
 			finished: '15:00 2022-04-23',
 			warbots: 3,
-			unclaimed: 0,
+			unclaimed: 3,
+			produced: 0,
 		},
 		{
 			id: 77,
@@ -45,7 +48,8 @@ const Manufacturing = () => {
 			lock: 3,
 			finished: '15:00 2022-04-23',
 			warbots: 3,
-			unclaimed: 0,
+			unclaimed: 3,
+			produced: 0,
 		},
 		{
 			id: 83,
@@ -54,7 +58,8 @@ const Manufacturing = () => {
 			lock: 3,
 			finished: '15:00 2022-04-23',
 			warbots: 3,
-			unclaimed: 0,
+			unclaimed: 3,
+			produced: 0,
 		},
 		{
 			id: 92,
@@ -63,7 +68,8 @@ const Manufacturing = () => {
 			lock: 3,
 			finished: '15:00 2022-04-23',
 			warbots: 3,
-			unclaimed: 0,
+			unclaimed: 3,
+			produced: 0,
 		},
 	];
 

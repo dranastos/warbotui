@@ -52,7 +52,7 @@ const Checkbox = ({label, filter, setFilter, param}) => {
 	);
 };
 
-const Range = ({label, icon, color, min, max, step, filter, setFilter, param}) => {
+const Range = ({label, icon, color, min, max, step, filter, setFilter, isTwoThumbs, param}) => {
 	const [leftInputValue, setLeftInputValue] = useState(min);
 	const [rightInputValue, setRightInputValue] = useState(max);
 
@@ -101,6 +101,7 @@ const Range = ({label, icon, color, min, max, step, filter, setFilter, param}) =
 				setLeftInputValue={setLeftInputValue}
 				rightInputValue={rightInputValue}
 				setRightInputValue={setRightInputValue}
+				isTwoThumbs={isTwoThumbs}
 			/>
 		</div>
 	);

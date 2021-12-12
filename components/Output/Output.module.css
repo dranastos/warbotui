@@ -1,6 +1,7 @@
 .Output {
   display: flex;
   flex-direction: column;
+  white-space: nowrap;
 }
 
 .Output > div {
@@ -20,7 +21,7 @@
 .Output output {
   width: fit-content;
   min-width: 100px;
-  padding: 16px;
+  padding: 8px 16px;
   font-family: Teko, sans-serif;
   font-weight: bold;
   font-size: 30px;
@@ -54,7 +55,7 @@
 
   .Output output {
     min-width: 80px;
-    padding: 12px;
+    padding: 8px 12px;
     font-size: 24px;
     margin-top: 0;
   }

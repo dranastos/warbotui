@@ -1,17 +1,18 @@
 import styles from './Range.module.css';
 import {createRef, useEffect, useState} from 'react';
 
-const Range = ({
-	               min,
-	               max,
-	               step,
-	               leftInputValue,
-	               rightInputValue,
-	               setLeftInputValue,
-	               setRightInputValue,
-	               setMinValue,
-	               setMaxValue
-               }) => {
+const RangeTwoThumbs = ({
+	                        min,
+	                        max,
+	                        step,
+	                        leftInputValue,
+	                        rightInputValue,
+	                        setLeftInputValue,
+	                        setRightInputValue,
+	                        setMinValue,
+	                        setMaxValue,
+	                        ...props
+                        }) => {
 	const inputLeft = createRef();
 	const inputRight = createRef();
 	const thumbLeft = createRef();
@@ -89,7 +90,7 @@ const Range = ({
 				onMouseOut={() => setOnRightHover(false)}
 			/>
 
-			<div className={styles.Slider__wrapper}>
+			<div className={styles.Slider__wrapper} {...props}>
 				<div className={styles.Slider__track}/>
 				<div className={styles.Slider__range} ref={range}/>
 				<div className={!onLeftHover ? styles.Slider__thumb_left : styles.Slider__thumb_left_hover} ref={thumbLeft}/>
@@ -97,6 +98,108 @@ const Range = ({
 				     ref={thumbRight}/>
 			</div>
 		</div>
+	);
+};
+
+const RangeOneThumb = ({
+	                       min,
+	                       max,
+	                       step,
+	                       rightInputValue,
+	                       setRightInputValue,
+	                       setMaxValue,
+	                       ...props
+                       }) => {
+	const inputRight = createRef();
+	const thumbRight = createRef();
+	const range = createRef();
+
+	const [onRightHover, setOnRightHover] = useState(false);
+
+	const setRightValue = () => {
+		const _this = inputRight.current;
+		const min = parseInt(_this.min);
+		const max = parseInt(_this.max);
+
+		setRightInputValue(_this.value);
+
+		const percent = ((_this.value - min) / (max - min)) * 100;
+
+		thumbRight.current.style.right = (100 - percent) + '%';
+		range.current.style.right = (100 - percent) + '%';
+
+		setMaxValue(_this.value);
+	};
+
+	useEffect(() => {
+		const rightPercent = ((inputRight.current.value - min) / (max - min)) * 100;
+
+		thumbRight.current.style.right = (100 - rightPercent) + '%';
+		range.current.style.right = (100 - rightPercent) + '%';
+	});
+
+	return (
+		<div className={styles.Slider}>
+			<input
+				type="range"
+				min={min}
+				max={max}
+				step={step}
+				value={rightInputValue}
+				ref={inputRight}
+				onChange={setRightValue}
+				onMouseOver={() => setOnRightHover(true)}
+				onMouseOut={() => setOnRightHover(false)}
+			/>
+
+			<div className={styles.Slider__wrapper} {...props}>
+				<div className={styles.Slider__track}/>
+				<div className={styles.Slider__range} ref={range}/>
+				<div className={!onRightHover ? styles.Slider__thumb_right : styles.Slider__thumb_right_hover} ref={thumbRight}/>
+			</div>
+		</div>
+	);
+};
+
+const Range = ({
+	               min,
+	               max,
+	               step,
+	               leftInputValue,
+	               rightInputValue,
+	               setLeftInputValue,
+	               setRightInputValue,
+	               setMinValue,
+	               setMaxValue,
+	               isTwoThumbs = true,
+	               ...props
+               }) => {
+	return isTwoThumbs ? (
+		<RangeTwoThumbs
+			min={min}
+			max={max}
+			step={step}
+			leftInputValue={leftInputValue}
+			rightInputValue={rightInputValue}
+			setLeftInputValue={setLeftInputValue}
+			setRightInputValue={setRightInputValue}
+			setMinValue={setMinValue}
+			setMaxValue={setMaxValue}
+			{...props}
+		/>
+	) : (
+		<RangeOneThumb
+			min={min}
+			max={max}
+			step={step}
+			leftInputValue={leftInputValue}
+			rightInputValue={rightInputValue}
+			setLeftInputValue={setLeftInputValue}
+			setRightInputValue={setRightInputValue}
+			setMinValue={setMinValue}
+			setMaxValue={setMaxValue}
+			{...props}
+		/>
 	);
 };
 
