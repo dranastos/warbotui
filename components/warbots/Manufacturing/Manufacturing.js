@@ -5,12 +5,13 @@ import {faUndo} from '@fortawesome/free-solid-svg-icons';
 import Card from '../../Card/Card';
 import Output from '../../Output/Output';
 import Plant from '../Plant/Plant';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import Select from '../../Select/Select';
 
 const Manufacturing = () => {
 	const [visibleElementsCount, setVisibleElementsCount] = useState(3);
 
-	const plants = [
+	const [plants, setPlants] = useState([
 		{
 			id: 76,
 			staked: 123,
@@ -71,7 +72,7 @@ const Manufacturing = () => {
 			unclaimed: 3,
 			produced: 0,
 		},
-	];
+	]);
 
 	const plantsList = plants.map((plant, i) => {
 		return i < visibleElementsCount && (
@@ -91,16 +92,59 @@ const Manufacturing = () => {
 		);
 	});
 
+	const [key, setKey] = useState(0);
+
+	const options = [
+		{text: 'Lowest Plant #', key: 'id'},
+		{text: 'MMAC Staked', key: 'staked'},
+		{text: 'Warbots produced', key: 'produced'},
+	];
+
+	useEffect(() => {
+		setKey(Math.random());
+		setPlants(plants.sort((a, b) => {
+			if (a[options[0].key] < b[options[0].key]) {
+				return -1;
+			} else if (a[options[0].key] > b[options[0].key]) {
+				return 1;
+			}
+			return 0;
+		}));
+	}, []);
+
 	return (
 		<div className={styles.Manufacturing}>
 			<header className={styles.Manufacturing__header}>
 				<h2>Closed Warbot Manufacturing Plants <span>{plants.length}</span></h2>
-				<Button.Secondary>
-					<FontAwesomeIcon icon={faUndo}/>
-					Refresh
-				</Button.Secondary>
+				<div className={styles.Manufacturing__buttons}>
+					<Select
+						placeholder="Option"
+						options={options}
+						setSelectData={(e) => {
+							options.findIndex((element, index, array) => {
+								if (element.text === e) {
+									setKey(Math.random());
+									setPlants(plants.sort((a, b) => {
+										if (a[array[index].key] < b[array[index].key]) {
+											return -1;
+										} else if (a[array[index].key] > b[array[index].key]) {
+											return 1;
+										}
+										return 0;
+									}));
+								}
+							});
+						}}
+						selectData={'Lowest Plant #'}
+						alternate={true}
+					/>
+					<Button.Secondary>
+						<FontAwesomeIcon icon={faUndo}/>
+						Refresh
+					</Button.Secondary>
+				</div>
 			</header>
-			<div className={styles.Manufacturing__plants}>
+			<div className={styles.Manufacturing__plants} key={key}>
 				{plantsList}
 			</div>
 			<div className={styles.Manufacturing__button}>
@@ -108,6 +152,7 @@ const Manufacturing = () => {
 					plants.length > visibleElementsCount &&
 					<Button.Secondary
 						onClick={() => setVisibleElementsCount(visibleElementsCount + 3)}
+						style={{margin: 'auto'}}
 					>
 						View Active Plants
 					</Button.Secondary>

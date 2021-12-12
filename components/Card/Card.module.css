@@ -65,6 +65,10 @@
   color: #71EEFF;
 }
 
+.Header__output {
+  margin-left: auto;
+}
+
 .Footer {
   border-bottom: none;
 }
@@ -118,5 +122,9 @@
     grid-template-rows: auto auto;
     grid-column-gap: 0;
     grid-row-gap: 30px;
+  }
+
+  .Header__output {
+    margin-left: 0;
   }
 }

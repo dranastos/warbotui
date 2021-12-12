@@ -48,6 +48,12 @@
   grid-gap: 30px;
 }
 
+.Manufacturing__buttons {
+  display: flex;
+  align-items: center;
+  grid-column-gap: 12px;
+}
+
 .Manufacturing__button {
   text-align: center;
   margin-top: 36px;
@@ -58,6 +64,24 @@
   font-weight: 600;
   font-size: 28px;
   color: #71EEFF;
+}
+
+@media (max-width: 1400px) {
+  .Manufacturing__header h2::before {
+    display: none;
+  }
+
+  .Manufacturing__header h2 span {
+    display: none;
+  }
+
+  .Manufacturing__buttons {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    grid-column-gap: 0;
+    grid-row-gap: 16px;
+    margin: 12px 0;
+  }
 }
 
 @media (max-width: 1200px) {

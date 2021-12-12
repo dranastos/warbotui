@@ -11,7 +11,7 @@ const Header = ({title, subtitle, stakedText, balanceValue, approvedValue, outpu
 					<h4>{subtitle}</h4>
 				</div>
 				{outputValue && (
-					<div style={{marginLeft: 'auto'}}>
+					<div className={styles.Header__output}>
 						<Output value={outputValue} style={{marginTop: 0}}/>
 					</div>
 				)}
