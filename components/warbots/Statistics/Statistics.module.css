@@ -28,7 +28,7 @@
 }
 
 .Statistics__stat div {
-  height: fit-content;
+  /*height: fit-content;*/
 }
 
 .Statistics__stat img {

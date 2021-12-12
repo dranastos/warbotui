@@ -107,8 +107,8 @@ export default function Dashboard() {
 						<>
 							<Tabs
 								tabs={['Production Facilities', 'Statistics']}
-								defaultTab={toggleFacility}
-								callback={setToggleFacility}
+								activeTab={toggleFacility}
+								setActiveTab={setToggleFacility}
 							/>
 							{toggleFacility === 0 && (
 								<>

@@ -14,8 +14,8 @@ export default function bridge() {
 
 					<Tabs
 						tabs={['To Polygon', 'To BSC']}
-						defaultTab={toggleState}
-						callback={setToggleState}
+						activeTab={toggleState}
+						setActiveTab={setToggleState}
 					/>
 
 					<Transfer toggleState={toggleState}/>

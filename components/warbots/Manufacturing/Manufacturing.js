@@ -3,14 +3,12 @@ import Button from '../../Button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUndo} from '@fortawesome/free-solid-svg-icons';
 import Card from '../../Card/Card';
-import Output from '../../Output/Output';
 import Plant from '../Plant/Plant';
 import {useEffect, useState} from 'react';
 import Select from '../../Select/Select';
+import Link from 'next/link';
 
-const Manufacturing = () => {
-	const [visibleElementsCount, setVisibleElementsCount] = useState(3);
-
+const Manufacturing = ({callback, link, type = 'link', isClosed = true}) => {
 	const [plants, setPlants] = useState([
 		{
 			id: 76,
@@ -75,8 +73,8 @@ const Manufacturing = () => {
 	]);
 
 	const plantsList = plants.map((plant, i) => {
-		return i < visibleElementsCount && (
-			<Card style={{height: 'fit-content'}}>
+		return (
+			<Card style={{height: 'fit-content'}} key={i}>
 				<Plant
 					img="/img/warbots/plant_image_1.png"
 					id={plant.id}
@@ -115,7 +113,9 @@ const Manufacturing = () => {
 	return (
 		<div className={styles.Manufacturing}>
 			<header className={styles.Manufacturing__header}>
-				<h2>Closed Warbot Manufacturing Plants <span>{plants.length}</span></h2>
+				<h2 className={isClosed ? styles.Manufacturing__title_closed : styles.Manufacturing__title}>
+					{isClosed && 'Closed'} Warbot Manufacturing Plants <span>{plants.length}</span>
+				</h2>
 				<div className={styles.Manufacturing__buttons}>
 					<Select
 						placeholder="Option"
@@ -149,13 +149,17 @@ const Manufacturing = () => {
 			</div>
 			<div className={styles.Manufacturing__button}>
 				{
-					plants.length > visibleElementsCount &&
-					<Button.Secondary
-						onClick={() => setVisibleElementsCount(visibleElementsCount + 3)}
-						style={{margin: 'auto'}}
-					>
-						View Active Plants
-					</Button.Secondary>
+					type === 'link' ? (
+						<Link href={link}>
+							<Button.Secondary style={{margin: 'auto'}}>
+								View {isClosed ? 'Active' : 'Closed'} Plants
+							</Button.Secondary>
+						</Link>
+					) : (
+						<Button.Secondary style={{margin: 'auto'}} onClick={callback}>
+							View {isClosed ? 'Active' : 'Closed'} Plants
+						</Button.Secondary>
+					)
 				}
 			</div>
 		</div>

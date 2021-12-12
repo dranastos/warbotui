@@ -25,6 +25,7 @@ import useGlobal from '../hooks/useGlobal';
 import useStaking from '../hooks/useStaking';
 import moment from 'moment';
 import Manufacturing from '../components/warbots/Manufacturing/Manufacturing';
+import ManufacturingBlock from '../components/warbots/Manufacturing/Manufacturing';
 
 
 const UserManufacturingCenters = ({onComplete, address}) => {
@@ -77,7 +78,9 @@ const UserManufacturingCenters = ({onComplete, address}) => {
 	};
 
 	return (
-		<Manufacturing/>
+		<Manufacturing
+			link={'/manufacturing'}
+		/>
 	);
 };
 

@@ -20,27 +20,40 @@ const Manufacturing = () => {
 			<section className="War_dashboard_tabs">
 				<div className="container">
 					<h1>MicroMachine Warbot Manufacturing Center</h1>
-					{/*{(state.hasSecurity && wallet.status === 'connected') && (*/}
+					{(state.hasSecurity && wallet.status === 'connected') && (
 					<div>
 						<Tabs
 							tabs={['Dashboard', 'Closed Plants', 'Statistics']}
-							defaultTab={0}
-							callback={setActiveTab}
+							activeTab={activeTab}
+							setActiveTab={setActiveTab}
 						/>
 						{activeTab === 0 && (
 							<>
 								<Dashboard/>
-								<ManufacturingBlock/>
+								<ManufacturingBlock
+									isClosed={false}
+									type="button"
+									callback={() => setActiveTab(1)}
+								/>
 							</>
 						)}
 						{activeTab === 1 && (
-							<></>
+							<ManufacturingBlock
+								type="button"
+								callback={() => setActiveTab(0)}
+							/>
 						)}
 						{activeTab === 2 && (
-							<></>
+							<Statistics
+								extended={false}
+								warbots={81}
+								plants={6}
+								period={120}
+								manufactured={62}
+							/>
 						)}
 					</div>
-					{/*)}*/}
+					)}
 				</div>
 			</section>
 		</PublicLayout>

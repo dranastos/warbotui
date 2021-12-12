@@ -1,9 +1,6 @@
 import styles from './Tabs.module.css';
-import {useState} from 'react';
 
-const Alternate = ({tabs, defaultTab, callback}) => {
-	const [activeTab, setActiveTab] = useState(defaultTab);
-
+const Alternate = ({tabs, activeTab, setActiveTab}) => {
 	const tabsList = tabs.map((tab, i) => (
 		<button
 			className={
@@ -11,7 +8,6 @@ const Alternate = ({tabs, defaultTab, callback}) => {
 			}
 			onClick={() => {
 				setActiveTab(i);
-				callback(i);
 			}}
 			key={i}
 		>
@@ -26,9 +22,7 @@ const Alternate = ({tabs, defaultTab, callback}) => {
 	);
 };
 
-const Tabs = ({tabs, defaultTab, callback, style, minimize = false}) => {
-	const [activeTab, setActiveTab] = useState(defaultTab);
-
+const Tabs = ({tabs, setActiveTab, activeTab, style, minimize = false}) => {
 	const tabsList = tabs.map((tab, i) => (
 		<button
 			className={
@@ -36,7 +30,6 @@ const Tabs = ({tabs, defaultTab, callback, style, minimize = false}) => {
 			}
 			onClick={() => {
 				setActiveTab(i);
-				callback(i);
 			}}
 			key={i}
 			style={{padding: minimize && '10px 20px'}}

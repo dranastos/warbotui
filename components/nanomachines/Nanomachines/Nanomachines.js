@@ -14,8 +14,8 @@ const Nanomachines = () => {
 			<h2>Build Nanomachines (NMAC)</h2>
 			<Tabs
 				tabs={['Alpha', 'Beta', 'Gamma']}
-				defaultTab={toggleNanomachine}
-				callback={setToggleNanomachine}
+				activeTab={toggleNanomachine}
+				setActiveTab={setToggleNanomachine}
 				style={{marginLeft: 'auto', marginRight: 'auto'}}
 			/>
 			<div>

@@ -50,8 +50,8 @@ const List = ({title, products, items, deposits, dashboard = false}) => {
 							<FontAwesomeIcon icon={faList}/>,
 							<FontAwesomeIcon icon={faGripHorizontal}/>
 						]}
-						defaultTab={activeTab}
-						callback={setActiveTab}
+						activeTab={activeTab}
+						setActiveTab={setActiveTab}
 						minimize={true}
 					/>
 				</div>

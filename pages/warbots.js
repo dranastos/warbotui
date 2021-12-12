@@ -84,8 +84,8 @@ export default function Dashboard() {
 						<div>
 							<Tabs
 								tabs={['Warbots', 'Upgrading Facility', 'Statistics']}
-								defaultTab={0}
-								callback={setActiveTab}
+								activeTab={activeTab}
+								setActiveTab={setActiveTab}
 							/>
 							{activeTab === 0 && (
 								<WarbotInventory/>

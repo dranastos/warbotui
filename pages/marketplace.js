@@ -321,8 +321,8 @@ const marketplace = () => {
 						<>
 							<Tabs
 								tabs={['Warbots', 'NanoNFTs', 'Warhelms', 'Warhelm Patches']}
-								defaultTab={activeTab}
-								callback={setActiveTab}
+								activeTab={activeTab}
+								setActiveTab={setActiveTab}
 								style={{transform: 'translateY(-20px)'}}
 							/>
 							{activeTab === 0 && (

@@ -19,11 +19,17 @@
   height: 24px;
   width: 24px;
   border-radius: 50%;
+  background: rgb(143, 226, 123);
+  background: radial-gradient(circle, rgba(143, 226, 123) 40%, rgba(25, 40, 61, 1) 40%);
+  border: 1px solid #8FE27B;
+  box-sizing: border-box;
+  margin-right: 16px;
+}
+
+.Manufacturing__header h2.Manufacturing__title_closed::before {
   background: rgb(172, 72, 50);
   background: radial-gradient(circle, rgba(172, 72, 50, 1) 40%, rgba(25, 40, 61, 1) 40%);
   border: 1px solid #AC4832;
-  box-sizing: border-box;
-  margin-right: 16px;
 }
 
 .Manufacturing__header h2 span {
