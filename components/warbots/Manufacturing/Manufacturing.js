@@ -17,14 +17,8 @@ import moment from 'moment';
 const Manufacturing = ({callback, link, type = 'link', isClosed = true}) => {
 	const wallet = useWallet();
 	const [getVault, sendVaultTx] = useStaking();
-	const [state, actions] = useGlobal([
-		'security',
-		'hasSecurity',
-		'vaultCount',
-	]);
-	const {security, web3, connected} = useMicroMachineManufacturingPlant(
-		state.security
-	);
+	const [state, actions] = useGlobal(['security', 'hasSecurity', 'vaultCount',]);
+	const {security, web3, connected} = useMicroMachineManufacturingPlant(state.security);
 	const [deposits, setDeposits] = useState([]);
 	const [vaults, setVaults] = useState({});
 	const [total, setTotal] = useState(0);
@@ -32,7 +26,7 @@ const Manufacturing = ({callback, link, type = 'link', isClosed = true}) => {
 	const [hasVaults, setHasVaults] = useState(false);
 
 	useEffect(() => {
-		if (connected && state.hasSecurity) {
+		if (connected && state.hasSecurity  && !isClosed) {
 			getDeposits(false);
 		}
 	}, [connected, state.hasSecurity, state.vaultCount]);
@@ -138,6 +132,39 @@ const Manufacturing = ({callback, link, type = 'link', isClosed = true}) => {
 		}));
 	}, []);
 
+	useEffect(() => {
+		if (connected && state.hasSecurity && isClosed) {
+			getDepositsClosed(false);
+		}
+	}, [connected, state.hasSecurity, state.vaultCount]);
+
+	const getDepositsClosed = async () => {
+		setLoading(true);
+
+		const deps = await security.getUserManufacturingPlants(wallet.account).call();
+		const totalDeps = await security.userManufacturingPlantCount(wallet.account).call();
+
+
+		setDeposits(deps);
+
+		let vaults = {};
+		for (let dep of deps) {
+			const rawdata = await security.ManufacturingPlants(dep).call();
+			const data = await getVault(rawdata);
+
+			vaults[dep] = {
+				address,
+				...data
+			};
+
+		}
+
+		setVaults(vaults);
+		setTotal(totalDeps);
+		setHasVaults(true);
+		setLoading(false);
+	};
+
 	return (
 		<div className={styles.Manufacturing}>
 			<header className={styles.Manufacturing__header}>
@@ -167,7 +194,7 @@ const Manufacturing = ({callback, link, type = 'link', isClosed = true}) => {
 						alternate={true}
 					/>
 					<Button.Secondary
-						onClick={getDeposits}
+						onClick={!isClosed ? getDeposits : getDepositsClosed}
 					>
 						<FontAwesomeIcon icon={faUndo}/>
 						Refresh
