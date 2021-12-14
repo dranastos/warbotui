@@ -216,15 +216,6 @@ export default function Dashboard() {
 										View Active Plants
 									</button>
 								</div>
-								<div
-									className={
-										toggleState === 3
-											? 'content  active-content'
-											: 'content'
-									}
-								>
-									<Statistics_tab/>
-								</div>
 							</div>
 						</div>
 					</section>
