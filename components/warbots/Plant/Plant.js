@@ -4,7 +4,7 @@ import {faChevronDown, faClock, faLock, faCog} from '@fortawesome/free-solid-svg
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useState} from 'react';
 
-const Plant = ({img, id, unclaimed, warbots, date, finished, staked, lock, produced}) => {
+const Plant = ({img, id, unclaimed, warbots, date, finished, staked, lock, produced, onClick}) => {
 	const [isVisibleDetails, setIsVisibleDetails] = useState(false);
 
 	return (
@@ -26,7 +26,8 @@ const Plant = ({img, id, unclaimed, warbots, date, finished, staked, lock, produ
 									height: '48px',
 									borderRadius: '10px'
 								},
-								disabled: true
+								disabled: true,
+								onClick: onClick
 							}}
 							style={{
 								fontSize: '24px',
