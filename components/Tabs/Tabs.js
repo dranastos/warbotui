@@ -22,7 +22,7 @@ const Alternate = ({tabs, activeTab, setActiveTab}) => {
 	);
 };
 
-const Tabs = ({tabs, setActiveTab, activeTab, style, minimize = false}) => {
+const Tabs = ({tabs, setActiveTab, activeTab, style, minimize = false, secondary = false}) => {
 	const tabsList = tabs.map((tab, i) => (
 		<button
 			className={
@@ -39,7 +39,7 @@ const Tabs = ({tabs, setActiveTab, activeTab, style, minimize = false}) => {
 	));
 
 	return (
-		<div className={styles.Tabs} style={style}>
+		<div style={style} className={`${styles.Tabs} ${secondary ? styles.Tabs_secondary : ''}`}>
 			{tabsList}
 		</div>
 	);

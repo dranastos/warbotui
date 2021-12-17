@@ -17,6 +17,7 @@ const Nanomachines = () => {
 				activeTab={toggleNanomachine}
 				setActiveTab={setToggleNanomachine}
 				style={{marginLeft: 'auto', marginRight: 'auto'}}
+				secondary={true}
 			/>
 			<div>
 				{toggleNanomachine === 0 && (

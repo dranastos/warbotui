@@ -12,7 +12,7 @@ const Header = ({title, subtitle, stakedText, balanceValue, approvedValue, outpu
 				</div>
 				{outputValue && (
 					<div className={styles.Header__output}>
-						<Output value={outputValue} style={{marginTop: 0}}/>
+						<Output value={outputValue} style={{marginTop: 0, whiteSpace: 'nowrap'}}/>
 					</div>
 				)}
 				<div className={styles.Header__values}>
